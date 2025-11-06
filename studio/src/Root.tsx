@@ -2,6 +2,7 @@ import React from 'react';
 import {Composition, Folder} from 'remotion';
 import {EarningsVideo} from './compositions/EarningsVideo';
 import {EarningsCallVideo} from './compositions/EarningsVideoFull';
+import {PLTR_Q3_2025} from './compositions/PLTR_Q3_2025';
 import {
 	SubscribeExample,
 	OutroExample,
@@ -29,6 +30,14 @@ export const RemotionRoot: React.FC = () => {
 				</Folder>
 				<Folder name="Full-Earnings-Calls">
 					<EarningsCallVideo />
+					<Composition
+						id="PLTR-Q3-2025"
+						component={PLTR_Q3_2025}
+						durationInFrames={79000} // ~44 min at 30fps (adjust after insights)
+						fps={30}
+						width={1920}
+						height={1080}
+					/>
 				</Folder>
 			</Folder>
 
