@@ -6,5 +6,11 @@ torchaudio
 # LLM processing
 openai>=1.0.0
 
+# YouTube API
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+
 # Utilities
 python-dotenv
+requests

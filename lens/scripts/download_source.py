@@ -11,9 +11,11 @@ import argparse
 from pathlib import Path
 from typing import Optional, Dict
 import requests
+from dotenv import load_dotenv
 
-# RapidAPI credentials (same as VideotoBe)
-RAPID_API_KEY = "3f1bb5e065msh90a5e46cb63b48ap1df86fjsnf05311ceb523"
+# Load environment variables
+load_dotenv()
+RAPID_API_KEY = os.getenv("RAPID_API_KEY")
 
 
 class VideoSourceDownloader:
@@ -47,6 +49,12 @@ class VideoSourceDownloader:
         response.raise_for_status()
         data = response.json()
 
+        # Save complete metadata
+        metadata_path = self.input_dir / "metadata.json"
+        with open(metadata_path, "w") as f:
+            json.dump(data, f, indent=2)
+        print(f"✓ Metadata saved to: {metadata_path}")
+
         # Find best MP4 with audio
         download_url = self._find_best_mp4_url(data)
         if not download_url:
@@ -63,7 +71,10 @@ class VideoSourceDownloader:
             "url": youtube_url,
             "video_id": video_id,
             "file_path": str(output_path),
+            "metadata_path": str(metadata_path),
             "title": data.get("title", ""),
+            "description": data.get("description", ""),
+            "channel": data.get("channel", {}),
             "duration": data.get("lengthSeconds", 0),
         }
 
@@ -137,54 +148,57 @@ class VideoSourceDownloader:
         print()  # New line after progress
 
 
+def download_video(url: str, downloads_dir: str = "/var/earninglens/_downloads") -> Dict:
+    """
+    Download video from YouTube URL.
+
+    Args:
+        url: YouTube video URL
+        downloads_dir: Base directory for downloads
+
+    Returns:
+        Dictionary with download results including file paths and metadata
+    """
+    # Extract video ID from URL
+    video_id = None
+    if "youtu.be/" in url:
+        video_id = url.split("youtu.be/")[1].split("?")[0]
+    elif "youtube.com/watch?v=" in url:
+        video_id = url.split("v=")[1].split("&")[0]
+
+    if not video_id:
+        raise ValueError(f"Could not extract video ID from URL: {url}")
+
+    # Create downloader - save to _downloads/<video_id>/
+    output_dir = Path(downloads_dir) / video_id
+    downloader = VideoSourceDownloader(video_id, str(output_dir))
+
+    # Download
+    result = downloader.download_from_youtube(url)
+
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Download earnings call videos from multiple sources"
+        description="Download earnings call videos from YouTube"
     )
-    parser.add_argument("video_id", help="Video ID (e.g., pltr-q3-2024)")
+    parser.add_argument("url", help="YouTube URL")
     parser.add_argument(
-        "source",
-        choices=["youtube", "manual"],
-        help="Source: youtube or manual (already uploaded)",
-    )
-    parser.add_argument("--url", help="YouTube URL (required if source=youtube)")
-    parser.add_argument(
-        "--output-dir",
-        default="sushi/videos",
-        help="Output directory (default: sushi/videos)",
+        "--downloads-dir",
+        default="/var/earninglens/_downloads",
+        help="Downloads directory (default: /var/earninglens/_downloads)",
     )
 
     args = parser.parse_args()
 
-    # Validate
-    if args.source == "youtube" and not args.url:
-        print("❌ Error: --url required when source=youtube")
-        sys.exit(1)
-
-    # Create downloader
-    output_dir = Path(args.output_dir) / args.video_id
-    downloader = VideoSourceDownloader(args.video_id, str(output_dir))
-
-    # Download
     try:
-        if args.source == "youtube":
-            result = downloader.download_from_youtube(args.url)
-        else:
-            result = downloader.use_manual_upload()
+        result = download_video(args.url, args.downloads_dir)
 
-        # Save metadata
-        metadata_path = output_dir / "metadata.json"
-        metadata = {
-            "video_id": args.video_id,
-            "status": {"download": "completed"},
-            "source": result,
-        }
-
-        with open(metadata_path, "w") as f:
-            json.dump(metadata, f, indent=2)
-
-        print(f"✓ Metadata saved to: {metadata_path}")
         print(f"✓ Download complete!")
+        print(f"  Video: {result['file_path']}")
+        print(f"  Metadata: {result['metadata_path']}")
+        print(f"  Title: {result['title']}")
 
     except Exception as e:
         print(f"❌ Error: {e}")

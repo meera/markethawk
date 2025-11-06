@@ -25,6 +25,10 @@ yarn-error.log*
 .env
 .env*.local
 
+# Secrets and credentials
+*client_secret*.json
+*.pem
+
 # Vercel
 .vercel
 
@@ -47,7 +51,6 @@ Thumbs.db
 
 # Python
 .venv/
-.venv-sushi/
 __pycache__/
 *.py[cod]
 *$py.class
@@ -68,9 +71,9 @@ public/audio/**/*.srt
 public/audio/**/*.vtt
 public/audio/**/*.txt
 
-# Sushi working directories
-sushi/uploads/
-sushi/downloads/
+# Pipeline working directories
+lens/uploads/
+lens/downloads/
 
 # Logs
 *.log

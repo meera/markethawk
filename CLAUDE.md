@@ -152,6 +152,25 @@ These are the ONLY sources we trust absolutely. Everything else is supplementary
 - **Data-driven:** Monitor via admin dashboard (NOT email)
 - **Mobile-first:** Admin interface optimized for mobile monitoring
 
+**Command Execution Principles:**
+- **Always run from project root:** `~/earninglens/`
+- **NEVER cd into subdirectories** to run commands
+- **Use relative paths from root** for all commands
+- Examples:
+  ```bash
+  # ✅ CORRECT - Run from root
+  cd ~/earninglens
+  source .venv/bin/activate
+  python lens/process_earnings.py --url "..."
+  npm run dev --prefix web
+  npm run start --prefix studio
+
+  # ❌ WRONG - Don't cd into subdirectories
+  cd ~/earninglens/lens
+  python process_earnings.py --url "..."
+  ```
+- **Benefits:** Consistent working directory, .env always in same location, clearer paths
+
 **What We're Good At:**
 - 🎨 Visually appealing video production
 - 📖 Compelling storytelling with data
@@ -470,11 +489,11 @@ Config.setConcurrency('50%');  # Lower concurrency
 
 **3. Output Directory**
 ```bash
-# Standard (with sushi mount): ~/earninglens/sushi/videos/
-# Travel mode (local only): ~/earninglens/sushi/videos/
+# Standard (with GPU machine mount): ~/earninglens/lens/videos/
+# Travel mode (local only): ~/earninglens/lens/videos/
 
 # Same path! No changes needed if working locally.
-# Just no access to sushi's generated files until you sync.
+# Just no access to GPU machine's generated files until you sync.
 ```
 
 ### Laptop Workflow (Offline/Travel)
@@ -489,7 +508,7 @@ npm run remotion     # Remotion Studio (preview only)
 **Option B: Process Videos Locally (Slower)**
 ```bash
 # 1. Download video
-cd sushi
+cd lens
 python scripts/download-youtube.py <video-id>
 
 # 2. Transcribe (CPU - slower)
@@ -501,10 +520,10 @@ npm run render -- pltr-q3-2024
 
 # 4. Upload to R2 when online
 cd ..
-npm run upload:r2 -- sushi/videos/pltr-q3-2024/output/final.mp4
+npm run upload:r2 -- lens/videos/pltr-q3-2024/output/final.mp4
 
 # 5. Commit transcripts
-git add sushi/videos/pltr-q3-2024
+git add lens/videos/pltr-q3-2024
 git commit -m "Process PLTR Q3 2024 (laptop)"
 git push
 ```
@@ -533,7 +552,7 @@ Before traveling, ensure laptop has:
 
 ```bash
 # 1. Python environment
-cd ~/earninglens/sushi
+cd ~/earninglens/lens
 python --version  # Should be 3.9+
 pip install -r requirements.txt
 

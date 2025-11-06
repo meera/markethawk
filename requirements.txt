@@ -1,0 +1,27 @@
+# EarningLens Pipeline Requirements
+# Install: pip install -r requirements.txt
+
+# Core utilities
+python-dotenv
+requests
+
+# YouTube processing
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+
+# LLM processing (OpenAI)
+openai>=1.0.0
+
+# Video processing
+ffmpeg-python
+
+# ============================================================================
+# GPU MACHINE ONLY (Transcription)
+# ============================================================================
+# These require Python <3.14 and GPU acceleration
+# Install on Linux GPU machine with: pip install -r requirements-gpu.txt
+#
+# openai-whisper
+# torch
+# torchaudio

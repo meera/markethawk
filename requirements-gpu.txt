@@ -1,0 +1,7 @@
+# GPU Machine Requirements (Python <3.14)
+# Install on Linux GPU machine: pip install -r requirements-gpu.txt
+
+# Whisper transcription (GPU-accelerated)
+openai-whisper
+torch
+torchaudio
