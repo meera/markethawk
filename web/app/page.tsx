@@ -9,7 +9,10 @@ export const revalidate = 3600;
 
 export default async function HomePage() {
   // Fetch published videos with company data
-  let latestVideos = [];
+  let latestVideos: Array<{
+    video: typeof videos.$inferSelect;
+    company: typeof companies.$inferSelect | null;
+  }> = [];
 
   try {
     latestVideos = await db
