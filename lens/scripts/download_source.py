@@ -24,8 +24,8 @@ class VideoSourceDownloader:
     def __init__(self, video_id: str, output_dir: str):
         self.video_id = video_id
         self.output_dir = Path(output_dir)
-        self.input_dir = self.output_dir / "input"
-        self.input_dir.mkdir(parents=True, exist_ok=True)
+        # Flat structure - all files at root level
+        self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def download_from_youtube(self, youtube_url: str) -> Dict:
         """Download video from YouTube using RapidAPI"""
@@ -50,7 +50,7 @@ class VideoSourceDownloader:
         data = response.json()
 
         # Save complete metadata
-        metadata_path = self.input_dir / "metadata.json"
+        metadata_path = self.output_dir / "metadata.json"
         with open(metadata_path, "w") as f:
             json.dump(data, f, indent=2)
         print(f"✓ Metadata saved to: {metadata_path}")
@@ -61,7 +61,7 @@ class VideoSourceDownloader:
             raise ValueError("No suitable MP4 format with audio found")
 
         # Download video
-        output_path = self.input_dir / "source.mp4"
+        output_path = self.output_dir / "source.mp4"
         print(f"  Downloading video...")
         self._download_file(download_url, output_path)
 
@@ -81,7 +81,7 @@ class VideoSourceDownloader:
     def use_manual_upload(self) -> Dict:
         """Use manually uploaded file"""
         print(f"📂 Using manual upload")
-        expected_path = self.input_dir / "source.mp4"
+        expected_path = self.output_dir / "source.mp4"
 
         if not expected_path.exists():
             print(f"❌ No file found at: {expected_path}")

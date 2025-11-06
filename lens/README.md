@@ -94,42 +94,39 @@ python process_earnings.py --url "..." --from render
 
 ## File Structure
 
-**Permanent Archive (`_downloads/`):** All source data tied to video_id
-**Organized Outputs (`PLTR/`, etc.):** Only final rendered videos
+**Flat structure - all files at root level of `_downloads/<video_id>/`**
 
 ```
 /var/earninglens/
 ├── _downloads/                    # Permanent archive (source of truth)
-│   └── <video_id>/
-│       ├── input/
-│       │   ├── source.mp4        # Original download (with silence)
-│       │   └── metadata.json     # RapidAPI metadata
-│       ├── processed/
-│       │   └── trimmed.mp4       # Silence removed
-│       ├── transcripts/          # All transcript formats
-│       │   ├── transcript.json   # Full Whisper output
-│       │   ├── transcript.srt    # Captions
-│       │   ├── transcript.vtt    # WebVTT
-│       │   ├── transcript.txt    # Plain text
-│       │   └── paragraphs.json   # LLM-friendly format
-│       ├── insights/
-│       │   └── insights.json     # LLM-extracted insights
-│       └── .state.json           # Processing state
+│   └── <video_id>/               # Flat directory - easy to see everything
+│       ├── source.mp4            # Original download
+│       ├── source.trimmed.mp4    # Silence removed
+│       ├── metadata.json         # RapidAPI metadata
+│       ├── transcript.json       # Full Whisper output
+│       ├── transcript.srt        # Captions
+│       ├── transcript.vtt        # WebVTT
+│       ├── transcript.txt        # Plain text
+│       ├── transcript.paragraphs.json  # LLM-friendly format
+│       ├── insights.json         # LLM-extracted insights
+│       ├── .state.json           # Processing state
+│       └── .state.lock           # File lock for parallel processing
 │
-├── PLTR/                          # Organized by company (final outputs only)
-│   └── Q3-2024/                   # Auto-detected quarter
-│       ├── take1/                 # Rendered video versions
-│       │   ├── final.mp4
-│       │   └── thumbnail.jpg
-│       ├── take2/
-│       └── metadata.json          # Parsed metadata
+└── PLTR/                          # Organized by company (final outputs only)
+    └── Q3-2024/                   # Auto-detected quarter
+        ├── take1/                 # Rendered video versions
+        │   ├── final.mp4
+        │   └── thumbnail.jpg
+        ├── take2/
+        └── metadata.json          # Parsed metadata
 ```
 
-**Why this structure?**
-- `_downloads/<video_id>/` = Permanent, tied to video_id, never changes
-- `PLTR/Q3-2024/` = Organized output for rendered videos only
-- If company/quarter gets re-parsed, transcripts don't move
-- Single source of truth for all source data
+**Why flat structure?**
+- Simple `ls` shows all files for a video
+- No unnecessary nesting
+- File naming makes purpose clear
+- All source data tied to video_id forever
+- `PLTR/Q3-2024/` only for final rendered videos
 
 ---
 

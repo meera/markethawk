@@ -229,7 +229,7 @@ class EarningsProcessor:
             self.logger.info("Already parsed, skipping")
             return
 
-        metadata_file = DOWNLOADS_DIR / self.video_id / "input" / "metadata.json"
+        metadata_file = DOWNLOADS_DIR / self.video_id / "metadata.json"
 
         if not metadata_file.exists():
             raise FileNotFoundError("Metadata not found. Run download step first.")
@@ -274,12 +274,10 @@ class EarningsProcessor:
             self.logger.info("Already trimmed, skipping")
             return
 
-        # Source and trimmed files in _downloads (permanent archive)
+        # All files in flat _downloads/<video_id>/ directory
         video_dir = DOWNLOADS_DIR / self.video_id
-        source_file = video_dir / "input" / "source.mp4"
-        processed_dir = video_dir / "processed"
-        processed_dir.mkdir(exist_ok=True)
-        trimmed_file = processed_dir / "trimmed.mp4"
+        source_file = video_dir / "source.mp4"
+        trimmed_file = video_dir / "source.trimmed.mp4"
 
         # Call remove_silence function directly
         result = remove_silence_func(str(source_file), str(trimmed_file))
@@ -298,14 +296,13 @@ class EarningsProcessor:
             self.logger.info("Already transcribed, skipping")
             return
 
-        # Transcribe the TRIMMED video from _downloads (permanent archive)
+        # Transcribe from flat _downloads/<video_id>/ directory
         video_dir = DOWNLOADS_DIR / self.video_id
-        processed_dir = video_dir / "processed"
-        trimmed_file = processed_dir / "trimmed.mp4"
+        trimmed_file = video_dir / "source.trimmed.mp4"
 
         # If trimmed file doesn't exist, use original
         if not trimmed_file.exists():
-            trimmed_file = video_dir / "input" / "source.mp4"
+            trimmed_file = video_dir / "source.mp4"
 
         if not trimmed_file.exists():
             raise FileNotFoundError("Video file not found. Run previous steps first.")
@@ -315,26 +312,30 @@ class EarningsProcessor:
         # Outputs are saved automatically to same directory as input
         self._run_python_script(script, [str(trimmed_file), "medium"])
 
-        # Move transcript files to _downloads/<video_id>/transcripts/
+        # Rename transcript files to standard names (flat structure)
         import shutil
-        source_dir = trimmed_file.parent
-        transcript_dir = video_dir / "transcripts"
-        transcript_dir.mkdir(exist_ok=True)
+        base_name = trimmed_file.stem  # "source.trimmed" or "source"
 
-        # Move all transcript files to transcripts/ directory
-        base_name = trimmed_file.stem  # "trimmed" or "source"
-        shutil.move(str(source_dir / f"{base_name}.json"), str(transcript_dir / "transcript.json"))
-        shutil.move(str(source_dir / f"{base_name}.srt"), str(transcript_dir / "transcript.srt"))
-        shutil.move(str(source_dir / f"{base_name}.vtt"), str(transcript_dir / "transcript.vtt"))
-        shutil.move(str(source_dir / f"{base_name}.txt"), str(transcript_dir / "transcript.txt"))
-        shutil.move(str(source_dir / f"{base_name}.paragraphs.json"), str(transcript_dir / "paragraphs.json"))
+        # Rename to standard transcript.* names
+        source_files = {
+            f"{base_name}.json": "transcript.json",
+            f"{base_name}.srt": "transcript.srt",
+            f"{base_name}.vtt": "transcript.vtt",
+            f"{base_name}.txt": "transcript.txt",
+            f"{base_name}.paragraphs.json": "transcript.paragraphs.json"
+        }
+
+        for source, dest in source_files.items():
+            src_path = video_dir / source
+            if src_path.exists():
+                shutil.move(str(src_path), str(video_dir / dest))
 
         self.state.update_state("transcribe", "completed", {
-            "transcript_json": str(transcript_dir / "transcript.json"),
-            "transcript_srt": str(transcript_dir / "transcript.srt"),
-            "transcript_vtt": str(transcript_dir / "transcript.vtt"),
-            "transcript_txt": str(transcript_dir / "transcript.txt"),
-            "paragraphs_json": str(transcript_dir / "paragraphs.json")
+            "transcript_json": str(video_dir / "transcript.json"),
+            "transcript_srt": str(video_dir / "transcript.srt"),
+            "transcript_vtt": str(video_dir / "transcript.vtt"),
+            "transcript_txt": str(video_dir / "transcript.txt"),
+            "paragraphs_json": str(video_dir / "transcript.paragraphs.json")
         })
         self.logger.success("Transcription complete")
 
@@ -346,13 +347,10 @@ class EarningsProcessor:
             self.logger.info("Already extracted, skipping")
             return
 
-        # Read from _downloads (permanent archive)
+        # Flat structure - all files at root level
         video_dir = DOWNLOADS_DIR / self.video_id
-        transcript_file = video_dir / "transcripts" / "transcript.json"
-
-        insights_dir = video_dir / "insights"
-        insights_dir.mkdir(exist_ok=True)
-        output_file = insights_dir / "insights.json"
+        transcript_file = video_dir / "transcript.json"
+        output_file = video_dir / "insights.json"
 
         if not transcript_file.exists():
             raise FileNotFoundError("Transcript not found. Run transcribe step first.")

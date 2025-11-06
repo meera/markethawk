@@ -188,27 +188,23 @@ This produces:
 
 **Output Structure:**
 
-**Permanent Archive (`_downloads/`):** All source data tied to video_id (never changes)
-**Organized Outputs (`PLTR/`, etc.):** Only final rendered videos
+**Flat structure - all files at root level of `_downloads/<video_id>/`**
 
 ```
 /var/earninglens/
 ├── _downloads/                    # Permanent archive (source of truth)
-│   └── <video_id>/
-│       ├── input/
-│       │   ├── source.mp4        # Original download (with silence)
-│       │   └── metadata.json     # RapidAPI metadata
-│       ├── processed/
-│       │   └── trimmed.mp4       # Silence removed
-│       ├── transcripts/          # All transcript formats
-│       │   ├── transcript.json   # Full Whisper output
-│       │   ├── transcript.srt    # Captions
-│       │   ├── transcript.vtt    # WebVTT
-│       │   ├── transcript.txt    # Plain text
-│       │   └── paragraphs.json   # LLM-friendly format
-│       ├── insights/
-│       │   └── insights.json     # LLM-extracted insights
-│       └── .state.json           # Processing state
+│   └── <video_id>/               # Flat directory - easy to navigate
+│       ├── source.mp4            # Original download
+│       ├── source.trimmed.mp4    # Silence removed
+│       ├── metadata.json         # RapidAPI metadata
+│       ├── transcript.json       # Full Whisper output
+│       ├── transcript.srt        # Captions
+│       ├── transcript.vtt        # WebVTT
+│       ├── transcript.txt        # Plain text
+│       ├── transcript.paragraphs.json  # LLM-friendly format
+│       ├── insights.json         # LLM-extracted insights
+│       ├── .state.json           # Processing state
+│       └── .state.lock           # File lock for parallel processing
 │
 └── PLTR/                          # Organized by company (final outputs only)
     └── Q3-2025/
@@ -220,10 +216,11 @@ This produces:
 ```
 
 **Rationale:**
-- `_downloads/<video_id>/` = Permanent, tied to video forever
-- Transcripts/insights belong with source video, not rendered output
-- If company/quarter gets re-parsed, data doesn't move
-- `PLTR/Q3-2025/` = Organized output directory for rendered videos only
+- **Flat structure:** Simple `ls` shows all files, no unnecessary nesting
+- **Clear naming:** File names indicate purpose (source.*, transcript.*, insights.json)
+- **Permanent archive:** All source data tied to video_id forever in `_downloads/`
+- **Organized outputs:** `PLTR/Q3-2025/` only for final rendered videos
+- **Safe re-parsing:** If company/quarter changes, source data stays in `_downloads/`
 
 **Step 6: Manual Composition (Remotion Studio)**
 ```bash
