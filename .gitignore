@@ -80,3 +80,4 @@ lens/downloads/
 
 # Logs
 *.log
+.env.prod
