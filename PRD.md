@@ -187,27 +187,43 @@ This produces:
 5. **Extract Insights** - LLM analysis → key metrics, highlights
 
 **Output Structure:**
+
+**Permanent Archive (`_downloads/`):** All source data tied to video_id (never changes)
+**Organized Outputs (`PLTR/`, etc.):** Only final rendered videos
+
 ```
 /var/earninglens/
-└── PLTR/
+├── _downloads/                    # Permanent archive (source of truth)
+│   └── <video_id>/
+│       ├── input/
+│       │   ├── source.mp4        # Original download (with silence)
+│       │   └── metadata.json     # RapidAPI metadata
+│       ├── processed/
+│       │   └── trimmed.mp4       # Silence removed
+│       ├── transcripts/          # All transcript formats
+│       │   ├── transcript.json   # Full Whisper output
+│       │   ├── transcript.srt    # Captions
+│       │   ├── transcript.vtt    # WebVTT
+│       │   ├── transcript.txt    # Plain text
+│       │   └── paragraphs.json   # LLM-friendly format
+│       ├── insights/
+│       │   └── insights.json     # LLM-extracted insights
+│       └── .state.json           # Processing state
+│
+└── PLTR/                          # Organized by company (final outputs only)
     └── Q3-2025/
-        ├── input/
-        │   └── source.mp4              # Trimmed audio (silence removed)
-        ├── transcripts/
-        │   ├── transcript.json         # Full Whisper output
-        │   ├── transcript.srt          # Captions
-        │   ├── transcript.vtt          # WebVTT
-        │   ├── transcript.txt          # Plain text
-        │   ├── paragraphs.json         # LLM-friendly format
-        │   └── insights.json           # Extracted insights
-        ├── composition/                # Generated composition scaffold
-        │   ├── props.json              # Auto-generated props
-        │   └── assets/                 # Company logo, charts, etc.
-        ├── take1/                      # Multiple render versions
+        ├── take1/                 # Rendered video versions
         │   ├── final.mp4
         │   └── thumbnail.jpg
-        └── take2/
+        ├── take2/
+        └── metadata.json          # Parsed metadata
 ```
+
+**Rationale:**
+- `_downloads/<video_id>/` = Permanent, tied to video forever
+- Transcripts/insights belong with source video, not rendered output
+- If company/quarter gets re-parsed, data doesn't move
+- `PLTR/Q3-2025/` = Organized output directory for rendered videos only
 
 **Step 6: Manual Composition (Remotion Studio)**
 ```bash

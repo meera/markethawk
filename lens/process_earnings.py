@@ -274,15 +274,12 @@ class EarningsProcessor:
             self.logger.info("Already trimmed, skipping")
             return
 
-        ticker = self.state.get_data("parse", "ticker")
-        quarter = self.state.get_data("parse", "quarter")
-
-        if not ticker or not quarter:
-            raise ValueError("Parse data not found. Run parse step first.")
-
-        source_file = DOWNLOADS_DIR / self.video_id / "input" / "source.mp4"
-        company_dir = ORGANIZED_DIR / ticker / quarter
-        trimmed_file = company_dir / "input" / "source.mp4"
+        # Source and trimmed files in _downloads (permanent archive)
+        video_dir = DOWNLOADS_DIR / self.video_id
+        source_file = video_dir / "input" / "source.mp4"
+        processed_dir = video_dir / "processed"
+        processed_dir.mkdir(exist_ok=True)
+        trimmed_file = processed_dir / "trimmed.mp4"
 
         # Call remove_silence function directly
         result = remove_silence_func(str(source_file), str(trimmed_file))
@@ -301,30 +298,36 @@ class EarningsProcessor:
             self.logger.info("Already transcribed, skipping")
             return
 
-        ticker = self.state.get_data("parse", "ticker")
-        quarter = self.state.get_data("parse", "quarter")
-        company_dir = ORGANIZED_DIR / ticker / quarter
-        input_file = company_dir / "input" / "source.mp4"
+        # Transcribe the TRIMMED video from _downloads (permanent archive)
+        video_dir = DOWNLOADS_DIR / self.video_id
+        processed_dir = video_dir / "processed"
+        trimmed_file = processed_dir / "trimmed.mp4"
 
-        if not input_file.exists():
-            raise FileNotFoundError("Input file not found. Run previous steps first.")
+        # If trimmed file doesn't exist, use original
+        if not trimmed_file.exists():
+            trimmed_file = video_dir / "input" / "source.mp4"
+
+        if not trimmed_file.exists():
+            raise FileNotFoundError("Video file not found. Run previous steps first.")
 
         script = PIPELINE_DIR / "transcribe.py"
         # transcribe.py accepts: filepath, model_name (optional), language (optional)
         # Outputs are saved automatically to same directory as input
-        self._run_python_script(script, [str(input_file), "medium"])
+        self._run_python_script(script, [str(trimmed_file), "medium"])
 
-        # Move transcript files from input/ to transcripts/ directory
+        # Move transcript files to _downloads/<video_id>/transcripts/
         import shutil
-        input_dir = company_dir / "input"
-        transcript_dir = company_dir / "transcripts"
+        source_dir = trimmed_file.parent
+        transcript_dir = video_dir / "transcripts"
+        transcript_dir.mkdir(exist_ok=True)
 
         # Move all transcript files to transcripts/ directory
-        shutil.move(str(input_dir / "source.json"), str(transcript_dir / "transcript.json"))
-        shutil.move(str(input_dir / "source.srt"), str(transcript_dir / "transcript.srt"))
-        shutil.move(str(input_dir / "source.vtt"), str(transcript_dir / "transcript.vtt"))
-        shutil.move(str(input_dir / "source.txt"), str(transcript_dir / "transcript.txt"))
-        shutil.move(str(input_dir / "source.paragraphs.json"), str(transcript_dir / "paragraphs.json"))
+        base_name = trimmed_file.stem  # "trimmed" or "source"
+        shutil.move(str(source_dir / f"{base_name}.json"), str(transcript_dir / "transcript.json"))
+        shutil.move(str(source_dir / f"{base_name}.srt"), str(transcript_dir / "transcript.srt"))
+        shutil.move(str(source_dir / f"{base_name}.vtt"), str(transcript_dir / "transcript.vtt"))
+        shutil.move(str(source_dir / f"{base_name}.txt"), str(transcript_dir / "transcript.txt"))
+        shutil.move(str(source_dir / f"{base_name}.paragraphs.json"), str(transcript_dir / "paragraphs.json"))
 
         self.state.update_state("transcribe", "completed", {
             "transcript_json": str(transcript_dir / "transcript.json"),
@@ -343,15 +346,20 @@ class EarningsProcessor:
             self.logger.info("Already extracted, skipping")
             return
 
-        ticker = self.state.get_data("parse", "ticker")
-        quarter = self.state.get_data("parse", "quarter")
-        company_name = self.state.get_data("parse", "company_name")
-        company_dir = ORGANIZED_DIR / ticker / quarter
-        transcript_file = company_dir / "transcripts" / "transcript.json"
-        output_file = company_dir / "transcripts" / "insights.json"
+        # Read from _downloads (permanent archive)
+        video_dir = DOWNLOADS_DIR / self.video_id
+        transcript_file = video_dir / "transcripts" / "transcript.json"
+
+        insights_dir = video_dir / "insights"
+        insights_dir.mkdir(exist_ok=True)
+        output_file = insights_dir / "insights.json"
 
         if not transcript_file.exists():
             raise FileNotFoundError("Transcript not found. Run transcribe step first.")
+
+        # Get metadata from parse step
+        company_name = self.state.get_data("parse", "company_name")
+        quarter = self.state.get_data("parse", "quarter")
 
         # Use comprehensive insights extractor
         script = PIPELINE_DIR / "extract_insights.py"

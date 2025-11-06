@@ -94,27 +94,42 @@ python process_earnings.py --url "..." --from render
 
 ## File Structure
 
+**Permanent Archive (`_downloads/`):** All source data tied to video_id
+**Organized Outputs (`PLTR/`, etc.):** Only final rendered videos
+
 ```
 /var/earninglens/
-├── _downloads/                    # Permanent archive
+├── _downloads/                    # Permanent archive (source of truth)
 │   └── <video_id>/
 │       ├── input/
-│       │   ├── source.mp4        # Original (with silence)
-│       │   └── metadata.json     # RapidAPI data
+│       │   ├── source.mp4        # Original download (with silence)
+│       │   └── metadata.json     # RapidAPI metadata
+│       ├── processed/
+│       │   └── trimmed.mp4       # Silence removed
+│       ├── transcripts/          # All transcript formats
+│       │   ├── transcript.json   # Full Whisper output
+│       │   ├── transcript.srt    # Captions
+│       │   ├── transcript.vtt    # WebVTT
+│       │   ├── transcript.txt    # Plain text
+│       │   └── paragraphs.json   # LLM-friendly format
+│       ├── insights/
+│       │   └── insights.json     # LLM-extracted insights
 │       └── .state.json           # Processing state
 │
-├── PLTR/                          # Auto-organized by company
+├── PLTR/                          # Organized by company (final outputs only)
 │   └── Q3-2024/                   # Auto-detected quarter
-│       ├── input/
-│       │   └── source.mp4        # Trimmed (silence removed)
-│       ├── transcripts/
-│       │   ├── transcript.json
-│       │   └── insights.json
-│       ├── take1/
+│       ├── take1/                 # Rendered video versions
 │       │   ├── final.mp4
 │       │   └── thumbnail.jpg
-│       └── metadata.json
+│       ├── take2/
+│       └── metadata.json          # Parsed metadata
 ```
+
+**Why this structure?**
+- `_downloads/<video_id>/` = Permanent, tied to video_id, never changes
+- `PLTR/Q3-2024/` = Organized output for rendered videos only
+- If company/quarter gets re-parsed, transcripts don't move
+- Single source of truth for all source data
 
 ---
 
