@@ -166,11 +166,13 @@ class StateManager:
 class EarningsProcessor:
     """Main earnings video processor"""
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, ticker: str = None, quarter: str = None):
         self.url = url
         self.video_id = self._extract_video_id(url)
         self.state = StateManager(self.video_id)
         self.logger = Logger()
+        self.manual_ticker = ticker
+        self.manual_quarter = quarter
 
     def _extract_video_id(self, url: str) -> str:
         """Extract YouTube video ID from URL"""
@@ -246,6 +248,23 @@ class EarningsProcessor:
         quarter = parse_result.get("quarter")
         company_name = parse_result.get("company_name")
         confidence = parse_result.get("confidence")
+
+        # Use manual overrides if provided
+        if self.manual_ticker:
+            ticker = self.manual_ticker
+            self.logger.log(f"Using manual ticker: {ticker}")
+        if self.manual_quarter:
+            quarter = self.manual_quarter
+            self.logger.log(f"Using manual quarter: {quarter}")
+
+        # Prompt user if still missing
+        if not ticker:
+            self.logger.warning(f"Could not auto-detect ticker from: {company_name or 'Unknown'}")
+            ticker = input("Enter ticker symbol (e.g., HOOD): ").strip().upper()
+
+        if not quarter:
+            self.logger.warning("Could not auto-detect quarter")
+            quarter = input("Enter quarter (e.g., Q3-2025): ").strip()
 
         if not ticker or not quarter:
             raise ValueError(f"Could not parse company/quarter. Ticker: {ticker}, Quarter: {quarter}")
@@ -513,13 +532,15 @@ def main():
         description="Unified earnings video processing orchestrator"
     )
     parser.add_argument("--url", required=True, help="YouTube URL")
+    parser.add_argument("--ticker", help="Company ticker symbol (e.g., HOOD, PLTR)")
+    parser.add_argument("--quarter", help="Quarter (e.g., Q3-2025)")
     parser.add_argument("--step", help="Run single step (download, parse, remove-silence, transcribe, insights, render, upload)")
     parser.add_argument("--from", dest="from_step", help="Run from specific step onwards")
 
     args = parser.parse_args()
 
     try:
-        processor = EarningsProcessor(args.url)
+        processor = EarningsProcessor(args.url, ticker=args.ticker, quarter=args.quarter)
 
         if args.step:
             processor.run_step(args.step)
