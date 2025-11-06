@@ -88,7 +88,7 @@ const TitleCard: React.FC = () => {
 
 const SimpleBanner: React.FC = () => {
   const frame = useCurrentFrame();
-  const {fps, durationInFrames} = useVideoConfig();
+  const {fps} = useVideoConfig();
 
   // Simple fade in at start
   const opacity = interpolate(frame, [0, 30], [0, 1], {extrapolateRight: 'clamp'});
@@ -101,32 +101,49 @@ const SimpleBanner: React.FC = () => {
 
   return (
     <AbsoluteFill style={{opacity}}>
-      {/* Top Banner */}
-      <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/90 via-black/70 to-transparent p-6">
-        <div className="flex items-center justify-between">
-          {/* Left: Company Info */}
-          <div>
-            <div className="text-4xl font-bold text-white mb-1">
-              {PLTR_DATA.company}
-            </div>
-            <div className="text-2xl text-indigo-300 font-mono">
-              ${PLTR_DATA.ticker} · {PLTR_DATA.quarter} {PLTR_DATA.fiscal_year}
-            </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+      }}>
+        {/* Centered white box with blue border */}
+        <div style={{
+          backgroundColor: 'white',
+          borderRadius: '48px',
+          border: '12px solid #2563eb',
+          padding: '80px 120px',
+          textAlign: 'center',
+          minWidth: '1200px',
+        }}>
+          {/* Company Name */}
+          <div style={{
+            fontSize: '96px',
+            fontWeight: 'bold',
+            color: '#111827',
+            marginBottom: '24px',
+          }}>
+            {PLTR_DATA.company}
           </div>
 
-          {/* Right: Branding */}
-          <div className="text-right">
-            <div className="text-3xl font-bold text-white">EarningLens</div>
-            <div className="text-lg text-gray-400">Earnings Call Analysis</div>
+          {/* Ticker and Quarter */}
+          <div style={{
+            fontSize: '64px',
+            color: '#2563eb',
+            fontFamily: 'monospace',
+            fontWeight: 'bold',
+            marginBottom: '32px',
+          }}>
+            ${PLTR_DATA.ticker} · {PLTR_DATA.quarter} {PLTR_DATA.fiscal_year}
           </div>
-        </div>
-      </div>
 
-      {/* Bottom Banner */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-6">
-        <div className="flex items-center justify-between">
-          {/* Left: Call Info */}
-          <div className="text-gray-300 text-xl">
+          {/* Call Date */}
+          <div style={{
+            fontSize: '40px',
+            color: '#374151',
+            marginBottom: '40px',
+          }}>
             Earnings Call · {new Date(PLTR_DATA.call_date).toLocaleDateString('en-US', {
               month: 'long',
               day: 'numeric',
@@ -134,9 +151,35 @@ const SimpleBanner: React.FC = () => {
             })}
           </div>
 
-          {/* Right: Time */}
-          <div className="text-gray-400 text-xl font-mono">
+          {/* Time Display */}
+          <div style={{
+            fontSize: '48px',
+            fontFamily: 'monospace',
+            color: '#4b5563',
+            marginBottom: '40px',
+          }}>
             {timeDisplay}
+          </div>
+
+          {/* Branding */}
+          <div style={{
+            borderTop: '6px solid #2563eb',
+            paddingTop: '32px',
+          }}>
+            <div style={{
+              fontSize: '72px',
+              fontWeight: 'bold',
+              color: '#2563eb',
+            }}>
+              EarningLens
+            </div>
+            <div style={{
+              fontSize: '32px',
+              color: '#4b5563',
+              marginTop: '12px',
+            }}>
+              Earnings Call Analysis
+            </div>
           </div>
         </div>
       </div>

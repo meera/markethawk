@@ -13,6 +13,7 @@
 3. **Summarize first** - Create summary, then extract insights
 4. **Extract incrementally** - Process sections (revenue, EPS, guidance separately)
 
+Make sure transcript.paragraphs.json is used to send to LLM.
 **Priority**: Medium (MVP works without insights)
 
 ---
@@ -30,6 +31,8 @@
 ---
 
 ## Future Enhancements
+- [ ] Fix SimpleBanner to use TailwindCSS instead of inline styles (currently using inline styles as workaround)
+- [ ] Update all render commands to work from root directory (currently requires cd studio/)
 - [ ] Fix context length issue for insights
 - [ ] Add transcript subtitles overlay
 - [ ] Add charts and visualizations
