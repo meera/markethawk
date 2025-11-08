@@ -53,19 +53,38 @@ def transcribe_file(filepath: str, model_name: str = "medium", language: str = N
         # Load Whisper model
         model = whisper.load_model(model_name).to(device)
 
-        # Run transcription
+        # Run transcription with hallucination prevention
         with torch.no_grad():
+            # Hallucination prevention settings:
+            # - initial_prompt: Biases model away from common hallucinations
+            # - condition_on_previous_text=False: Prevents cascading errors in long audio
+            # - compression_ratio_threshold: Detects repetitive hallucinations
+            # - logprob_threshold: Filters low-confidence segments
+
+            initial_prompt = (
+                "This is an earnings conference call. "
+                "The speakers discuss financial results, metrics, and business updates."
+            )
+
             if language:
                 result = model.transcribe(
                     filepath,
                     word_timestamps=True,
                     language=language,
+                    initial_prompt=initial_prompt,
+                    condition_on_previous_text=False,  # Prevent cascading errors
+                    compression_ratio_threshold=2.4,    # Detect repetition (default: 2.4)
+                    logprob_threshold=-1.0,             # Filter low-confidence (default: -1.0)
                     verbose=True
                 )
             else:
                 result = model.transcribe(
                     filepath,
                     word_timestamps=True,
+                    initial_prompt=initial_prompt,
+                    condition_on_previous_text=False,
+                    compression_ratio_threshold=2.4,
+                    logprob_threshold=-1.0,
                     verbose=True
                 )
 

@@ -49,6 +49,9 @@ from dotenv import load_dotenv
 # Load environment (loads from ~/earninglens/.env when running from root)
 load_dotenv()
 
+# Import production config tracker
+from production_config import ProductionConfig
+
 # Directories (must be set before imports)
 PIPELINE_DIR = Path(__file__).parent
 PROJECT_ROOT = PIPELINE_DIR.parent
@@ -186,6 +189,7 @@ class EarningsProcessor:
         self.logger = Logger()
         self.manual_ticker = ticker
         self.manual_quarter = quarter
+        self.production_config = None  # Initialized after parse step
 
     def _extract_video_id(self, url: str) -> str:
         """Extract YouTube video ID from URL"""
@@ -200,6 +204,13 @@ class EarningsProcessor:
                 return match.group(1)
 
         raise ValueError(f"Could not extract video ID from URL: {url}")
+
+    def _ensure_production_config(self):
+        """Ensure production config is initialized (lazy load)"""
+        if self.production_config is None:
+            company_dir = self.state.get_data("parse", "company_dir")
+            if company_dir:
+                self.production_config = ProductionConfig(company_dir)
 
     def _run_python_script(self, script_path: Path, args: List[str]) -> subprocess.CompletedProcess:
         """Run a Python script via subprocess (for scripts without imported functions)"""
@@ -295,6 +306,21 @@ class EarningsProcessor:
         import shutil
         shutil.copy(metadata_file, company_dir / "metadata.json")
 
+        # Initialize production config
+        self.production_config = ProductionConfig(company_dir)
+
+        # Load metadata to get video details
+        with open(metadata_file, 'r') as f:
+            metadata = json.load(f)
+
+        # Record source information
+        self.production_config.set_source(
+            youtube_url=self.url,
+            video_id=self.video_id,
+            title=metadata.get("title", ""),
+            duration=metadata.get("duration", 0)
+        )
+
         self.state.update_state("parse", "completed", {
             "ticker": ticker,
             "quarter": quarter,
@@ -362,6 +388,15 @@ class EarningsProcessor:
             "cut_start": cut_start,
             "first_speech_time": first_speech_time
         })
+
+        # Record runtime trim results in production config
+        self._ensure_production_config()
+        if self.production_config:
+            self.production_config.set_processing_params(
+                trim_start=cut_start,
+                first_speech_time=first_speech_time
+            )
+
         self.logger.success(f"Video trimmed from {cut_start:.2f}s")
 
     def step_transcribe(self):
@@ -382,7 +417,8 @@ class EarningsProcessor:
         script = PIPELINE_DIR / "transcribe.py"
         # transcribe.py accepts: filepath, model_name (optional), language (optional)
         # Outputs are saved automatically to same directory as input
-        self._run_python_script(script, [str(source_file), "medium"])
+        # Force English language to reduce hallucinations
+        self._run_python_script(script, [str(source_file), "medium", "en"])
 
         # Rename transcript files to standard names (flat structure)
         import shutil
@@ -409,6 +445,7 @@ class EarningsProcessor:
             "transcript_txt": str(video_dir / "transcript.txt"),
             "paragraphs_json": str(video_dir / "transcript.paragraphs.json")
         })
+
         self.logger.success("Transcription complete")
 
     def step_insights(self):
@@ -431,13 +468,17 @@ class EarningsProcessor:
         company_name = self.state.get_data("parse", "company_name")
         quarter = self.state.get_data("parse", "quarter")
 
+        # Get trim offset to adjust timestamps
+        cut_start = self.state.get_data("smart_trim", "cut_start") or 0
+
         # Use comprehensive insights extractor
         script = PIPELINE_DIR / "extract_insights.py"
         args = [
             str(transcript_file),
             "--output", str(output_file),
             "--company", company_name,
-            "--quarter", quarter
+            "--quarter", quarter,
+            "--trim-offset", str(cut_start)  # Pass trim offset
         ]
         self._run_python_script(script, args)
 

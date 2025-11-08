@@ -5,6 +5,9 @@
 python-dotenv
 requests
 
+# Image processing (for thumbnails)
+Pillow
+
 # YouTube processing
 google-api-python-client
 google-auth-oauthlib

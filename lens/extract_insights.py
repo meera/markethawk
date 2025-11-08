@@ -337,7 +337,8 @@ def generate_youtube_description(insights: Dict[str, Any]) -> str:
 
 
 def extract_insights(transcript_path: str, output_path: str = None,
-                    company_name: str = None, quarter: str = None) -> Dict[str, Any]:
+                    company_name: str = None, quarter: str = None,
+                    trim_offset: float = 0.0) -> Dict[str, Any]:
     """
     Extract comprehensive insights from earnings transcript.
 
@@ -346,6 +347,7 @@ def extract_insights(transcript_path: str, output_path: str = None,
         output_path: Where to save insights.json
         company_name: Company name for context
         quarter: Quarter for context
+        trim_offset: Seconds trimmed from beginning of video (to adjust timestamps)
 
     Returns:
         Dictionary with insights, YouTube metadata, and usage stats
@@ -381,6 +383,18 @@ def extract_insights(transcript_path: str, output_path: str = None,
     # Add YouTube description to result
     insights['youtube']['description'] = youtube_description
 
+    # Adjust all timestamps by trim_offset
+    if trim_offset > 0:
+        print(f"Adjusting timestamps by -{trim_offset:.2f}s (video trimmed)")
+
+        # Adjust chapter timestamps
+        for chapter in insights.get('chapters', []):
+            chapter['timestamp'] = max(0, chapter['timestamp'] - trim_offset)
+
+        # Adjust highlight timestamps
+        for highlight in insights.get('highlights', []):
+            highlight['timestamp'] = max(0, highlight['timestamp'] - trim_offset)
+
     # Save insights
     if output_path:
         output_file = Path(output_path)
@@ -406,6 +420,8 @@ def main():
     parser.add_argument("--output", help="Output path for insights.json")
     parser.add_argument("--company", help="Company name")
     parser.add_argument("--quarter", help="Quarter (e.g., Q3-2024)")
+    parser.add_argument("--trim-offset", type=float, default=0.0,
+                       help="Seconds trimmed from video start (adjusts timestamps)")
 
     args = parser.parse_args()
 
@@ -414,7 +430,8 @@ def main():
             args.transcript,
             args.output,
             args.company,
-            args.quarter
+            args.quarter,
+            args.trim_offset
         )
 
         print("\n" + "="*50)

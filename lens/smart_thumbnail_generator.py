@@ -100,7 +100,7 @@ def extract_frame_at_timestamp(video_path: str, timestamp: float, output_path: s
             output_path
         ]
 
-        result = subprocess.run(cmd, capture_output=True, stderr=subprocess.PIPE)
+        result = subprocess.run(cmd, capture_output=True)
 
         if result.returncode == 0 and os.path.exists(output_path):
             logger.info(f"✓ Extracted frame at {timestamp:.1f}s → {output_path}")
@@ -111,6 +111,127 @@ def extract_frame_at_timestamp(video_path: str, timestamp: float, output_path: s
 
     except Exception as e:
         logger.error(f"Error extracting frame: {e}")
+        return False
+
+
+def add_branding_to_frame(frame_path: str, data: dict, output_path: str, variation: int = 1) -> bool:
+    """
+    Add branded text overlay to an extracted frame
+
+    Args:
+        frame_path: Path to source frame image
+        data: Video metadata (company, quarter, metrics)
+        output_path: Where to save branded thumbnail
+        variation: Style variation (1-4)
+
+    Returns:
+        bool: Success status
+    """
+    try:
+        # Load frame
+        img = Image.open(frame_path)
+        width, height = img.size
+
+        # Convert to RGBA for drawing
+        img = img.convert('RGBA')
+        draw = ImageDraw.Draw(img)
+
+        # Load fonts
+        try:
+            font_company = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 80)
+            font_quarter = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 50)
+            font_metric = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 40)
+        except:
+            font_company = ImageFont.load_default()
+            font_quarter = ImageFont.load_default()
+            font_metric = ImageFont.load_default()
+
+        # Extract data from insights
+        metadata = data.get('metadata', {})
+        company = metadata.get('company', 'Company')
+        quarter = metadata.get('quarter', 'Q4')
+        year = metadata.get('year', 2024)
+
+        # Text positioning
+        text_y = height - 200
+        padding = 50
+
+        # Company name and subtitle
+        title_text = f"{company}"
+        subtitle_text = f"Quarterly Report for {quarter}"
+        subtitle_y = text_y + 90
+
+        # Apply different text effects based on variation
+        if variation == 1:
+            # Variation 1: Thick black stroke (most readable)
+            stroke_width = 8
+            # Title with stroke
+            draw.text((padding, text_y), title_text, font=font_company,
+                     fill=(255, 255, 255), stroke_width=stroke_width, stroke_fill=(0, 0, 0))
+            # Subtitle with stroke
+            draw.text((padding, subtitle_y), subtitle_text, font=font_metric,
+                     fill=(255, 255, 255), stroke_width=6, stroke_fill=(0, 0, 0))
+
+        elif variation == 2:
+            # Variation 2: Drop shadow effect
+            shadow_offset = 4
+            # Title shadow + text
+            draw.text((padding + shadow_offset, text_y + shadow_offset), title_text,
+                     font=font_company, fill=(0, 0, 0))
+            draw.text((padding, text_y), title_text, font=font_company, fill=(255, 255, 255))
+            # Subtitle shadow + text
+            draw.text((padding + shadow_offset, subtitle_y + shadow_offset), subtitle_text,
+                     font=font_metric, fill=(0, 0, 0))
+            draw.text((padding, subtitle_y), subtitle_text, font=font_metric, fill=(255, 255, 255))
+
+        elif variation == 3:
+            # Variation 3: Double outline (black + green for Robinhood)
+            # Title
+            draw.text((padding, text_y), title_text, font=font_company,
+                     fill=(255, 255, 255), stroke_width=10, stroke_fill=(0, 0, 0))
+            draw.text((padding, text_y), title_text, font=font_company,
+                     fill=(255, 255, 255), stroke_width=4, stroke_fill=(0, 200, 5))
+            # Subtitle
+            draw.text((padding, subtitle_y), subtitle_text, font=font_metric,
+                     fill=(255, 255, 255), stroke_width=6, stroke_fill=(0, 0, 0))
+
+        else:  # variation == 4
+            # Variation 4: Semi-transparent background box
+            # Calculate text bounding boxes
+            title_bbox = draw.textbbox((padding, text_y), title_text, font=font_company)
+            subtitle_bbox = draw.textbbox((padding, subtitle_y), subtitle_text, font=font_metric)
+
+            # Draw background boxes
+            box_padding = 20
+            draw.rectangle([
+                (title_bbox[0] - box_padding, title_bbox[1] - box_padding),
+                (title_bbox[2] + box_padding, title_bbox[3] + box_padding)
+            ], fill=(0, 0, 0, 200))
+
+            draw.rectangle([
+                (subtitle_bbox[0] - box_padding, subtitle_bbox[1] - box_padding),
+                (subtitle_bbox[2] + box_padding, subtitle_bbox[3] + box_padding)
+            ], fill=(0, 0, 0, 200))
+
+            # Draw text
+            draw.text((padding, text_y), title_text, font=font_company, fill=(255, 255, 255))
+            draw.text((padding, subtitle_y), subtitle_text, font=font_metric, fill=(255, 255, 255))
+
+        # Save
+        img = img.convert('RGB')
+        img.save(output_path, quality=95)
+
+        variation_names = {
+            1: "Thick Stroke",
+            2: "Drop Shadow",
+            3: "Double Outline",
+            4: "Background Box"
+        }
+        logger.info(f"✓ Created thumbnail (Style: {variation_names.get(variation, 'Default')}) → {output_path}")
+        return True
+
+    except Exception as e:
+        logger.error(f"Error adding branding: {e}")
         return False
 
 
@@ -511,10 +632,19 @@ def generate_smart_thumbnail(
 
         # Extract 4 frames from different locations
         frames = extract_frames_from_video(video_path, output_dir, num_frames=4)
-        result['extracted_frames'] = frames
-        result['success'] = len(frames) > 0
 
-        logger.info(f"✅ Extracted {len(frames)} frames for thumbnail selection")
+        # Add branding to each frame with different variations
+        branded_thumbnails = []
+        for i, frame_path in enumerate(frames, 1):
+            branded_path = os.path.join(output_dir, f"thumbnail_{i}.jpg")
+            if add_branding_to_frame(frame_path, data, branded_path, variation=i):
+                branded_thumbnails.append(branded_path)
+
+        result['extracted_frames'] = frames
+        result['branded_thumbnails'] = branded_thumbnails
+        result['success'] = len(branded_thumbnails) > 0
+
+        logger.info(f"✅ Created {len(branded_thumbnails)} branded thumbnails")
 
     else:
         logger.info("🎙️ Audio-only detected - Creating custom thumbnail...")
@@ -581,8 +711,9 @@ def main():
 
     if result['has_video_stream']:
         print(f"Extracted frames: {len(result['extracted_frames'])}")
-        for i, frame in enumerate(result['extracted_frames'], 1):
-            print(f"  {i}. {frame}")
+        print(f"\nBranded thumbnails: {len(result.get('branded_thumbnails', []))}")
+        for i, thumbnail in enumerate(result.get('branded_thumbnails', []), 1):
+            print(f"  {i}. {thumbnail}")
     else:
         print(f"Custom thumbnail: {result['custom_thumbnail']}")
 

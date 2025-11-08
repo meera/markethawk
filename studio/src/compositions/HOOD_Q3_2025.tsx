@@ -28,20 +28,23 @@ const chapters = [
 
 /**
  * Robinhood Q3 2025 Earnings Call Video
- * Duration: ~77 minutes (4642 seconds)
+ * Duration: ~70 minutes (trimmed from 9:13)
  *
- * Key moments:
- * - 107s: Revenue $1.3B (+100% YoY)
- * - 650s: Record trading volumes
- * - 1070s: Prediction markets $100M+ revenue
- * - 1205s: CFO transition announcement
- * - 1600s: Banking rollout update
+ * Key moments (timestamps from trimmed video):
+ * - 44s: Opening remarks (Vlad Tenev)
+ * - 160s: Product updates
+ * - 225s: Record trading volumes
+ * - 506s: Revenue $1.3B (+100% YoY)
+ * - 558s: Financial performance (Jason Warnick)
+ * - 611s: Prediction markets $300M run rate
  */
 export const HOOD_Q3_2025: React.FC = () => {
   const {fps, durationInFrames} = useVideoConfig();
 
-  // Video path (trimmed video with audio)
-  const videoPath = staticFile('audio/HOOD_Q3_2025.mp4');
+  // Video path - served via npx serve --cors
+  // Media server URL from .env (fallback to localhost)
+  const mediaServerUrl = process.env.MEDIA_SERVER_URL || 'http://localhost:8080';
+  const videoPath = `${mediaServerUrl}/HOOD/Q3-2025/input/source.trimmed.mp4`;
 
   return (
     <AbsoluteFill
@@ -76,8 +79,8 @@ export const HOOD_Q3_2025: React.FC = () => {
 
       {/* 3. KEY METRICS (at specific timestamps from insights) */}
 
-      {/* Revenue: $1.3B at 107s (1m 47s) */}
-      <Sequence from={fps * 107} durationInFrames={fps * 5}>
+      {/* Revenue: $1.3B at 506s (8m 26s) */}
+      <Sequence from={fps * 506} durationInFrames={fps * 10}>
         <MetricDisplay
           metric="Revenue"
           value="$1.3B"
@@ -89,8 +92,8 @@ export const HOOD_Q3_2025: React.FC = () => {
         />
       </Sequence>
 
-      {/* Trading Volumes at 650s (10m 50s) */}
-      <Sequence from={fps * 650} durationInFrames={fps * 5}>
+      {/* Trading Volumes at 225s (3m 45s) */}
+      <Sequence from={fps * 225} durationInFrames={fps * 10}>
         <MetricDisplay
           metric="Trading Volumes"
           value="Record"
@@ -102,8 +105,8 @@ export const HOOD_Q3_2025: React.FC = () => {
         />
       </Sequence>
 
-      {/* Gold Subscribers - display early for impact */}
-      <Sequence from={fps * 320} durationInFrames={fps * 5}>
+      {/* Gold Subscribers - TODO: Find exact timestamp */}
+      {/* <Sequence from={fps * 320} durationInFrames={fps * 5}>
         <MetricDisplay
           metric="Gold Subscribers"
           value="3.9M"
@@ -113,10 +116,10 @@ export const HOOD_Q3_2025: React.FC = () => {
           position="bottom-left"
           animationStyle="scale"
         />
-      </Sequence>
+      </Sequence> */}
 
-      {/* Net Deposits */}
-      <Sequence from={fps * 450} durationInFrames={fps * 5}>
+      {/* Net Deposits - TODO: Find exact timestamp */}
+      {/* <Sequence from={fps * 450} durationInFrames={fps * 5}>
         <MetricDisplay
           metric="Net Deposits"
           value="$20B"
@@ -126,14 +129,14 @@ export const HOOD_Q3_2025: React.FC = () => {
           position="center"
           animationStyle="bounce"
         />
-      </Sequence>
+      </Sequence> */}
 
-      {/* Prediction Markets at 1070s (17m 50s) */}
-      <Sequence from={fps * 1070} durationInFrames={fps * 5}>
+      {/* Prediction Markets at 611s (10m 11s) */}
+      <Sequence from={fps * 611} durationInFrames={fps * 10}>
         <MetricDisplay
           metric="Prediction Markets"
-          value="$100M+"
-          change="Annualized Revenue"
+          value="$300M"
+          change="Run Rate"
           changeType="positive"
           brandColors={robinhoodBrand.brandColors}
           position="center"
@@ -141,8 +144,8 @@ export const HOOD_Q3_2025: React.FC = () => {
         />
       </Sequence>
 
-      {/* International Customers */}
-      <Sequence from={fps * 920} durationInFrames={fps * 5}>
+      {/* International Customers - TODO: Find exact timestamp */}
+      {/* <Sequence from={fps * 920} durationInFrames={fps * 5}>
         <MetricDisplay
           metric="International Customers"
           value="700K"
@@ -152,12 +155,12 @@ export const HOOD_Q3_2025: React.FC = () => {
           position="bottom-right"
           animationStyle="slide-up"
         />
-      </Sequence>
+      </Sequence> */}
 
       {/* 4. SPEAKER LABELS (appear when speakers change) */}
 
-      {/* CEO Vlad Tenev - Opening remarks */}
-      <Sequence from={fps * 10} durationInFrames={fps * 8}>
+      {/* CEO Vlad Tenev - Opening remarks at 44s */}
+      <Sequence from={fps * 44} durationInFrames={fps * 8}>
         <SpeakerLabel
           name="Vlad Tenev"
           title="CEO"
@@ -167,8 +170,19 @@ export const HOOD_Q3_2025: React.FC = () => {
         />
       </Sequence>
 
-      {/* CFO Jason Warnick - Financial highlights */}
-      <Sequence from={fps * 305} durationInFrames={fps * 8}>
+      {/* CEO Vlad Tenev - Product Updates at 160s */}
+      <Sequence from={fps * 160} durationInFrames={fps * 8}>
+        <SpeakerLabel
+          name="Vlad Tenev"
+          title="CEO"
+          brandColors={robinhoodBrand.brandColors}
+          position="bottom-left"
+          showPhoto={false}
+        />
+      </Sequence>
+
+      {/* CFO Jason Warnick - Financial Performance at 558s */}
+      <Sequence from={fps * 558} durationInFrames={fps * 8}>
         <SpeakerLabel
           name="Jason Warnick"
           title="CFO"
@@ -178,8 +192,8 @@ export const HOOD_Q3_2025: React.FC = () => {
         />
       </Sequence>
 
-      {/* Shiv Verma - New CFO introduction */}
-      <Sequence from={fps * 1205} durationInFrames={fps * 8}>
+      {/* Shiv Verma - TODO: Find CFO transition timestamp */}
+      {/* <Sequence from={fps * 2941} durationInFrames={fps * 8}>
         <SpeakerLabel
           name="Shiv Verma"
           title="SVP Finance & Strategy (Incoming CFO)"
@@ -187,7 +201,7 @@ export const HOOD_Q3_2025: React.FC = () => {
           position="bottom-left"
           showPhoto={false}
         />
-      </Sequence>
+      </Sequence> */}
 
       {/* 5. PERSISTENT ELEMENTS (throughout video) */}
 
