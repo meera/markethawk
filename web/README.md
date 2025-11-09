@@ -1,4 +1,4 @@
-# EarningLens Web App
+# MarketHawk Web App
 
 Next.js web application - Transform earnings calls into visually-enhanced videos.
 
