@@ -113,7 +113,7 @@ These are the ONLY sources we trust absolutely. Everything else is supplementary
 - Add context from SEC filings
 - Cite all external data sources
 - Create clips from actual moments in call
-
+- Always run python and shell script using python <pythonfilename> ( no executable python scripts.)
 ❌ **DON'T:**
 - Summarize or paraphrase the call
 - Show data not mentioned in audio (unless clearly labeled "Additional Context")
@@ -2294,3 +2294,4 @@ See `PRD.md` for detailed phase-by-phase roadmap.
 - content on web site should be SEO optimized - Display headline, intro paragraph, meta description
 Show enough content for SEO indexing
 Add sign-in some point in time to encourage user- sign. Blurr some part of webpage.
+- ccm = "critic and correct me . Proceed with action only if claude validates it to be good"

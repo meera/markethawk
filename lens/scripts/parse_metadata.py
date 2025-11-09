@@ -196,7 +196,7 @@ def main():
     )
     parser.add_argument(
         "metadata_path",
-        help="Path to metadata.json (e.g., /var/earninglens/_downloads/jUnV3LiN0_k/input/metadata.json)"
+        help="Path to metadata.json (e.g., /var/markethawk/_downloads/jUnV3LiN0_k/input/metadata.json)"
     )
 
     args = parser.parse_args()

@@ -1,30 +1,50 @@
-# EarningLens Pipeline Requirements
+# MarketHawk Pipeline Requirements
 # Install: pip install -r requirements.txt
 
 # Core utilities
-python-dotenv
+python-dotenv==1.0.1
 requests
+PyYAML
 
 # Image processing (for thumbnails)
-Pillow
+Pillow>=10.0.0
 
 # YouTube processing
 google-api-python-client
 google-auth-oauthlib
 google-auth-httplib2
+yt-dlp==2024.8.1
 
 # LLM processing (OpenAI)
 openai>=1.0.0
+pydantic==2.8.2
 
 # Video processing
 ffmpeg-python
 
 # ============================================================================
-# GPU MACHINE ONLY (Transcription)
+# WhisperX (Speaker-diarized transcription from VideotoBe)
 # ============================================================================
-# These require Python <3.14 and GPU acceleration
-# Install on Linux GPU machine with: pip install -r requirements-gpu.txt
-#
-# openai-whisper
-# torch
-# torchaudio
+whisperx==3.3.1
+torch==2.2.2
+torchaudio==2.2.2
+
+# WhisperX dependencies
+numpy==1.26.4
+matplotlib==3.10.1
+pandas==2.2.3
+scipy==1.15.2
+scikit-learn==1.6.1
+soundfile==0.13.1
+librosa
+numba==0.61.0
+llvmlite==0.44.0
+
+# PyAnnote (speaker diarization)
+pyannote.audio==3.3.2
+pyannote.core==5.0.0
+pyannote.pipeline==3.0.1
+
+# Audio processing
+faster-whisper==1.1.0
+ctranslate2==4.3.1

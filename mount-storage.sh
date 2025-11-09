@@ -1,13 +1,13 @@
 #!/bin/bash
-# Mount earninglens storage
+# Mount markethawk storage
 # Run: ./mount-storage.sh
 
 set -e
 
-echo "Mounting earninglens storage..."
+echo "Mounting markethawk storage..."
 
 # Unmount any existing mounts (including -1, -2 duplicates)
-for mount_point in /Volumes/earninglens /Volumes/earninglens-1 /Volumes/earninglens-2; do
+for mount_point in /Volumes/markethawk /Volumes/markethawk-1 /Volumes/markethawk-2; do
     if mount | grep -q "$mount_point"; then
         echo "Unmounting $mount_point..."
         umount "$mount_point" 2>/dev/null || true
@@ -15,21 +15,21 @@ for mount_point in /Volumes/earninglens /Volumes/earninglens-1 /Volumes/earningl
 done
 
 # Mount to clean location
-echo "Mounting to /Volumes/earninglens..."
-mount -t smbfs //meera@192.168.1.101/earninglens /Volumes/earninglens
+echo "Mounting to /Volumes/markethawk..."
+mount -t smbfs //meera@192.168.1.101/markethawk /Volumes/markethawk
 
 # Update symlink
-echo "Updating /var/earninglens symlink..."
-sudo rm -f /var/earninglens
-sudo ln -s /Volumes/earninglens /var/earninglens
+echo "Updating /var/markethawk symlink..."
+sudo rm -f /var/markethawk
+sudo ln -s /Volumes/markethawk /var/markethawk
 
 echo ""
-echo "✓ Mounted /Volumes/earninglens"
-ls -ld /Volumes/earninglens
+echo "✓ Mounted /Volumes/markethawk"
+ls -ld /Volumes/markethawk
 
 # Check if we can write to it
-if [ -w /Volumes/earninglens ]; then
+if [ -w /Volumes/markethawk ]; then
     echo "✓ Write access confirmed"
 else
-    echo "⚠ No write access - check permissions on Linux server (192.168.1.101:/var/earninglens)"
+    echo "⚠ No write access - check permissions on Linux server (192.168.1.101:/var/markethawk)"
 fi

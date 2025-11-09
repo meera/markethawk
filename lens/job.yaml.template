@@ -1,0 +1,82 @@
+# MarketHawk Earnings Video Processing Job
+# Single source of truth - keep it simple!
+
+# ============================================================================
+# HUMAN-EDITABLE SECTION (Edit these!)
+# ============================================================================
+
+# === NOTES ===
+notes: |
+  Created: 2025-11-09
+
+  TODO:
+  - Process video
+  - Render
+  - Upload to YouTube
+
+# === RENDERS ===
+# Track all render attempts (latest first - add new renders at top)
+renders: []
+  # - take: 2
+  #   file: /var/markethawk/PLTR/Q3-2025/take2/final.mp4
+  #   rendered_at: "2025-11-10T16:30:00Z"
+  #   duration_seconds: 4595
+  #   notes: "Fixed trim point to 25.0"
+  #
+  # - take: 1
+  #   file: /var/markethawk/PLTR/Q3-2025/take1/final.mp4
+  #   rendered_at: "2025-11-09T14:00:00Z"
+  #   duration_seconds: 4618
+  #   notes: "Initial render"
+
+# === ADJUST TRIM POINT ===
+# Edit this to change where video starts in Remotion
+trim_start_seconds: null  # Will be auto-detected, then you can adjust
+
+# === OUTPUTS ===
+outputs:
+  youtube_url: null
+
+# ============================================================================
+# MACHINE-GENERATED SECTION (Auto-filled by pipeline)
+# ============================================================================
+
+job_id: PLTR_Q3_2025_20251109_043000
+created_at: "2025-11-09T04:30:00Z"
+status: pending  # pending, processing, completed, failed
+
+input:
+  type: youtube_url
+  value: "https://youtube.com/watch?v=jUnV3LiN0_k"
+
+company:
+  name: "Palantir Technologies"
+  ticker: "PLTR"
+  quarter: "Q3-2025"
+  year: 2025
+
+processing:
+  download:
+    status: pending
+    file: null
+
+  parse:
+    status: pending
+    ticker_detected: null
+    quarter_detected: null
+    company_name: null
+
+  transcribe:
+    status: pending
+    transcript_file: null
+
+  detect_trim:
+    status: pending
+    first_speech_at: null
+
+  insights:
+    status: pending
+    highlights: []
+    chapters: []
+    youtube_title: null
+    youtube_description: null

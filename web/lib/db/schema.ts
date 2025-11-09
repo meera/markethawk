@@ -2,8 +2,8 @@ import { pgTable, varchar, timestamp, integer, jsonb, index, pgSchema } from 'dr
 import { relations } from 'drizzle-orm';
 import { z } from 'zod';
 
-// Define custom schema for EarningLens (separate from VideotoBe's app_videotobe schema)
-export const earninglensSchema = pgSchema('earninglens');
+// Define custom schema for MarketHawk (separate from VideotoBe's app_videotobe schema)
+export const markethawkSchema = pgSchema('markethawk');
 
 // ============================================
 // JSONB SCHEMAS (Type Safety with Zod)
@@ -143,7 +143,7 @@ export const videoDataSchema = z.object({
 // ============================================
 
 // Companies - Public companies we analyze (AAPL, MSFT, etc.)
-export const companies = earninglensSchema.table('companies', {
+export const companies = markethawkSchema.table('companies', {
   id: varchar('id', { length: 255 }).primaryKey(), // comp_aapl_a1b2
   ticker: varchar('ticker', { length: 10 }).notNull().unique(), // "AAPL"
   data: jsonb('data').$type<z.infer<typeof companyDataSchema>>().notNull(),
@@ -152,7 +152,7 @@ export const companies = earninglensSchema.table('companies', {
 });
 
 // Sources - Incoming raw materials (audio, video, documents from internet)
-export const sources = earninglensSchema.table(
+export const sources = markethawkSchema.table(
   'sources',
   {
     id: varchar('id', { length: 255 }).primaryKey(), // avd_audio_yt_aapl_k8m2
@@ -173,7 +173,7 @@ export const sources = earninglensSchema.table(
 );
 
 // Artifacts - Things we generate (charts, thumbnails, processed audio, etc.)
-export const artifacts = earninglensSchema.table(
+export const artifacts = markethawkSchema.table(
   'artifacts',
   {
     id: varchar('id', { length: 255 }).primaryKey(), // art_chart_revenue_a2b8
@@ -194,7 +194,7 @@ export const artifacts = earninglensSchema.table(
 );
 
 // Videos - Final output (one earnings call video)
-export const videos = earninglensSchema.table(
+export const videos = markethawkSchema.table(
   'videos',
   {
     id: varchar('id', { length: 255 }).primaryKey(), // vid_aapl_q4_2024_x9z3
@@ -221,7 +221,7 @@ export const videos = earninglensSchema.table(
 );
 
 // Video Views - Analytics (who watched, when, how long)
-export const videoViews = earninglensSchema.table(
+export const videoViews = markethawkSchema.table(
   'video_views',
   {
     id: varchar('id', { length: 255 }).primaryKey(), // view_m8n9_p2q7
@@ -241,7 +241,7 @@ export const videoViews = earninglensSchema.table(
 );
 
 // Video Engagement - User interactions (play, pause, chart clicks, downloads)
-export const videoEngagement = earninglensSchema.table(
+export const videoEngagement = markethawkSchema.table(
   'video_engagement',
   {
     id: varchar('id', { length: 255 }).primaryKey(), // eng_k4m8_x2y9
@@ -261,7 +261,7 @@ export const videoEngagement = earninglensSchema.table(
 );
 
 // Click Throughs - YouTube → Website conversion tracking
-export const clickThroughs = earninglensSchema.table(
+export const clickThroughs = markethawkSchema.table(
   'click_throughs',
   {
     id: varchar('id', { length: 255 }).primaryKey(), // ct_a1b2_c3d4

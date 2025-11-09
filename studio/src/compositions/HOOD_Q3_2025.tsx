@@ -42,8 +42,8 @@ export const HOOD_Q3_2025: React.FC = () => {
   const {fps, durationInFrames} = useVideoConfig();
 
   // Video path - served via npx serve --cors
-  // Media server URL from .env (fallback to localhost)
-  const mediaServerUrl = process.env.MEDIA_SERVER_URL || 'http://localhost:8080';
+  // Media server URL from .env (fallback to sushi IP)
+  const mediaServerUrl = process.env.MEDIA_SERVER_URL || 'http://192.168.1.101:8080';
   const videoPath = `${mediaServerUrl}/HOOD/Q3-2025/input/source.trimmed.mp4`;
 
   return (

@@ -17,6 +17,7 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
+    "web:dev": "npm run dev --workspace=web",
     "studio:preview": "npm run start --workspace=studio",
     "studio:render": "npm run render --workspace=studio",
     "studio:render:aapl": "npm run render:aapl --workspace=studio",

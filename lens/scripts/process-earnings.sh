@@ -25,8 +25,8 @@ set -e  # Exit on error
 # Directories
 SUSHI_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_ROOT="$(cd "$SUSHI_DIR/.." && pwd)"
-DOWNLOADS_DIR="/var/earninglens/_downloads"
-ORGANIZED_DIR="/var/earninglens"
+DOWNLOADS_DIR="/var/markethawk/_downloads"
+ORGANIZED_DIR="/var/markethawk"
 
 # Load environment
 if [ -f "$PROJECT_ROOT/.env" ]; then

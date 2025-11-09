@@ -148,7 +148,7 @@ def example_usage():
     """Example of how to use ProductionConfig"""
 
     # Initialize
-    config = ProductionConfig("/var/earninglens/HOOD/Q3-2025")
+    config = ProductionConfig("/var/markethawk/HOOD/Q3-2025")
 
     # Record source
     config.set_source(

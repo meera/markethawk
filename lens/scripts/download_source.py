@@ -148,7 +148,7 @@ class VideoSourceDownloader:
         print()  # New line after progress
 
 
-def download_video(url: str, downloads_dir: str = "/var/earninglens/_downloads") -> Dict:
+def download_video(url: str, downloads_dir: str = "/var/markethawk/_downloads") -> Dict:
     """
     Download video from YouTube URL.
 
@@ -186,8 +186,8 @@ def main():
     parser.add_argument("url", help="YouTube URL")
     parser.add_argument(
         "--downloads-dir",
-        default="/var/earninglens/_downloads",
-        help="Downloads directory (default: /var/earninglens/_downloads)",
+        default="/var/markethawk/_downloads",
+        help="Downloads directory (default: /var/markethawk/_downloads)",
     )
 
     args = parser.parse_args()

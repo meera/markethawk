@@ -63,14 +63,14 @@ from parse_metadata import parse_video_metadata
 from remove_silence import remove_silence as remove_silence_func
 
 # Data directories
-DOWNLOADS_DIR = Path(os.getenv("DOWNLOADS_DIR", "/var/earninglens/_downloads"))
-ORGANIZED_DIR = Path(os.getenv("ORGANIZED_DIR", "/var/earninglens"))
+DOWNLOADS_DIR = Path(os.getenv("DOWNLOADS_DIR", "/var/markethawk/_downloads"))
+ORGANIZED_DIR = Path(os.getenv("ORGANIZED_DIR", "/var/markethawk"))
 
-# Ensure /var/earninglens is accessible
+# Ensure /var/markethawk is accessible
 if not ORGANIZED_DIR.parent.exists():
     print(f"ERROR: {ORGANIZED_DIR.parent} not accessible")
     print("On Mac: Ensure samba mount is connected to GPU machine")
-    print("On Linux: Ensure /var/earninglens directory exists")
+    print("On Linux: Ensure /var/markethawk directory exists")
     sys.exit(1)
 
 

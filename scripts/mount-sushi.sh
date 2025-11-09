@@ -1,10 +1,10 @@
 #!/bin/bash
-# Mount sushi's /var/earninglens directory on Mac
+# Mount sushi's /var/markethawk directory on Mac
 # Run once per boot or add to startup
 
 MOUNT_POINT="$HOME/sushi-videos"
 SUSHI_HOST="sushi"
-SUSHI_PATH="/var/earninglens"
+SUSHI_PATH="/var/markethawk"
 
 # Check if already mounted
 if mount | grep -q "$MOUNT_POINT"; then

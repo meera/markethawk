@@ -12,7 +12,7 @@ import {
 /**
  * PLTR Q3 2025 Earnings Video
  *
- * Data source: /var/earninglens/_downloads/jUnV3LiN0_k/
+ * Data source: /var/markethawk/_downloads/jUnV3LiN0_k/
  * - source.trimmed.mp4 (audio)
  * - transcript.json (full transcript)
  * - insights.json (LLM analysis - when ready)

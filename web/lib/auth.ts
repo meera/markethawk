@@ -38,8 +38,8 @@ export const auth = betterAuth({
   ],
   trustedOrigins: [
     'http://localhost:3000',
-    'https://earninglens.com',
-    'https://www.earninglens.com',
+    'https://market-hawk.com',
+    'https://www.market-hawk.com',
   ],
 });
 
