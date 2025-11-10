@@ -1,3 +1,5 @@
+.Youtube-MarketHawk-OAuth.json
+.env 
 # Dependencies
 node_modules/
 .pnp

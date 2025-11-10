@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Upload earnings call video to YouTube with comprehensive metadata.
-Includes chapter markers, description, hashtags, and all extracted insights.
+Supports job.yaml format and thumbnail uploads.
 """
 
-import json
+import yaml
 import os
 import sys
 import argparse
@@ -68,49 +68,103 @@ def get_youtube_client():
     return build('youtube', 'v3', credentials=creds)
 
 
-def upload_video(video_path: str, insights_path: str, metadata_path: str = None) -> Dict:
+def format_time(seconds: float) -> str:
+    """Format seconds to MM:SS for chapter markers."""
+    mins = int(seconds // 60)
+    secs = int(seconds % 60)
+    return f"{mins}:{secs:02d}"
+
+
+def build_description(job_data: Dict) -> str:
+    """Build YouTube description with chapter markers from job.yaml."""
+
+    insights = job_data.get('processing', {}).get('insights', {})
+    company = job_data.get('company', {})
+
+    # Summary
+    summary = insights.get('summary', '')
+
+    # Chapters
+    chapters = insights.get('chapters', [])
+
+    # Build description
+    lines = []
+
+    if summary:
+        lines.append(summary)
+        lines.append("")
+
+    if chapters:
+        lines.append("📖 Chapters:")
+        for chapter in chapters:
+            timestamp = format_time(chapter['timestamp'])
+            title = chapter['title']
+            lines.append(f"{timestamp} - {title}")
+        lines.append("")
+
+    # Link to full analysis
+    ticker = company.get('ticker', 'unknown').lower()
+    quarter = company.get('quarter', 'q3').lower()
+    year = company.get('year', 2025)
+    lines.append(f"📊 Full interactive analysis: https://market-hawk.com/{ticker}/{quarter}-{year}")
+    lines.append("")
+    lines.append("Subscribe for more earnings call visualizations!")
+
+    # Hashtags
+    youtube_info = job_data.get('youtube', {})
+    hashtags = youtube_info.get('hashtags', [])
+    if hashtags:
+        lines.append("")
+        lines.append(" ".join(f"#{tag}" for tag in hashtags))
+
+    return "\n".join(lines)
+
+
+def upload_video(video_path: str, job_yaml_path: str, thumbnail_path: Optional[str] = None) -> Dict:
     """
-    Upload video to YouTube with comprehensive metadata.
+    Upload video to YouTube with metadata from job.yaml.
 
     Args:
         video_path: Path to video file
-        insights_path: Path to insights.json
-        metadata_path: Path to metadata.json (optional)
+        job_yaml_path: Path to job.yaml
+        thumbnail_path: Path to thumbnail image (optional)
 
     Returns:
         Dictionary with upload results including video ID and URL
     """
 
-    # Load insights
-    with open(insights_path, 'r') as f:
-        insights = json.load(f)
+    # Load job.yaml
+    with open(job_yaml_path, 'r') as f:
+        job_data = yaml.safe_load(f)
 
-    metadata_info = insights['metadata']
-    youtube_info = insights.get('youtube', {})
+    company = job_data.get('company', {})
+    insights = job_data.get('processing', {}).get('insights', {})
+    youtube_info = job_data.get('youtube', {})
 
     # Build title
-    title = metadata_info.get('title', 'Earnings Call')
+    title = youtube_info.get('title') or insights.get('title') or \
+            f"{company.get('name', 'Company')} {company.get('quarter', 'Q3')} {company.get('year', 2025)} Earnings Call"
 
-    # Build description (with chapter markers)
-    description = youtube_info.get('description', metadata_info.get('description', ''))
+    # Build description with chapter markers
+    description = build_description(job_data)
 
     # Tags
-    tags = youtube_info.get('tags', [])
+    tags = youtube_info.get('hashtags', [])
     if not tags:
         # Default tags
         tags = [
-            metadata_info.get('ticker', ''),
-            metadata_info.get('company', ''),
-            metadata_info.get('quarter', ''),
-            str(metadata_info.get('year', '')),
+            company.get('ticker', ''),
+            company.get('name', ''),
+            company.get('quarter', ''),
+            str(company.get('year', '')),
             'earnings call',
-            'investor relations',
-            'financial results'
+            'investing',
+            'stocks',
+            'finance'
         ]
         tags = [t for t in tags if t]  # Remove empty
 
-    # Category: 28 = Science & Technology
-    # Or 25 = News & Politics (for financial news)
+    # Category: 25 = News & Politics (for financial news)
     category_id = "25"
 
     # Request body
@@ -122,7 +176,7 @@ def upload_video(video_path: str, insights_path: str, metadata_path: str = None)
             'categoryId': category_id
         },
         'status': {
-            'privacyStatus': 'public',  # or 'unlisted' or 'private'
+            'privacyStatus': 'public',
             'selfDeclaredMadeForKids': False
         }
     }
@@ -131,7 +185,8 @@ def upload_video(video_path: str, insights_path: str, metadata_path: str = None)
     print(f"📤 Uploading video to YouTube...")
     print(f"   Title: {title}")
     print(f"   Tags: {len(tags)} tags")
-    print(f"   Chapters: {len(insights.get('chapters', []))} chapters")
+    chapters = insights.get('chapters', [])
+    print(f"   Chapters: {len(chapters)} chapters")
 
     youtube = get_youtube_client()
 
@@ -157,6 +212,18 @@ def upload_video(video_path: str, insights_path: str, metadata_path: str = None)
     print(f"   Video ID: {video_id}")
     print(f"   URL: {video_url}")
 
+    # Upload thumbnail if provided
+    if thumbnail_path and Path(thumbnail_path).exists():
+        print(f"\n📸 Uploading thumbnail...")
+        try:
+            youtube.thumbnails().set(
+                videoId=video_id,
+                media_body=MediaFileUpload(thumbnail_path, mimetype='image/jpeg')
+            ).execute()
+            print(f"✓ Thumbnail uploaded successfully!")
+        except Exception as e:
+            print(f"⚠️  Warning: Thumbnail upload failed: {e}")
+
     return {
         'video_id': video_id,
         'url': video_url,
@@ -167,24 +234,39 @@ def upload_video(video_path: str, insights_path: str, metadata_path: str = None)
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Upload earnings call video to YouTube with metadata"
+        description="Upload earnings call video to YouTube with metadata from job.yaml"
     )
-    parser.add_argument("video", help="Path to video file")
-    parser.add_argument("insights", help="Path to insights.json")
-    parser.add_argument("--metadata", help="Path to metadata.json (optional)")
+    parser.add_argument("--video", required=True, help="Path to video file")
+    parser.add_argument("--metadata", required=True, help="Path to job.yaml")
+    parser.add_argument("--thumbnail", help="Path to thumbnail image (optional)")
 
     args = parser.parse_args()
 
-    try:
-        result = upload_video(args.video, args.insights, args.metadata)
+    # Validate inputs
+    if not Path(args.video).exists():
+        print(f"❌ Error: Video file not found: {args.video}")
+        sys.exit(1)
 
-        print("\n" + "="*50)
-        print("Upload complete!")
-        print("="*50)
-        print(json.dumps(result, indent=2))
+    if not Path(args.metadata).exists():
+        print(f"❌ Error: Metadata file not found: {args.metadata}")
+        sys.exit(1)
+
+    if args.thumbnail and not Path(args.thumbnail).exists():
+        print(f"⚠️  Warning: Thumbnail file not found: {args.thumbnail}")
+        args.thumbnail = None
+
+    try:
+        result = upload_video(args.video, args.metadata, args.thumbnail)
+
+        print("\n" + "="*60)
+        print("✓ Upload complete!")
+        print("="*60)
+        print(f"Video ID: {result['video_id']}")
+        print(f"URL: {result['url']}")
+        print(f"Title: {result['title']}")
 
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"\n❌ Error: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
