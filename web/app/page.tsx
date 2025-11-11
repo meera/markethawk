@@ -193,7 +193,7 @@ export default function HomePage() {
 
             {status === 'success' && (
               <p className="text-white font-medium">
-                Thanks for subscribing! Check your inbox to confirm.
+                Thank you for subscribing!
               </p>
             )}
 

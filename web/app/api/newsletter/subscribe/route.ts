@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { newsletterSubscribers } from '@/lib/db/schema';
+import { sendNewSubscriberNotification } from '@/lib/email';
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,22 +13,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Store in database (will create table if needed)
+    // Send email notification to admin
     try {
-      await db.insert(newsletterSubscribers).values({
-        email: email.toLowerCase().trim(),
-        subscribedAt: new Date(),
-      });
-    } catch (error: any) {
-      // If email already exists, treat as success (idempotent)
-      if (error?.code === '23505') {
-        return NextResponse.json({ success: true });
-      }
-      throw error;
+      await sendNewSubscriberNotification(email);
+    } catch (emailError) {
+      console.error('Failed to send notification email:', emailError);
+      return NextResponse.json(
+        { error: 'Failed to send notification' },
+        { status: 500 }
+      );
     }
-
-    // TODO: Send confirmation email via Resend when configured
-    // await sendConfirmationEmail(email);
 
     return NextResponse.json({ success: true });
   } catch (error) {

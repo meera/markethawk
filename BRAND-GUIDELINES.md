@@ -29,9 +29,9 @@
 - Mood: Growth, success, precision, professional actionability
 
 **Accent / Alerts (Amber Glint)**
-- Hex: `#FBBF24`
-- RGB: `rgb(251, 191, 36)`
-- HSL: `hsl(43, 96%, 56%)`
+- Hex: `#FFBF00`
+- RGB: `rgb(255, 191, 0)`
+- HSL: `hsl(45, 100%, 50%)`
 - Usage: Small accent bursts only - hawk's eye glint, pulsing dots, numbered badges, attention markers (10-15% usage)
 - Mood: Sharp focus, attention, precision highlight
 
@@ -58,7 +58,7 @@
 - Usage: Maintains brand consistency; CTAs, charts, hover states
 
 **Accent / Alerts**
-- Hex: `#FBBF24` (same as dark theme)
+- Hex: `#FFBF00` (same as dark theme)
 - Usage: Small accent bursts - key focus points, attention markers (10-15% usage)
 
 **Text / Labels**
@@ -127,7 +127,7 @@ color: rgba(249, 250, 251, 0.6); /* 60% opacity */
 color: #10B981;
 
 /* Alerts/focus (amber - small bursts only) */
-color: #FBBF24;
+color: #FFBF00;
 ```
 
 **Interactive Elements:**
@@ -173,7 +173,7 @@ background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
 
 **Amber Accent (Small Bursts):**
 ```css
-background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+background: linear-gradient(135deg, #FFBF00 0%, #EA580C 100%);
 ```
 
 ---
@@ -184,9 +184,9 @@ background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
 ```tsx
 <header className="border-b border-[#10B981]/30 bg-[#030712]/80 backdrop-blur-sm">
   <div className="w-10 h-10 bg-gradient-to-br from-[#10B981] to-[#059669] shadow-lg shadow-[#10B981]/20">
-    <span className="text-white font-bold">H</span>
+    <span className="text-white font-bold">M</span>
     {/* Amber accent burst */}
-    <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#FBBF24] rounded-full animate-pulse"></span>
+    <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#FFBF00] rounded-full animate-pulse"></span>
   </div>
   <h1 className="text-[#F9FAFB] font-bold">Market Hawk Eye</h1>
 </header>
@@ -202,9 +202,9 @@ background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
 
 ### Feature Card
 ```tsx
-<div className="bg-[#1E293B]/40 border border-[#10B981]/20 rounded-xl hover:bg-[#1E293B]/60 hover:border-[#FBBF24]/40">
+<div className="bg-[#1E293B]/40 border border-[#10B981]/20 rounded-xl hover:bg-[#1E293B]/60 hover:border-[#FFBF00]/40">
   {/* Amber numbered badge (small burst) */}
-  <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-[#FBBF24] to-[#F59E0B] rounded-full">1</div>
+  <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-[#FFBF00] to-[#EA580C] rounded-full">1</div>
   <div className="bg-[#10B981]/10 rounded-lg">
     <span>Icon</span>
   </div>
@@ -232,10 +232,10 @@ background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
 ## Logo Specifications
 
 ### Logo Mark
-- Simple "H" lettermark
+- Simple "M" lettermark
 - Background: Green gradient (`#10B981` to `#059669`)
 - Text: White (`#FFFFFF`)
-- Accent: Amber glint (`#FBBF24`) - small pulsing dot (optional)
+- Accent: Amber glint (`#FFBF00`) - small pulsing dot (optional)
 - Shape: Rounded rectangle (8px border radius)
 - Shadow: `shadow-lg shadow-[#10B981]/20`
 
@@ -245,7 +245,7 @@ background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
 - Favicon: 16px × 16px, 32px × 32px
 
 ### Logo Variations
-- **Primary:** Green gradient background with white "H" + amber glint
+- **Primary:** Green gradient background with white "M" + amber glint
 - **Minimal:** Solid green background
 - **Monochrome:** All white or all green (for specific contexts)
 
@@ -261,7 +261,7 @@ background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
 
 ### Color Psychology
 - **Emerald Green (#10B981):** Brand color, growth, success, professional actionability, precision
-- **Amber (#FBBF24):** Hawk's eye glint (small bursts only) - sharp focus, attention, key highlights
+- **Amber (#FFBF00):** Hawk's eye glint (small bursts only) - sharp focus, attention, key highlights
 - **Ultra-Dark (#030712):** Premium, stealthy, makes green & amber "pop"
 
 ### Effect
@@ -310,7 +310,7 @@ color: #34D399; /* Lighter Green */
 
 **Alerts / Focus Points (Small Bursts):**
 ```css
-color: #FBBF24; /* Amber */
+color: #FFBF00; /* Amber */
 ```
 
 **Chart Color Palette (Multi-metric):**
@@ -318,7 +318,7 @@ color: #FBBF24; /* Amber */
 const chartColors = [
   '#10B981',  // Primary - Green
   '#34D399',  // Positive - Lighter Green
-  '#FBBF24',  // Accent - Amber (small bursts)
+  '#FFBF00',  // Accent - Amber (small bursts)
   '#8B5CF6',  // Additional - Purple (if needed)
   '#EC4899',  // Additional - Pink (if needed)
 ];
@@ -346,7 +346,7 @@ Use Market Hawk Eye colors for:
   "name": "Market Hawk Eye",
   "brandColors": {
     "primary": "#10B981",
-    "accent": "#FBBF24",
+    "accent": "#FFBF00",
     "background": "#030712",
     "backgroundGradient": ["#030712", "#0a0f1e"],
     "text": "#F9FAFB",
@@ -396,7 +396,7 @@ Use Market Hawk Eye colors for:
 |---------|-------|-----|-------|
 | Background | Ultra-Dark | `#030712` | Main background |
 | Primary | Emerald Green | `#10B981` | Brand, CTAs, highlights, logos |
-| Accent | Amber | `#FBBF24` | Small bursts only (10-15%) - glints, badges, hover glows |
+| Accent | Amber | `#FFBF00` | Small bursts only (10-15%) - glints, badges, hover glows |
 | Text | Off-White | `#F9FAFB` | Primary text |
 | Muted | Slate 800 | `#1E293B` | Cards, secondary panels |
 
