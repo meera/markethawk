@@ -1,39 +1,46 @@
 @import "tailwindcss";
 
-/* YouTube-Compatible Dark Theme */
+/* Market Hawk Eye Brand Theme */
 :root {
-  /* YouTube Dark backgrounds (exact match) */
-  --background: #0F0F0F;
-  --background-elevated: #212121;
-  --background-hover: #272727;
+  /* Ultra-dark backgrounds */
+  --background: #030712;
+  --background-elevated: #0a0f1e;
+  --background-hover: #1E293B;
+  --background-muted: #1E293B;
 
-  /* MarketHawk brand accent (financial blue - NOT YouTube red) */
-  --primary: #0EA5E9;
-  --primary-hover: #0284C7;
-  --primary-light: #38BDF8;
-  --primary-dark: #0369A1;
+  /* Primary brand color (Emerald Green) */
+  --primary: #10B981;
+  --primary-hover: #059669;
+  --primary-light: #34D399;
+  --primary-dark: #059669;
 
-  /* Financial data colors */
+  /* Accent color (Orange) */
+  --accent: #FFBF00;
+  --accent-hover: #EA580C;
+  --accent-light: #FB923C;
+
+  /* Status colors */
   --success: #10B981;
   --danger: #EF4444;
-  --warning: #F59E0B;
+  --warning: #F97316;
 
-  /* Text (YouTube-style) */
-  --text-primary: #FFFFFF;
-  --text-secondary: #AAAAAA;
-  --text-tertiary: #717171;
+  /* Text colors */
+  --text-primary: #F9FAFB;
+  --text-secondary: rgba(249, 250, 251, 0.8);
+  --text-tertiary: rgba(249, 250, 251, 0.6);
 
-  /* Borders (subtle, like YouTube) */
-  --border: #272727;
-  --border-light: #3F3F3F;
+  /* Borders */
+  --border: rgba(16, 185, 129, 0.2);
+  --border-hover: rgba(16, 185, 129, 0.4);
+  --border-accent: rgba(249, 115, 22, 0.4);
 
-  /* Chart colors (distinct, accessible) */
-  --chart-blue: #3B82F6;
-  --chart-cyan: #06B6D4;
-  --chart-emerald: #10B981;
+  /* Chart colors */
+  --chart-primary: #10B981;
+  --chart-secondary: #34D399;
+  --chart-accent: #F97316;
   --chart-violet: #8B5CF6;
   --chart-pink: #EC4899;
-  --chart-orange: #F97316;
+  --chart-blue: #3B82F6;
 }
 
 @theme inline {
@@ -41,12 +48,18 @@
   --color-background: var(--background);
   --color-background-elevated: var(--background-elevated);
   --color-background-hover: var(--background-hover);
+  --color-background-muted: var(--background-muted);
 
-  /* Primary brand */
+  /* Primary brand (Green) */
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-light: var(--primary-light);
   --color-primary-dark: var(--primary-dark);
+
+  /* Accent (Orange) */
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
 
   /* Status colors */
   --color-success: var(--success);
@@ -60,23 +73,24 @@
 
   /* Borders */
   --color-border: var(--border);
-  --color-border-light: var(--border-light);
+  --color-border-hover: var(--border-hover);
+  --color-border-accent: var(--border-accent);
 
   /* Chart colors */
-  --color-chart-blue: var(--chart-blue);
-  --color-chart-cyan: var(--chart-cyan);
-  --color-chart-emerald: var(--chart-emerald);
+  --color-chart-primary: var(--chart-primary);
+  --color-chart-secondary: var(--chart-secondary);
+  --color-chart-accent: var(--chart-accent);
   --color-chart-violet: var(--chart-violet);
   --color-chart-pink: var(--chart-pink);
-  --color-chart-orange: var(--chart-orange);
+  --color-chart-blue: var(--chart-blue);
 
   /* Fonts */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
   background: var(--background);
   color: var(--text-primary);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
 }

@@ -278,6 +278,21 @@ export const clickThroughs = markethawkSchema.table(
   })
 );
 
+// Newsletter Subscribers - Email list for updates
+export const newsletterSubscribers = markethawkSchema.table(
+  'newsletter_subscribers',
+  {
+    id: varchar('id', { length: 255 }).primaryKey().$defaultFn(() => `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`),
+    email: varchar('email', { length: 255 }).notNull().unique(),
+    subscribedAt: timestamp('subscribed_at').defaultNow().notNull(),
+    confirmedAt: timestamp('confirmed_at'),
+    unsubscribedAt: timestamp('unsubscribed_at'),
+  },
+  (table) => ({
+    emailIdx: index('idx_newsletter_email').on(table.email),
+  })
+);
+
 // ============================================
 // RELATIONS
 // ============================================
@@ -357,3 +372,6 @@ export type NewVideoEngagement = typeof videoEngagement.$inferInsert;
 
 export type ClickThrough = typeof clickThroughs.$inferSelect;
 export type NewClickThrough = typeof clickThroughs.$inferInsert;
+
+export type NewsletterSubscriber = typeof newsletterSubscribers.$inferSelect;
+export type NewNewsletterSubscriber = typeof newsletterSubscribers.$inferInsert;
