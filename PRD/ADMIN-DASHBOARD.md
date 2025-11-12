@@ -22,7 +22,7 @@ The admin dashboard is the **primary monitoring tool** (NOT email) for tracking:
 
 ## URL & Access
 
-**URL:** `market-hawk.com/admin`
+**URL:** `markethawkeye.com/admin`
 
 **Authentication:**
 - Require admin role (separate from regular users)
@@ -583,7 +583,7 @@ export async function checkAlerts() {
 
   if (stats.viewsChange > 200) {
     await sendEmail({
-      to: 'admin@market-hawk.com',
+      to: 'admin@markethawkeye.com',
       subject: 'Video views spiking!',
       body: `Views are up ${stats.viewsChange}% in the last hour.`,
     });

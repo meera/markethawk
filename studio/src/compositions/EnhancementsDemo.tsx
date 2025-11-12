@@ -184,7 +184,7 @@ export const EnhancementsDemo: React.FC = () => {
       <Sequence from={durationInFrames - fps * 10} durationInFrames={fps * 10}>
         <CallToAction
           message="View full interactive analysis with charts and insights"
-          url="EarningLens.com/HOOD/Q3-2025"
+          url="markethawkeye.com/HOOD/Q3-2025"
           brandColors={robinhoodBrand.brandColors}
           showSubscribe={true}
         />

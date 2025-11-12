@@ -239,7 +239,7 @@ export async function POST(req: Request) {
 
 **First Visit (Not Logged In):**
 ```
-1. User lands on market-hawk.com
+1. User lands on markethawkeye.com
 2. Google One Tap popup appears in corner
    ┌──────────────────────────────┐
    │ Sign in with Google          │
@@ -255,7 +255,7 @@ export async function POST(req: Request) {
 
 **Subsequent Visits:**
 ```
-1. User returns to market-hawk.com
+1. User returns to markethawkeye.com
 2. If auto_select: true, automatically signed in
 3. No popup shown (seamless)
 ```

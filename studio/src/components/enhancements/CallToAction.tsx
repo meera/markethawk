@@ -38,9 +38,7 @@ export const CallToAction: React.FC<CallToActionProps> = ({
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(135deg, ${brandColors.background}e6, ${
-          brandColors.backgroundGradient?.[1] || brandColors.background
-        }e6)`,
+        background: 'rgba(0, 0, 0, 0.9)', // Dark semi-transparent overlay
         backdropFilter: 'blur(20px)',
         justifyContent: 'center',
         alignItems: 'center',
@@ -58,17 +56,6 @@ export const CallToAction: React.FC<CallToActionProps> = ({
           textAlign: 'center',
         }}
       >
-        {/* EarningLens branding */}
-        <div
-          style={{
-            fontSize: 72,
-            fontWeight: 700,
-            color: brandColors.text,
-          }}
-        >
-          EarningLens
-        </div>
-
         {/* Message */}
         <div
           style={{

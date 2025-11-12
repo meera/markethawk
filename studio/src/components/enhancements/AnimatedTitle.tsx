@@ -188,18 +188,6 @@ export const AnimatedTitle: React.FC<AnimatedTitleProps> = ({
           </span>
         </div>
 
-        {/* EarningLens branding */}
-        <div
-          style={{
-            marginTop: 40,
-            opacity: interpolate(frame, [50, 70], [0, 1]),
-            fontSize: 24,
-            color: brandColors.textSecondary,
-            fontWeight: 500,
-          }}
-        >
-          EarningLens.com
-        </div>
       </div>
     </AbsoluteFill>
   );

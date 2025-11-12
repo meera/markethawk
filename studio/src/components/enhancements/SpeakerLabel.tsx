@@ -89,7 +89,7 @@ export const SpeakerLabel: React.FC<SpeakerLabelProps> = ({
           display: 'flex',
           alignItems: 'center',
           gap: 16,
-          background: `linear-gradient(135deg, ${brandColors.background}e6, ${brandColors.backgroundGradient?.[1] || brandColors.background}e6)`,
+          background: 'rgba(0, 0, 0, 0.85)', // Dark semi-transparent - readable on any background
           border: `2px solid ${brandColors.primary}`,
           borderRadius: 12,
           padding: '16px 24px',

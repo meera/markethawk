@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from typing import List, Literal, Optional, Dict
 from openai import OpenAI
 import json
+import re
 from pathlib import Path
 
 
@@ -219,6 +220,176 @@ def format_timestamp(seconds: float) -> str:
     minutes = int(seconds // 60)
     secs = int(seconds % 60)
     return f"{minutes:02d}:{secs:02d}"
+
+
+def extract_keywords_from_metric(metric: FinancialMetric) -> List[str]:
+    """
+    Extract searchable keywords from a financial metric
+
+    Args:
+        metric: FinancialMetric object
+
+    Returns:
+        List of keywords to search for in word-level transcript
+    """
+    keywords = []
+
+    # Extract metric name words (e.g., "Paramount Plus" -> ["paramount", "plus"])
+    metric_words = re.findall(r'\w+', metric.metric.lower())
+    keywords.extend(metric_words)
+
+    # Extract value components (e.g., "$94.9B" -> ["94", "billion"])
+    # Strip common symbols and get numbers
+    value_clean = re.sub(r'[$,%]', '', metric.value.lower())
+    value_words = re.findall(r'\w+', value_clean)
+    keywords.extend(value_words)
+
+    # Extract change keywords if present (e.g., "+24% YoY" -> ["24", "percent"])
+    if metric.change:
+        change_clean = re.sub(r'[+\-%]', '', metric.change.lower())
+        change_words = re.findall(r'\w+', change_clean)
+        keywords.extend(change_words)
+
+    # Remove very common words that won't help narrow search
+    stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for'}
+    keywords = [k for k in keywords if k not in stop_words and len(k) > 1]
+
+    return keywords
+
+
+def extract_keywords_from_highlight(highlight: Highlight) -> List[str]:
+    """
+    Extract searchable keywords from a highlight
+
+    Args:
+        highlight: Highlight object
+
+    Returns:
+        List of keywords to search for
+    """
+    # Extract meaningful words from highlight text
+    text_clean = re.sub(r'[^\w\s]', '', highlight.text.lower())
+    words = text_clean.split()
+
+    # Remove stop words and keep substantial words
+    stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'is', 'was', 'are'}
+    keywords = [w for w in words if w not in stop_words and len(w) > 3]
+
+    # Take first 5 most distinctive words
+    return keywords[:5]
+
+
+def refine_timestamp_with_words(
+    llm_timestamp: int,
+    keywords: List[str],
+    transcript_data: Dict,
+    window_seconds: int = 30
+) -> float:
+    """
+    Refine LLM-suggested timestamp using word-level transcript data
+
+    Searches within +window_seconds of LLM suggestion for first keyword match.
+
+    Args:
+        llm_timestamp: Timestamp suggested by LLM (from paragraph-level)
+        keywords: Keywords to search for
+        transcript_data: Full transcript with word-level data
+        window_seconds: Search window in seconds (forward from llm_timestamp)
+
+    Returns:
+        Refined timestamp (or original if no match found)
+    """
+    if not keywords:
+        return llm_timestamp
+
+    # Get all word-level data from segments
+    segments = transcript_data.get("segments", [])
+
+    # Search window: llm_timestamp to llm_timestamp + window_seconds
+    search_start = llm_timestamp
+    search_end = llm_timestamp + window_seconds
+
+    # Build list of all words with timestamps in search window
+    word_matches = []
+
+    for segment in segments:
+        segment_start = segment.get("start", 0)
+        segment_end = segment.get("end", 0)
+
+        # Skip segments outside search window
+        if segment_end < search_start or segment_start > search_end:
+            continue
+
+        # Check word-level data if available
+        words = segment.get("words", [])
+        if words:
+            for word_obj in words:
+                word_text = word_obj.get("word", "").lower().strip()
+                word_start = word_obj.get("start", segment_start)
+
+                # Check if word is in search window
+                if search_start <= word_start <= search_end:
+                    # Check if word matches any keyword
+                    for keyword in keywords:
+                        if keyword in word_text or word_text in keyword:
+                            word_matches.append({
+                                'word': word_text,
+                                'keyword': keyword,
+                                'timestamp': word_start
+                            })
+
+    # Return first match timestamp + 0.5s buffer (so overlay appears after word spoken)
+    if word_matches:
+        first_match = min(word_matches, key=lambda x: x['timestamp'])
+        refined_timestamp = first_match['timestamp'] + 0.5
+        print(f"  ✓ Refined timestamp: {llm_timestamp}s → {refined_timestamp:.1f}s (matched '{first_match['word']}')")
+        return refined_timestamp
+
+    # No match found, return original
+    return float(llm_timestamp)
+
+
+def refine_all_timestamps(insights: EarningsInsights, transcript_data: Dict) -> EarningsInsights:
+    """
+    Refine all metric and highlight timestamps using word-level data
+
+    Args:
+        insights: EarningsInsights from LLM
+        transcript_data: Full transcript with word-level data
+
+    Returns:
+        EarningsInsights with refined timestamps
+    """
+    print("\n🔍 Refining timestamps with word-level data...")
+
+    # Refine financial metrics
+    print(f"\nRefining {len(insights.financial_metrics)} financial metrics:")
+    for metric in insights.financial_metrics:
+        keywords = extract_keywords_from_metric(metric)
+        print(f"  {metric.metric}: {metric.value} (keywords: {', '.join(keywords[:3])})")
+        metric.timestamp = refine_timestamp_with_words(
+            metric.timestamp,
+            keywords,
+            transcript_data,
+            window_seconds=30
+        )
+
+    # Refine highlights
+    print(f"\nRefining {len(insights.highlights)} highlights:")
+    for highlight in insights.highlights:
+        keywords = extract_keywords_from_highlight(highlight)
+        preview = highlight.text[:50] + "..." if len(highlight.text) > 50 else highlight.text
+        print(f"  {preview}")
+        highlight.timestamp = refine_timestamp_with_words(
+            highlight.timestamp,
+            keywords,
+            transcript_data,
+            window_seconds=30
+        )
+
+    print("\n✅ Timestamp refinement complete!\n")
+
+    return insights
 
 
 if __name__ == "__main__":

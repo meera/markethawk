@@ -93,14 +93,23 @@ export const BIP_Q3_2025: React.FC = () => {
     >
       {/* 1. TITLE CARD (0-5s) with intro music */}
       <Sequence from={0} durationInFrames={fps * 5}>
-        {/* Intro music with fade out at end */}
-        <Sequence from={0} durationInFrames={fps * 5}>
-          <FadedAudio
-            src={staticFile('nebula_youtube_music.mp3')}
-            fadeInDuration={15}
-            fadeOutDuration={30}
-          />
-        </Sequence>
+        {/* Intro music with fade out */}
+        <Audio
+          src={staticFile('nebula_youtube_music.mp3')}
+          volume={(f) => {
+            const fadeOutStart = fps * 4; // Start fading at 4s
+            const fadeOutEnd = fps * 5;   // End at 5s
+
+            if (f < fadeOutStart) {
+              return 1; // Full volume until 4s
+            }
+            if (f >= fadeOutEnd) {
+              return 0; // Silent after 5s
+            }
+            // Linear fade from 1 to 0 between 4s and 5s
+            return 1 - ((f - fadeOutStart) / (fadeOutEnd - fadeOutStart));
+          }}
+        />
         <AnimatedTitle
           company={bipBrand.name}
           quarter="Q3"
@@ -115,55 +124,53 @@ export const BIP_Q3_2025: React.FC = () => {
           style={{
             background: 'linear-gradient(135deg, #001f5f 0%, #000000 50%, #001f5f 100%)',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            gap: 40,
           }}
         >
-          {/* Large centered company logo/ticker */}
+          {/* Company Name - Large and centered (Primary) */}
           <div
             style={{
-              fontSize: 240,
-              fontWeight: 'bold',
-              color: 'rgba(255, 184, 28, 0.3)', // Gold accent with more opacity
-              fontFamily: 'monospace',
-              letterSpacing: '20px',
-              textShadow: '0 0 40px rgba(255, 184, 28, 0.5)',
+              fontSize: 120,
+              fontWeight: '700',
+              color: 'rgba(255, 255, 255, 0.9)',
+              letterSpacing: '3px',
+              textAlign: 'center',
+              lineHeight: 1.2,
+              maxWidth: '90%',
             }}
           >
-            BIP
+            Brookfield Infrastructure Partners
           </div>
 
-          {/* Earnings call info overlay */}
+          {/* Quarterly Earnings Call - Large (Primary) */}
           <div
             style={{
-              position: 'absolute',
-              bottom: 120,
-              left: 0,
-              right: 0,
+              fontSize: 84,
+              fontWeight: '600',
+              color: 'rgba(255, 255, 255, 0.7)',
+              letterSpacing: '3px',
               textAlign: 'center',
             }}
           >
-            <div
-              style={{
-                fontSize: 72,
-                fontWeight: '700',
-                color: 'rgba(255, 255, 255, 0.8)',
-                letterSpacing: '3px',
-                marginBottom: '16px',
-              }}
-            >
-              Q3 2025 Earnings Call
-            </div>
-            <div
-              style={{
-                fontSize: 48,
-                fontWeight: '500',
-                color: 'rgba(255, 255, 255, 0.5)',
-                letterSpacing: '2px',
-              }}
-            >
-              Brookfield Infrastructure Partners
-            </div>
+            Q3 2025 Earnings Call
+          </div>
+
+          {/* Stock Symbol - Secondary hierarchy */}
+          <div
+            style={{
+              fontSize: 120,
+              fontWeight: 'bold',
+              color: 'rgba(255, 184, 28, 0.4)', // Gold accent with transparency
+              fontFamily: 'monospace',
+              letterSpacing: '16px',
+              textShadow: '0 0 40px rgba(255, 184, 28, 0.5)',
+              marginTop: 40,
+            }}
+          >
+            BIP
           </div>
         </AbsoluteFill>
       </Sequence>

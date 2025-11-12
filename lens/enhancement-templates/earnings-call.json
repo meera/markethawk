@@ -91,8 +91,8 @@
         "duration": 10
       },
       "config": {
-        "message": "View full analysis at EarningLens.com",
-        "url": "https://earninglens.com/{ticker}/{quarter}-{year}",
+        "message": "View full analysis at markethawkeye.com",
+        "url": "https://markethawkeye.com/{ticker}/{quarter}-{year}",
         "animation": "fade-in"
       }
     }

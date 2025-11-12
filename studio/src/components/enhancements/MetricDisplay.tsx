@@ -113,13 +113,11 @@ export const MetricDisplay: React.FC<MetricDisplayProps> = ({
         style={{
           transform: getTransform(),
           opacity: finalOpacity,
-          background: `linear-gradient(135deg, ${brandColors.background}, ${
-            brandColors.backgroundGradient?.[1] || brandColors.background
-          })`,
+          background: 'rgba(0, 0, 0, 0.85)', // Dark semi-transparent - readable on any background
           border: `3px solid ${brandColors.primary}`,
           borderRadius: 20,
           padding: '40px 60px',
-          boxShadow: `0 0 60px ${brandColors.primary}60, 0 10px 30px rgba(0, 0, 0, 0.5)`,
+          boxShadow: `0 0 60px ${brandColors.primary}60, 0 10px 30px rgba(0, 0, 0, 0.8)`,
           backdropFilter: 'blur(10px)',
         }}
       >

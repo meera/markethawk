@@ -60,8 +60,9 @@ class JobManager:
 
     def update_step(self, step: str, status: str, **data):
         """Update step status and data"""
+        # Initialize step if it doesn't exist (backward compatibility)
         if step not in self.job['processing']:
-            raise ValueError(f"Unknown step: {step}")
+            self.job['processing'][step] = {}
 
         self.job['processing'][step]['status'] = status
 

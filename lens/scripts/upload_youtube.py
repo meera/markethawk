@@ -106,7 +106,7 @@ def build_description(job_data: Dict) -> str:
     ticker = company.get('ticker', 'unknown').lower()
     quarter = company.get('quarter', 'q3').lower()
     year = company.get('year', 2025)
-    lines.append(f"📊 Full interactive analysis: https://market-hawk.com/{ticker}/{quarter}-{year}")
+    lines.append(f"📊 Full interactive analysis: https://markethawkeye.com/{ticker}/{quarter}-{year}")
     lines.append("")
     lines.append("Subscribe for more earnings call visualizations!")
 

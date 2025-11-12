@@ -46,7 +46,7 @@ MarketHawk's SEO strategy focuses on:
 - EPS: $X.XX (±X%)
 - Guidance: [Summary]
 
-🔗 Full interactive analysis: https://market-hawk.com/[ticker]/[quarter]-[year]
+🔗 Full interactive analysis: https://markethawkeye.com/[ticker]/[quarter]-[year]
 
 Timestamps:
 0:00 Intro
@@ -69,7 +69,7 @@ Apple (AAPL) Q4 2024 earnings call with visual charts, transcripts, and financia
 - EPS: $1.64 (beat estimates of $1.58)
 - Guidance: Strong iPhone 16 demand, Services growth accelerating
 
-🔗 Full interactive analysis: https://market-hawk.com/aapl/q4-2024
+🔗 Full interactive analysis: https://markethawkeye.com/aapl/q4-2024
 
 Timestamps:
 0:00 Intro & Opening Remarks
@@ -232,7 +232,7 @@ export async function generateMetadata({params}) {
       description: video.description,
       images: [video.thumbnail_url],
       type: 'video.other',
-      url: `https://market-hawk.com/${video.ticker.toLowerCase()}/${video.slug}`,
+      url: `https://markethawkeye.com/${video.ticker.toLowerCase()}/${video.slug}`,
     },
     twitter: {
       card: 'player',
@@ -261,7 +261,7 @@ export async function generateMetadata({params}) {
   "@type": "VideoObject",
   "name": "Apple (AAPL) Q4 2024 Earnings Call - Visual Summary",
   "description": "Apple Q4 2024 earnings call with visual charts, transcripts, and financial analysis.",
-  "thumbnailUrl": "https://market-hawk.com/thumbnails/aapl-q4-2024.jpg",
+  "thumbnailUrl": "https://markethawkeye.com/thumbnails/aapl-q4-2024.jpg",
   "uploadDate": "2024-11-01T10:00:00Z",
   "duration": "PT13M42S",
   "contentUrl": "https://youtube.com/watch?v=abc123",
@@ -276,7 +276,7 @@ export async function generateMetadata({params}) {
     "name": "MarketHawk",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://market-hawk.com/logo.png"
+      "url": "https://markethawkeye.com/logo.png"
     }
   }
 }
@@ -292,19 +292,19 @@ export async function generateMetadata({params}) {
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://market-hawk.com"
+      "item": "https://markethawkeye.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Apple (AAPL)",
-      "item": "https://market-hawk.com/aapl"
+      "item": "https://markethawkeye.com/aapl"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "Q4 2024 Earnings",
-      "item": "https://market-hawk.com/aapl/q4-2024"
+      "item": "https://markethawkeye.com/aapl/q4-2024"
     }
   ]
 }
@@ -316,8 +316,8 @@ export async function generateMetadata({params}) {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "MarketHawk",
-  "url": "https://market-hawk.com",
-  "logo": "https://market-hawk.com/logo.png",
+  "url": "https://markethawkeye.com",
+  "logo": "https://markethawkeye.com/logo.png",
   "description": "Visual earnings call analysis with interactive charts and financial data.",
   "sameAs": [
     "https://youtube.com/@markethawk",
@@ -444,7 +444,7 @@ def generate_youtube_metadata(job_data):
 - EPS: {job_data['insights']['eps']}
 - Guidance: {job_data['insights']['guidance']}
 
-🔗 Full interactive analysis: https://market-hawk.com/{ticker.lower()}/{quarter.lower()}-{year}
+🔗 Full interactive analysis: https://markethawkeye.com/{ticker.lower()}/{quarter.lower()}-{year}
 
 Subscribe for more earnings call visualizations!
 

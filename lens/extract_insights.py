@@ -326,7 +326,7 @@ def generate_youtube_description(insights: Dict[str, Any]) -> str:
     ticker = metadata.get('ticker', 'unknown').lower() if metadata.get('ticker') else 'unknown'
     quarter = metadata.get('quarter', 'q1').lower() if metadata.get('quarter') else 'q1'
     year = metadata.get('year', 2025)
-    desc += f"📊 Full interactive analysis: https://earninglens.com/{ticker}/{quarter}-{year}\n\n"
+    desc += f"📊 Full interactive analysis: https://markethawkeye.com/{ticker}/{quarter}-{year}\n\n"
     desc += "Subscribe for more earnings call visualizations!\n\n"
 
     # Hashtags

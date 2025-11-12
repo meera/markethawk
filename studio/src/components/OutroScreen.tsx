@@ -132,7 +132,7 @@ export const OutroScreen: React.FC<OutroScreenProps> = ({
 						fontFamily: 'Arial, sans-serif',
 					}}
 				>
-					Visit earninglens.com for full analysis
+					Visit markethawkeye.com for full analysis
 				</p>
 			</div>
 		</AbsoluteFill>

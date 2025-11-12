@@ -123,7 +123,7 @@ const SimpleBanner: React.FC = () => {
               fontWeight: 'bold',
               color: '#2563eb',
             }}>
-              EarningLens.com
+              markethawkeye.com
             </div>
             <div style={{
               fontSize: '32px',

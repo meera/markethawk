@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 """
-Smart Thumbnail Generator for EarningLens
+Smart Thumbnail Generator for MarketHawk
 
 Intelligently generates YouTube thumbnails based on video content:
 1. If video has video stream → Extract 4 frames from strategic locations
 2. If audio-only → Create eye-catching thumbnail with CEO image + stock chart
 
 Usage:
-    python smart_thumbnail_generator.py <video_file> <data_json_path> <output_dir>
+    python smart_thumbnail_generator.py <video_file> <data_file> <output_dir>
 
 Example:
-    python smart_thumbnail_generator.py uploads/video.mp4 data/AAPL-Q4-2024.json output/
+    python smart_thumbnail_generator.py /var/markethawk/jobs/B_Q3_2025_20251110_220309/renders/take1.mp4 /var/markethawk/jobs/B_Q3_2025_20251110_220309/job.yaml /var/markethawk/jobs/B_Q3_2025_20251110_220309/thumbnails/
+
+Supports both JSON and YAML data files.
 """
 
 import os
 import sys
 import json
+import yaml
 import subprocess
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
@@ -146,11 +149,11 @@ def add_branding_to_frame(frame_path: str, data: dict, output_path: str, variati
             font_quarter = ImageFont.load_default()
             font_metric = ImageFont.load_default()
 
-        # Extract data from insights
-        metadata = data.get('metadata', {})
-        company = metadata.get('company', 'Company')
-        quarter = metadata.get('quarter', 'Q4')
-        year = metadata.get('year', 2024)
+        # Extract data from job.yaml (company info at top level)
+        company_info = data.get('company', {})
+        company = company_info.get('name', 'Company')
+        quarter = company_info.get('quarter', 'Q4')
+        year = company_info.get('year', 2024)
 
         # Text positioning
         text_y = height - 200
@@ -696,9 +699,12 @@ def main():
         print(f"❌ Error: Data file not found: {data_path}")
         sys.exit(1)
 
-    # Load data
+    # Load data (support both JSON and YAML)
     with open(data_path, 'r') as f:
-        data = json.load(f)
+        if data_path.endswith('.yaml') or data_path.endswith('.yml'):
+            data = yaml.safe_load(f)
+        else:
+            data = json.load(f)
 
     # Generate smart thumbnail
     result = generate_smart_thumbnail(video_path, data, output_dir)

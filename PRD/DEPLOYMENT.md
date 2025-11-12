@@ -56,7 +56,7 @@ NEXT_PUBLIC_GA_ID="G-..."
 NEXT_PUBLIC_POSTHOG_KEY="phc_..."
 
 # App Config
-NEXT_PUBLIC_APP_URL="https://market-hawk.com"
+NEXT_PUBLIC_APP_URL="https://markethawkeye.com"
 ```
 
 ---
@@ -96,11 +96,11 @@ vercel --prod
 ### 5. Configure Custom Domain
 
 ```bash
-vercel domains add market-hawk.com
+vercel domains add markethawkeye.com
 ```
 
 **DNS Configuration:**
-- Add CNAME record: `market-hawk.com` → `cname.vercel-dns.com`
+- Add CNAME record: `markethawkeye.com` → `cname.vercel-dns.com`
 - Add A record for root domain (if needed)
 
 ---
@@ -204,7 +204,7 @@ rclone config
 ### 3. Configure Webhook
 
 1. Stripe Dashboard → Developers → Webhooks
-2. Add endpoint: `https://market-hawk.com/api/webhooks/stripe`
+2. Add endpoint: `https://markethawkeye.com/api/webhooks/stripe`
 3. Select events:
    - `customer.subscription.created`
    - `customer.subscription.updated`
@@ -255,7 +255,7 @@ If self-hosting:
 sudo apt-get install certbot
 
 # Get certificate
-sudo certbot certonly --standalone -d market-hawk.com
+sudo certbot certonly --standalone -d markethawkeye.com
 ```
 
 ---
@@ -276,7 +276,7 @@ npx @sentry/wizard -i nextjs
 ### Uptime Monitoring (UptimeRobot)
 
 1. Create account at [uptimerobot.com](https://uptimerobot.com)
-2. Add monitor: `https://market-hawk.com`
+2. Add monitor: `https://markethawkeye.com`
 3. Set alert email
 
 ---

@@ -174,22 +174,94 @@ python lens/process_job_pipeline.py /var/markethawk/jobs/{JOB_ID}/job.yaml
 **Pipeline steps:**
 1. Download (YouTube or HLS stream or manually downloaded)
 2. Parse metadata (ticker, quarter, company)
-3. Transcribe (WhisperX with speaker diarization)
+3. Transcribe (WhisperX with speaker diarization + word-level timestamps)
 4. Detect trim point (skip silence)
-5. Extract insights (OpenAI structured outputs)
+5. Extract insights (OpenAI structured outputs - paragraph-level timestamps)
+6. **Refine timestamps** (word-level precision with +30s search window)
+
+### Start Media Server (Background)
+
+**Required for both preview and rendering:**
+
+```bash
+cd /var/markethawk
+screen -S media-server
+npx serve . --cors -p 8080
+
+# Press Ctrl+A then D to detach
+# screen -r media-server  # to reattach if needed
+```
+
+### Preview in Remotion Studio (Background)
+
+**Preview compositions before rendering:**
+
+```bash
+cd ~/markethawk/studio
+screen -S remotion-studio
+npm run start
+
+# Press Ctrl+A then D to detach
+# screen -r remotion-studio  # to reattach when needed
+```
+
+Access at: `http://localhost:3000`
 
 ### Render Video
+
+**Two Options:**
+
+#### Option 1: Pipeline (Recommended)
+```bash
+cd ~/markethawk
+source .venv/bin/activate
+
+# Render via pipeline (updates job.yaml automatically)
+python lens/process_job_pipeline.py /var/markethawk/jobs/{JOB_ID}/job.yaml --step render
+
+# Specify take name (default: take1)
+python lens/process_job_pipeline.py /var/markethawk/jobs/{JOB_ID}/job.yaml --step render --take take2
+
+# Override composition ID (default: auto-detected from job)
+python lens/process_job_pipeline.py /var/markethawk/jobs/{JOB_ID}/job.yaml --step render --composition PSKY-Q3-2025
+```
+
+**Benefits:**
+- Automatically updates `job.yaml` with render status
+- Adds entry to `renders` array
+- Tracks file size, duration, timestamp
+- Auto-detects composition ID from job
+
+**Updates in job.yaml:**
+```yaml
+processing:
+  render:
+    status: completed
+    composition_id: PSKY-Q3-2025
+    output_file: /var/markethawk/jobs/.../renders/take1.mp4
+    duration_seconds: 2633
+    file_size_mb: 592.4
+    rendered_at: "2025-11-11T12:30:00"
+
+renders:
+  - take: take1
+    file: /var/markethawk/jobs/.../renders/take1.mp4
+    composition_id: PSKY-Q3-2025
+    rendered_at: "2025-11-11T12:30:00"
+    duration_seconds: 2633
+    file_size_mb: 592.4
+    notes: "Automated render via pipeline"
+```
+
+#### Option 2: Manual (Background)
 
 **CRITICAL:** Always run renders in background to prevent accidental terminal shutdown!
 
 ```bash
-# Terminal 1: Start media server (keep running)
-cd /var/markethawk
-npx serve . --cors -p 8080
-
-
+cd ~/markethawk/studio
 screen -S render
 npx remotion render TICKER-Q3-2025 /var/markethawk/jobs/{JOB_ID}/renders/take1.mp4
+
 # Press Ctrl+A then D to detach
 # screen -r render  # to reattach
 ```
@@ -197,7 +269,12 @@ npx remotion render TICKER-Q3-2025 /var/markethawk/jobs/{JOB_ID}/renders/take1.m
 **Why background rendering is critical:**
 - Renders take 15-30 minutes
 - Accidental terminal close = lost render progress
-- Use  `screen` to persist
+- Use `screen` to persist
+
+**Check running screens:**
+```bash
+screen -ls  # List all screen sessions
+```
 
 ### Generate Thumbnails
 
@@ -205,10 +282,36 @@ npx remotion render TICKER-Q3-2025 /var/markethawk/jobs/{JOB_ID}/renders/take1.m
 
 ```bash
 python lens/smart_thumbnail_generator.py \
-  --video /var/markethawk/jobs/{JOB_ID}/renders/take1.mp4 \
-  --data /var/markethawk/jobs/{JOB_ID}/job.yaml \
-  --output /var/markethawk/jobs/{JOB_ID}/thumbnails/
+  /var/markethawk/jobs/{JOB_ID}/renders/take1.mp4 \
+  /var/markethawk/jobs/{JOB_ID}/job.yaml \
+  /var/markethawk/jobs/{JOB_ID}/thumbnails/
 ```
+
+**Note:** Uses positional arguments (video, data, output). Supports both JSON and YAML data files.
+
+### Preview with YouTube Chapter Markers
+
+Before uploading, preview the video with clickable chapter markers and thumbnails:
+
+```
+http://192.168.1.101:8080/preview-chapters?job={JOB_ID}&take=take1.mp4
+```
+
+**Example:**
+```
+http://192.168.1.101:8080/preview-chapters?job=B_Q3_2025_20251110_220309&take=take1.mp4
+```
+
+**Features:**
+- Watch rendered video with synchronized chapter markers
+- Click chapter timestamps to jump to sections
+- View all 4 thumbnail variations (click to download)
+- Copy YouTube description with markethawkeye.com link
+- All data loaded from job.yaml (single source of truth)
+
+**File location:** `/var/markethawk/preview-chapters.html`
+
+**Note:** The media server (`npx serve`) uses clean URLs, so access without `.html` extension.
 
 ### Upload to YouTube - this may need to happen on mac -
 ```bash
@@ -220,17 +323,140 @@ python lens/scripts/upload_youtube.py \
 
 ---
 
+## Timestamp Refinement (Word-Level Precision)
+
+**Problem:** LLM uses paragraph-level timestamps, causing metrics to appear before they're actually spoken.
+
+**Solution:** Separate refinement step searches word-level transcript within +30s window to find exact moment keywords are spoken.
+
+### How It Works:
+
+1. **LLM suggests metric** with paragraph timestamp (e.g., "$1.5 billion" at 320s)
+2. **Extract keywords** from metric: ["content", "investment", "1", "5", "billion"]
+3. **Prioritize number keywords** - search for "1", "5" first (more specific than "billion")
+4. **Search word-level transcript** from 320s to 350s (+30s window)
+5. **Find first match** with quality filters:
+   - Skip single-letter words ('a', 'i', 'to')
+   - Require minimum 3-character match for text keywords
+   - Prioritize number matches over text matches
+6. **Add 0.5s buffer** → final timestamp: 331.6s (overlay appears right after spoken)
+
+### Match Quality Improvements:
+
+- **Number priority**: "1.5" > "billion" > "investment"
+- **Filter noise**: Ignores 'a', 'the', 'in', 'on', single letters
+- **Minimum length**: 3+ chars for text keywords, exact match for short words
+- **Window increased**: 20s → 30s to catch delayed mentions
+
+### Run Refinement
+
+**Automatic (part of pipeline):**
+```bash
+python lens/process_job_pipeline.py /var/markethawk/jobs/{JOB_ID}/job.yaml
+```
+
+**Manual (standalone):**
+```bash
+# Refine timestamps for existing job
+python lens/refine_timestamps.py /var/markethawk/jobs/{JOB_ID}/job.yaml
+
+# Adjust search window (default: 30s)
+python lens/refine_timestamps.py /var/markethawk/jobs/{JOB_ID}/job.yaml --window 40
+```
+
+### Output During Processing:
+
+```
+🔍 Refining timestamps with word-level data...
+   Window: +30s from LLM suggestion
+
+Refining 6 financial metrics:
+  Content Investment: $1.5 billion
+    Keywords: content, investment, 1, 5, billion
+    ✓ 320s → 331.6s (matched 'investment' [text])
+
+  Segment Revenue Growth: 24% for Paramount Plus
+    Keywords: segment, revenue, growth, 24, paramount
+    ✓ 531s → 537.5s (matched '24' [number])
+
+Refining 10 highlights:
+  Strategic focus on content quality...
+    Keywords: strategic, focus, content
+    ✓ 180s → 183.2s (matched 'strategic' [text])
+
+✅ Timestamp refinement complete!
+   Metrics: 5 refined, 1 unchanged
+   Highlights: 10 refined, 0 unchanged
+```
+
+### State Tracking
+
+Refinement status is tracked in job.yaml:
+
+```yaml
+processing:
+  insights:
+    status: completed
+    # Contains paragraph-level timestamps
+
+  refine_timestamps:
+    status: completed
+    metrics_refined: 5
+    metrics_unchanged: 1
+    highlights_refined: 10
+    highlights_unchanged: 0
+    search_window_seconds: 30
+```
+
+**Benefits of Separate Step:**
+- Can re-run without expensive LLM call
+- Idempotent (safe to run multiple times)
+- Adjustable search window
+- Clear separation: LLM insights vs local word search
+
+**Implementation:** `lens/refine_timestamps.py` - runs automatically as pipeline step 6.
+
+---
+
 ## Audio-Only Earnings Calls
 
 **See:** `PRD/recipes/AUDIO-ONLY-EARNINGS-RECIPE.md` for complete recipe.
 
-**Key points:**
-- Use `<Audio>` component, NOT `<OffthreadVideo>` (audio-only files have no video stream)
-- Create static branded background (company colors + ticker watermark)
-- Add `FadedAudio` component for smooth transitions between title music and earnings audio
-- Generate thumbnails from rendered video (not from source)
+### Key Design Principles:
 
-**Example:** `studio/src/compositions/BIP_Q3_2025.tsx`
+**1. Audio Components:**
+- Use `<Audio>` component, NOT `<OffthreadVideo>` (audio-only files have no video stream)
+- Add `FadedAudio` component for smooth transitions:
+  - Title music fades out at 4-5s (smooth transition to earnings audio)
+  - Earnings audio fades in over 1.5s (45 frames at 30fps)
+
+**2. Visual Hierarchy (Fill the Canvas):**
+- **Primary:** Company Name + "Q3 2025 Earnings Call" - Large and centered
+- **Secondary:** Stock ticker (PSKY, BIP, etc.) - Smaller, watermark style
+- Example layout:
+  ```
+  Paramount Global          ← Large (140px)
+  Q3 2025 Earnings Call     ← Large (84px)
+  PSKY                      ← Secondary (120px, semi-transparent)
+  ```
+
+**3. Persistent Speaker Labels:**
+- Keep speaker names visible throughout their speaking time
+- **Don't just show at chapter transitions** - span entire speaker duration
+- Purpose: Fill empty canvas, provide context
+- Example: "David Ellison - Chairman and CEO" visible for 10+ minutes
+
+**4. Brand Colors:**
+- Use company brand colors for gradient background
+- Ticker watermark uses brand primary color with transparency (0.3-0.4 opacity)
+- Speaker labels use dark semi-transparent backgrounds (readable on any background)
+
+**5. Thumbnails:**
+- Generate thumbnails from rendered video (not from source audio file)
+
+**Examples:**
+- `studio/src/compositions/BIP_Q3_2025.tsx`
+- `studio/src/compositions/PSKY_Q3_2025.tsx`
 
 ---
 

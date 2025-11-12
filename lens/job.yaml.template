@@ -77,3 +77,13 @@ processing:
   insights:
     status: pending
     # Will be populated with: speakers, financial_metrics, highlights, chapters, summary, youtube_title, youtube_description
+
+  refine_timestamps:
+    status: pending
+    # Will be populated with: metrics_refined, metrics_unchanged, highlights_refined, highlights_unchanged, search_window_seconds
+
+  render:
+    status: pending
+    composition_id: null
+    output_file: null
+    # Will be populated with: duration_seconds, file_size_mb, rendered_at

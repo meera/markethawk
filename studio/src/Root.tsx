@@ -6,6 +6,8 @@ import {PLTR_Q3_2025} from './compositions/PLTR_Q3_2025';
 import {PLTR_Q3_2025_take2} from './compositions/PLTR_Q3_2025-take2';
 import {HOOD_Q3_2025} from './compositions/HOOD_Q3_2025';
 import {BIP_Q3_2025} from './compositions/BIP_Q3_2025';
+import {B_Q3_2025} from './compositions/B_Q3_2025';
+import {PSKY_Q3_2025} from './compositions/PSKY_Q3_2025';
 import {
 	SubscribeExample,
 	OutroExample,
@@ -64,6 +66,22 @@ export const RemotionRoot: React.FC = () => {
 						id="BIP-Q3-2025"
 						component={BIP_Q3_2025}
 						durationInFrames={54826} // 30m 27s (1827.527s * 30fps)
+						fps={30}
+						width={1920}
+						height={1080}
+					/>
+					<Composition
+						id="B-Q3-2025"
+						component={B_Q3_2025}
+						durationInFrames={67904} // 37m 28s (2248.475s + 5s title + 10s CTA = 2263.475s * 30fps)
+						fps={30}
+						width={1920}
+						height={1080}
+					/>
+					<Composition
+						id="PSKY-Q3-2025"
+						component={PSKY_Q3_2025}
+						durationInFrames={79448} // 43m 53s (2633.268s + 5s title + 10s CTA = 2648.268s * 30fps)
 						fps={30}
 						width={1920}
 						height={1080}
