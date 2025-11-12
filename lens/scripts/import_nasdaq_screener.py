@@ -106,7 +106,7 @@ def import_csv(csv_path):
     # Connect to database
     print(f"\n🔌 Connecting to database...")
     try:
-        conn = psycopg2.connect(DATABASE_URL)
+        conn = psycopg2.connect(DATABASE_URL, connect_timeout=10)
         print("✅ Connected")
     except Exception as e:
         print(f"❌ Database connection failed: {e}")

@@ -92,3 +92,4 @@ stripe_products.csv
 # Build artifacts
 *.tsbuildinfo
 Youtube-MarketHawk-OAuth.json
+.env.prod
