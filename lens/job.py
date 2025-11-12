@@ -27,13 +27,52 @@ import yaml
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, Optional
+import psycopg2
+import json
 
 # Directories
 LENS_DIR = Path(__file__).parent
 PROJECT_ROOT = LENS_DIR.parent
 JOBS_DIR = Path(os.getenv("JOBS_DIR", "/var/markethawk/jobs"))
 
+# Database
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@192.168.86.250:54322/postgres")
+
 # Collocation preference: Everything for a job in one directory
+
+
+def lookup_company(ticker: str) -> Optional[Dict[str, Any]]:
+    """Lookup company by ticker from database."""
+    try:
+        conn = psycopg2.connect(DATABASE_URL, connect_timeout=5)
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT symbol, name, slug, cik_str, metadata
+            FROM markethawkeye.companies
+            WHERE UPPER(symbol) = UPPER(%s)
+            LIMIT 1
+        """, (ticker,))
+
+        row = cursor.fetchone()
+        conn.close()
+
+        if row:
+            symbol, name, slug, cik_str, metadata = row
+            return {
+                'symbol': symbol,
+                'name': name,
+                'slug': slug,
+                'cik_str': cik_str,
+                'metadata': metadata or {}
+            }
+
+        return None
+
+    except Exception as e:
+        print(f"⚠️  Database lookup failed: {e}")
+        print(f"   Continuing without company enrichment...")
+        return None
 
 
 class JobManager:
@@ -95,6 +134,20 @@ def create_job(args):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     job_id = f"{ticker}_{quarter}_{timestamp}".replace("-", "_")
 
+    # Lookup company from database
+    print(f"🔍 Looking up company: {ticker}")
+    company_data = lookup_company(ticker)
+
+    if company_data:
+        print(f"✅ Found: {company_data['name']} ({company_data['symbol']})")
+        print(f"   Slug: {company_data['slug']}")
+        print(f"   CIK: {company_data['cik_str']}")
+        if company_data['metadata'].get('sector'):
+            print(f"   Sector: {company_data['metadata']['sector']}")
+    else:
+        print(f"⚠️  Company not found in database: {ticker}")
+        print(f"   Job will be created with limited company info")
+
     # Determine input type
     if args.url:
         if 'youtube.com' in args.url or 'youtu.be' in args.url:
@@ -124,7 +177,15 @@ def create_job(args):
     job['company']['ticker'] = ticker
     job['company']['quarter'] = quarter
 
-    if args.company:
+    # Add company data from database
+    if company_data:
+        job['company']['name'] = company_data['name']
+        job['company']['slug'] = company_data['slug']
+        job['company']['cik_str'] = company_data['cik_str']
+        job['company']['exchange'] = company_data['metadata'].get('exchange')
+        job['company']['sector'] = company_data['metadata'].get('sector')
+        job['company']['industry'] = company_data['metadata'].get('industry')
+    elif args.company:
         job['company']['name'] = args.company
 
     # Create job directory (collocation: everything in one place)

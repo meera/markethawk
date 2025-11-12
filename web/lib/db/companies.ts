@@ -3,17 +3,21 @@ import { db } from './index';
 
 export interface Company {
   id: number;
+  cik_str: string;
   symbol: string;
   name: string;
-  last_sale: number | null;
-  net_change: number | null;
-  pct_change: string | null;
-  market_cap: number | null;
-  country: string | null;
-  ipo_year: number | null;
-  volume: number | null;
-  sector: string | null;
-  industry: string | null;
+  slug: string;
+  metadata: {
+    exchange?: string;
+    market_cap?: number;
+    sector?: string;
+    industry?: string;
+    ipo_year?: number;
+    country?: string;
+    website?: string;
+    description?: string;
+    [key: string]: any;  // Flexible for future additions
+  };
   created_at: Date;
   updated_at: Date;
 }
@@ -36,7 +40,7 @@ export async function getCompanies(options?: {
   `;
 
   if (sector) {
-    query = sql`${query} AND sector = ${sector}`;
+    query = sql`${query} AND metadata->>'sector' = ${sector}`;
   }
 
   if (search) {
@@ -47,7 +51,7 @@ export async function getCompanies(options?: {
   }
 
   query = sql`${query}
-    ORDER BY market_cap DESC NULLS LAST
+    ORDER BY (metadata->>'market_cap')::bigint DESC NULLS LAST
     LIMIT ${limit}
     OFFSET ${offset}
   `;
@@ -71,14 +75,28 @@ export async function getCompanyByTicker(ticker: string): Promise<Company | null
 }
 
 /**
+ * Get a single company by slug
+ */
+export async function getCompanyBySlug(slug: string): Promise<Company | null> {
+  const result = await db.execute(sql`
+    SELECT *
+    FROM markethawkeye.companies
+    WHERE slug = ${slug}
+    LIMIT 1
+  `);
+
+  return (result[0] as unknown as Company) || null;
+}
+
+/**
  * Get all unique sectors
  */
 export async function getSectors(): Promise<{ sector: string; count: number }[]> {
   const result = await db.execute(sql`
-    SELECT sector, COUNT(*) as count
+    SELECT metadata->>'sector' as sector, COUNT(*) as count
     FROM markethawkeye.companies
-    WHERE sector IS NOT NULL
-    GROUP BY sector
+    WHERE metadata->>'sector' IS NOT NULL
+    GROUP BY metadata->>'sector'
     ORDER BY count DESC
   `);
 
@@ -101,7 +119,7 @@ export async function getCompanyCount(options?: {
   `;
 
   if (sector) {
-    query = sql`${query} AND sector = ${sector}`;
+    query = sql`${query} AND metadata->>'sector' = ${sector}`;
   }
 
   if (search) {
@@ -122,8 +140,9 @@ export async function getTopCompaniesByMarketCap(limit: number = 10): Promise<Co
   const result = await db.execute(sql`
     SELECT *
     FROM markethawkeye.companies
-    WHERE market_cap IS NOT NULL AND market_cap > 0
-    ORDER BY market_cap DESC
+    WHERE metadata->>'market_cap' IS NOT NULL
+      AND (metadata->>'market_cap')::bigint > 0
+    ORDER BY (metadata->>'market_cap')::bigint DESC
     LIMIT ${limit}
   `);
 
@@ -137,8 +156,8 @@ export async function getCompaniesBySector(sector: string, limit: number = 50): 
   const result = await db.execute(sql`
     SELECT *
     FROM markethawkeye.companies
-    WHERE sector = ${sector}
-    ORDER BY market_cap DESC NULLS LAST
+    WHERE metadata->>'sector' = ${sector}
+    ORDER BY (metadata->>'market_cap')::bigint DESC NULLS LAST
     LIMIT ${limit}
   `);
 

@@ -52,6 +52,11 @@ input:
 company:
   name: "Palantir Technologies"
   ticker: "PLTR"
+  slug: "palantir-technologies"  # NEW: URL-friendly slug
+  cik_str: "1321655"  # NEW: SEC identifier
+  exchange: "NASDAQ"  # NEW: Stock exchange
+  sector: "Technology"  # NEW: Company sector
+  industry: "Software"  # NEW: Company industry
   quarter: "Q3-2025"
   year: 2025
 

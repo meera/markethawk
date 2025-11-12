@@ -76,10 +76,18 @@ def format_time(seconds: float) -> str:
 
 
 def build_description(job_data: Dict) -> str:
-    """Build YouTube description with chapter markers from job.yaml."""
+    """Build YouTube description with chapter markers and company info from job.yaml."""
 
     insights = job_data.get('processing', {}).get('insights', {})
     company = job_data.get('company', {})
+
+    # Extract company info
+    name = company.get('name', 'Company')
+    ticker = company.get('ticker', 'N/A')
+    slug = company.get('slug', ticker.lower())
+    quarter = company.get('quarter', 'Q3-2025')
+    exchange = company.get('exchange', 'N/A')
+    sector = company.get('sector', 'N/A')
 
     # Summary
     summary = insights.get('summary', '')
@@ -90,10 +98,26 @@ def build_description(job_data: Dict) -> str:
     # Build description
     lines = []
 
+    # Company intro with enriched data
+    lines.append(f"{name} ({ticker}) - {quarter} Earnings Call Analysis")
+    lines.append("")
+
     if summary:
         lines.append(summary)
         lines.append("")
 
+    # Company info section
+    lines.append("Company Info:")
+    lines.append(f"• Exchange: {exchange}")
+    lines.append(f"• Sector: {sector}")
+    lines.append(f"• Ticker: {ticker}")
+    lines.append("")
+
+    # Link to full analysis (using slug-based URL)
+    lines.append(f"📊 Full interactive analysis: https://markethawkeye.com/companies/{slug}")
+    lines.append("")
+
+    # Chapters
     if chapters:
         lines.append("📖 Chapters:")
         for chapter in chapters:
@@ -102,11 +126,9 @@ def build_description(job_data: Dict) -> str:
             lines.append(f"{timestamp} - {title}")
         lines.append("")
 
-    # Link to full analysis
-    ticker = company.get('ticker', 'unknown').lower()
-    quarter = company.get('quarter', 'q3').lower()
-    year = company.get('year', 2025)
-    lines.append(f"📊 Full interactive analysis: https://markethawkeye.com/{ticker}/{quarter}-{year}")
+    lines.append("This video provides analysis of {}'s earnings call with key financial metrics, management highlights, and visual insights.".format(name))
+    lines.append("")
+    lines.append("Visit MarketHawk Eye for more earnings analysis and interactive financial data.")
     lines.append("")
     lines.append("Subscribe for more earnings call visualizations!")
 

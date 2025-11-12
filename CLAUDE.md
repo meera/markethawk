@@ -70,31 +70,124 @@ Markey HawkEye transforms earnings call audio into visually-enhanced YouTube vid
 - **Payments:** Stripe (via Better Auth plugin)
 - **Storage:** Cloudflare R2 (bucket: `earninglens`)
 
-### Database Seeding (Companies)
-**Source:** NASDAQ Screener CSV (7,048 companies)
-**Download:** https://www.nasdaq.com/market-activity/stocks/screener → Download CSV
+### Database Schema (Companies)
 
-**Quick Import:**
-```bash
-# Clean CSV (remove $ and % symbols)
-python3 << 'EOF'
-import csv
-from pathlib import Path
-input_file, output_file = Path('data/nasdaq_screener.csv'), Path('data/nasdaq_screener_cleaned.csv')
-with input_file.open('r') as f_in, output_file.open('w', newline='') as f_out:
-    reader, writer = csv.DictReader(f_in), csv.DictWriter(f_out, fieldnames=csv.DictReader(f_in).fieldnames)
-    writer.writeheader()
-    [writer.writerow({k: v.replace('$','').replace('%','') for k, v in row.items()}) for row in reader]
-EOF
+**Source:** SEC company_tickers.json (authoritative source for company names and CIK)
+**Enrichment:** NASDAQ Screener CSV for financial data (market cap, sector, industry)
 
-# Import to Neon (NOTE: add :5432 for psql, Vercel doesn't need it)
-psql "postgresql://user:pass@host:5432/db?sslmode=require" \
-  -c "\COPY markethawkeye.companies (...) FROM 'data/nasdaq_screener_cleaned.csv' CSV HEADER"
+**Schema Design:**
+```sql
+CREATE TABLE markethawkeye.companies (
+  id SERIAL PRIMARY KEY,
+  symbol VARCHAR(10) UNIQUE NOT NULL,       -- Stock ticker (e.g., NVDA)
+  name VARCHAR(255) NOT NULL,               -- Company name (e.g., NVIDIA CORP)
+  cik_str VARCHAR(20) UNIQUE NOT NULL,      -- SEC Central Index Key (for filings)
+  slug VARCHAR(255) UNIQUE NOT NULL,        -- URL-friendly (e.g., nvidia, alphabet-goog)
+  metadata JSONB DEFAULT '{}',              -- Flexible metadata (see below)
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Indexes
+CREATE UNIQUE INDEX idx_companies_cik ON markethawkeye.companies(cik_str);
+CREATE UNIQUE INDEX idx_companies_slug ON markethawkeye.companies(slug);
+CREATE INDEX idx_companies_metadata ON markethawkeye.companies USING GIN (metadata);
+CREATE INDEX idx_companies_name_trgm ON markethawkeye.companies USING GIN (name gin_trgm_ops);
 ```
 
-**Full Script:** `import-to-neon.sh`
+**JSONB Metadata Fields:**
+```json
+{
+  "exchange": "NASDAQ",
+  "market_cap": 4693788000000,
+  "sector": "Technology",
+  "industry": "Semiconductors",
+  "ipo_year": 1999,
+  "country": "United States",
+  "website": "https://nvidia.com",
+  "description": "GPU manufacturer..."
+}
+```
 
-**Critical Fix:** psql requires explicit `:5432` port in connection string. Vercel/Node.js works without it.
+**Why JSONB?** Flexible schema for future enrichment without migrations.
+
+**Data Sources:**
+- **SEC company_tickers.json** (10,142 companies) - Clean names, CIK numbers
+- **NASDAQ Screener CSV** - Financial enrichment (market cap, sector)
+
+**Filtering Applied:**
+- Removed 1,566 derivative securities (warrants, units, preferred shares)
+- Deduplicated by CIK (one company per CIK): -1,204 duplicates
+- Final: 7,372 unique companies
+
+**Slug Generation:**
+- Base: `nvidia` from "NVIDIA CORP"
+- Conflicts: Append ticker suffix (e.g., `alphabet-goog`, `alphabet-googl`)
+- Only 10 companies needed ticker suffix
+
+**Master CSV:** `data/companies_master.csv` (committed to Git)
+
+**Database Seeding:**
+```bash
+# 1. Download SEC data
+python lens/scripts/download_sec_companies.py
+
+# 2. Download NASDAQ screener
+# Visit: https://www.nasdaq.com/market-activity/stocks/screener
+# Download CSV to data/nasdaq_screener.csv
+
+# 3. Merge and generate slugs
+python lens/scripts/create_master_companies.py
+
+# 4. Migrate database (local or production)
+python lens/scripts/migrate_companies_db.py
+
+# Production migration
+bash migrate-companies-neon.sh
+```
+
+**TypeScript Interface:**
+```typescript
+export interface Company {
+  id: number;
+  cik_str: string;
+  symbol: string;
+  name: string;
+  slug: string;
+  metadata: {
+    exchange?: string;
+    market_cap?: number;
+    sector?: string;
+    industry?: string;
+    ipo_year?: number;
+    country?: string;
+    website?: string;
+    description?: string;
+    [key: string]: any;  // Flexible for future additions
+  };
+  created_at: Date;
+  updated_at: Date;
+}
+```
+
+**Querying JSONB in Drizzle:**
+```typescript
+// Filter by sector
+const result = await db.execute(sql`
+  SELECT * FROM markethawkeye.companies
+  WHERE metadata->>'sector' = ${sector}
+  ORDER BY (metadata->>'market_cap')::bigint DESC NULLS LAST
+`);
+
+// Access in TypeScript
+company.metadata.market_cap
+company.metadata.sector
+```
+
+**URL Structure:**
+- Old: `/stocks/${ticker}` (e.g., `/stocks/nvda`)
+- New: `/companies/${slug}` (e.g., `/companies/nvidia`)
+- SEO-friendly, human-readable URLs
 
 ### Video Pipeline
 - **Transcription:** WhisperX 3.3.1 (speaker diarization  )

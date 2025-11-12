@@ -87,7 +87,12 @@ lens/downloads/
 
 # Data files
 *.csv
+!data/companies_master.csv  # Exception: commit master CSV
 stripe_products.csv
+
+# SEC data (download fresh, don't commit)
+data/sec_company_tickers.json
+data/nasdaq_screener*.csv
 
 # Build artifacts
 *.tsbuildinfo
