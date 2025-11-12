@@ -64,9 +64,37 @@ Markey HawkEye transforms earnings call audio into visually-enhanced YouTube vid
 
 ### Backend
 - **Database:** PostgreSQL with Drizzle ORM (avoid Neon-specific packages)
+  - **Local:** PostgreSQL at 192.168.86.250:54322
+  - **Production:** Neon (ep-twilight-leaf-a4dgbd70)
 - **Authentication:** Better Auth with Google One Tap
 - **Payments:** Stripe (via Better Auth plugin)
 - **Storage:** Cloudflare R2 (bucket: `earninglens`)
+
+### Database Seeding (Companies)
+**Source:** NASDAQ Screener CSV (7,048 companies)
+**Download:** https://www.nasdaq.com/market-activity/stocks/screener → Download CSV
+
+**Quick Import:**
+```bash
+# Clean CSV (remove $ and % symbols)
+python3 << 'EOF'
+import csv
+from pathlib import Path
+input_file, output_file = Path('data/nasdaq_screener.csv'), Path('data/nasdaq_screener_cleaned.csv')
+with input_file.open('r') as f_in, output_file.open('w', newline='') as f_out:
+    reader, writer = csv.DictReader(f_in), csv.DictWriter(f_out, fieldnames=csv.DictReader(f_in).fieldnames)
+    writer.writeheader()
+    [writer.writerow({k: v.replace('$','').replace('%','') for k, v in row.items()}) for row in reader]
+EOF
+
+# Import to Neon (NOTE: add :5432 for psql, Vercel doesn't need it)
+psql "postgresql://user:pass@host:5432/db?sslmode=require" \
+  -c "\COPY markethawkeye.companies (...) FROM 'data/nasdaq_screener_cleaned.csv' CSV HEADER"
+```
+
+**Full Script:** `import-to-neon.sh`
+
+**Critical Fix:** psql requires explicit `:5432` port in connection string. Vercel/Node.js works without it.
 
 ### Video Pipeline
 - **Transcription:** WhisperX 3.3.1 (speaker diarization  )
@@ -597,7 +625,7 @@ chmod 755 /var/markethawk/jobs/{JOB_ID}/renders
 
 ---
 
-**Last Updated:** 2025-11-09
-**Project Status:** Active Development - Job-based pipeline with audio-only support
+**Last Updated:** 2025-11-12
+**Project Status:** Active Development - Job-based pipeline with audio-only support + Neon production database
 - Guidelines for Marketing Copy: Always talk in terms of User Benefits and not Product Features.
 - greenfield project - no legacy consideration

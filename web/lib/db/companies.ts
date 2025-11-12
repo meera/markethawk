@@ -127,7 +127,7 @@ export async function getTopCompaniesByMarketCap(limit: number = 10): Promise<Co
     LIMIT ${limit}
   `);
 
-  return result as Company[];
+  return result as unknown as Company[];
 }
 
 /**
@@ -142,5 +142,5 @@ export async function getCompaniesBySector(sector: string, limit: number = 50): 
     LIMIT ${limit}
   `);
 
-  return result as Company[];
+  return result as unknown as Company[];
 }
