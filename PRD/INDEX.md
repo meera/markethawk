@@ -55,6 +55,12 @@ Build the Markey HawkEye web application:
 - Example queries and migrations
 - Indexes for performance
 
+🌱 **[DATABASE-SEEDING.md](./DATABASE-SEEDING.md)** - Database Seeding Guide
+- Populating the `markethawkeye.companies` table
+- Automated scripts for SEC, NASDAQ, exchange data
+- Production deployment procedures
+- Data refresh schedules and verification
+
 🚀 **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Production Deployment
 - Vercel deployment guide
 - Environment variables
@@ -100,8 +106,9 @@ Step-by-step guides for video production:
 **Building the web app?**
 1. Start: [WEB-APP-GUIDE.md](./WEB-APP-GUIDE.md)
 2. Setup: [DATABASE-SCHEMA.md](./DATABASE-SCHEMA.md)
-3. Deploy: [DEPLOYMENT.md](./DEPLOYMENT.md)
-4. Monitor: [ADMIN-DASHBOARD.md](./ADMIN-DASHBOARD.md)
+3. Seed: [DATABASE-SEEDING.md](./DATABASE-SEEDING.md)
+4. Deploy: [DEPLOYMENT.md](./DEPLOYMENT.md)
+5. Monitor: [ADMIN-DASHBOARD.md](./ADMIN-DASHBOARD.md)
 
 **Optimizing for growth?**
 1. SEO: [SEO-STRATEGY.md](./SEO-STRATEGY.md)
@@ -110,4 +117,4 @@ Step-by-step guides for video production:
 
 ---
 
-**Last Updated:** 2025-11-10
+**Last Updated:** 2025-11-11

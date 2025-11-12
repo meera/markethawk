@@ -1,14 +1,13 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { Logo } from '@/components/Logo';
 import { getCompanies, getSectors, getTopCompaniesByMarketCap } from '@/lib/db/companies';
 
 export const metadata = {
-  title: 'Markey HawkEye - Stock Earnings Call Videos',
-  description: 'Browse earnings call videos for 7,600+ public companies. Listen to actual executive voices with synchronized financial data.',
+  title: 'Stock Earnings Calls - Markey HawkEye',
+  description: 'Browse earnings call videos for 7,000+ public companies. Listen to actual executive voices with synchronized financial data.',
   openGraph: {
-    title: 'Markey HawkEye - Stock Earnings Call Videos',
-    description: 'Browse earnings call videos for 7,600+ public companies.',
+    title: 'Stock Earnings Calls - Markey HawkEye',
+    description: 'Browse earnings call videos for 7,000+ public companies.',
   },
 };
 
@@ -64,7 +63,7 @@ async function SectorsList() {
       {sectors.map((sector) => (
         <Link
           key={sector.sector}
-          href={`/?sector=${encodeURIComponent(sector.sector)}`}
+          href={`/stocks?sector=${encodeURIComponent(sector.sector)}`}
           className="px-4 py-2 bg-background-muted/40 border border-border rounded-lg hover:bg-primary/10 hover:border-primary transition-all text-text-secondary hover:text-primary text-sm"
         >
           {sector.sector} <span className="text-text-tertiary">({sector.count})</span>
@@ -74,7 +73,7 @@ async function SectorsList() {
   );
 }
 
-export default async function HomePage({
+export default async function StocksPage({
   searchParams,
 }: {
   searchParams: Promise<{ sector?: string; search?: string }>;
@@ -92,14 +91,20 @@ export default async function HomePage({
       <header className="border-b border-border backdrop-blur-sm bg-background/80 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <Logo />
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="relative w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+                <span className="text-white font-bold text-xl">M</span>
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full shadow-lg shadow-accent/50 animate-pulse"></span>
+              </div>
+              <h1 className="text-2xl font-bold text-text-primary">Markey HawkEye</h1>
+            </Link>
 
             <nav className="flex items-center space-x-6">
-              <Link href="/" className="text-primary font-medium transition-colors text-sm">
-                Companies
+              <Link href="/" className="text-text-tertiary hover:text-primary transition-colors text-sm">
+                Home
               </Link>
-              <Link href="/about" className="text-text-tertiary hover:text-primary transition-colors text-sm">
-                About
+              <Link href="/stocks" className="text-primary font-medium transition-colors text-sm">
+                Stocks
               </Link>
             </nav>
           </div>
@@ -140,8 +145,8 @@ export default async function HomePage({
               </button>
               {(search || sector) && (
                 <Link
-                  href="/"
-                  className="px-6 py-4 bg-background-muted hover:bg-background-elevated border border-border text-text-secondary hover:text-primary rounded-lg font-semibold transition-all"
+                  href="/stocks"
+                  className="px-6 py-4 bg-background-muted hover:bg-background-elevated border border-border text-text-secondary hover:text-text-primary rounded-lg font-semibold transition-all"
                 >
                   Clear
                 </Link>
@@ -211,7 +216,10 @@ export default async function HomePage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-3">
-              <Logo size="small" />
+              <div className="relative w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">M</span>
+                <span className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-accent rounded-full shadow-sm shadow-accent/50"></span>
+              </div>
               <span className="text-text-tertiary text-sm">
                 © 2024 Markey HawkEye. Transform earnings calls into visual insights.
               </span>
@@ -221,8 +229,8 @@ export default async function HomePage({
               <Link href="mailto:thehawkeyemarket@gmail.com" className="text-text-tertiary hover:text-accent transition-colors">
                 Contact
               </Link>
-              <Link href="/about" className="text-text-tertiary hover:text-accent transition-colors">
-                About
+              <Link href="/" className="text-text-tertiary hover:text-accent transition-colors">
+                Home
               </Link>
             </div>
           </div>

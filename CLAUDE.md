@@ -374,3 +374,4 @@ chmod 755 /var/markethawk/jobs/{JOB_ID}/renders
 **Last Updated:** 2025-11-09
 **Project Status:** Active Development - Job-based pipeline with audio-only support
 - Guidelines for Marketing Copy: Always talk in terms of User Benefits and not Product Features.
+- greenfield project - no legacy consideration

@@ -402,4 +402,4 @@ Use Markey HawkEye colors for:
 
 ---
 
-**For questions or updates, contact:** hello@markethawkeye.com
+**For questions or updates, contact:** thehawkeyemarket@gmail.com
