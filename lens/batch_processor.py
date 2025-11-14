@@ -637,8 +637,16 @@ SET
         )
         returncode, stdout, stderr = result.returncode, result.stdout, result.stderr
 
-        # Clean up temp file
-        sql_file.unlink()
+        # Log output for debugging
+        if stdout:
+            self.log(f"[{job['job_id']}] psql stdout: {stdout}")
+        if stderr:
+            self.log(f"[{job['job_id']}] psql stderr: {stderr}")
+
+        # Keep SQL file in job directory for debugging (don't delete)
+        job_sql_file = Path(f"/var/markethawk/jobs/{job['job_id']}/db_insert.sql")
+        sql_file.rename(job_sql_file)
+        self.log(f"[{job['job_id']}] SQL saved to: {job_sql_file}")
 
         if returncode == 0:
             self.update_job_status(job, 'update_db', 'completed')
