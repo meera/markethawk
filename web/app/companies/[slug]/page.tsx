@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Logo } from '@/components/Logo';
 import { getCompanyBySlug, getCompaniesBySector } from '@/lib/db/companies';
+import { getEarningsCallsBySymbol } from '@/app/earnings/actions';
 import type { Metadata } from 'next';
 
 interface PageProps {
@@ -44,6 +45,69 @@ function formatMarketCap(marketCap: number | null): string {
   } else {
     return `$${marketCap.toLocaleString()}`;
   }
+}
+
+async function EarningsCallsSection({ symbol }: { symbol: string }) {
+  const result = await getEarningsCallsBySymbol(symbol);
+
+  if (!result.success || !result.data || result.data.length === 0) {
+    return (
+      <div className="bg-background-muted/40 border border-border rounded-2xl p-8 mb-8">
+        <h2 className="text-2xl font-bold text-text-primary mb-4">Earnings Call Videos</h2>
+        <div className="bg-background/50 rounded-lg p-8 text-center">
+          <div className="text-6xl mb-4">🎬</div>
+          <p className="text-text-secondary text-lg mb-4">
+            Earnings call videos for <strong className="text-primary">{symbol}</strong> are coming soon.
+          </p>
+          <p className="text-text-tertiary">
+            We're transforming earnings calls into visual insights. Subscribe to get notified when videos are available.
+          </p>
+          <Link
+            href="/#subscribe"
+            className="inline-block mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-all"
+          >
+            Get Notified
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const calls = result.data;
+
+  return (
+    <div className="bg-background-muted/40 border border-border rounded-2xl p-8 mb-8">
+      <h2 className="text-2xl font-bold text-text-primary mb-4">
+        Earnings Call Videos ({calls.length})
+      </h2>
+      <div className="grid gap-4">
+        {calls.map((call) => (
+          <Link
+            key={call.id}
+            href={`/earnings/${call.id}`}
+            className="group bg-background/50 border border-border rounded-xl p-6 hover:bg-background-muted/60 hover:border-border-accent hover:shadow-lg hover:shadow-accent/10 transition-all"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors">
+                  {call.quarter} {call.year} Earnings Call
+                </h3>
+                <p className="text-text-tertiary text-sm mt-1">{call.symbol}</p>
+              </div>
+              <div className="text-sm text-text-tertiary bg-background/50 px-3 py-1 rounded">
+                {new Date(call.createdAt).toLocaleDateString()}
+              </div>
+            </div>
+            {call.metadata && (call.metadata as any).pipeline_type && (
+              <div className="text-xs text-text-tertiary">
+                Pipeline: {(call.metadata as any).pipeline_type}
+              </div>
+            )}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default async function CompanyPage({ params }: PageProps) {
@@ -137,25 +201,7 @@ export default async function CompanyPage({ params }: PageProps) {
         </div>
 
         {/* Earnings Calls Section */}
-        <div className="bg-background-muted/40 border border-border rounded-2xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-text-primary mb-4">Earnings Call Videos</h2>
-          <div className="bg-background/50 rounded-lg p-8 text-center">
-            <div className="text-6xl mb-4">🎬</div>
-            <p className="text-text-secondary text-lg mb-4">
-              Earnings call videos for <strong className="text-primary">{company.symbol}</strong> are coming soon.
-            </p>
-            <p className="text-text-tertiary">
-              We're transforming earnings calls into visual insights. Subscribe to get notified when videos are
-              available.
-            </p>
-            <Link
-              href="/#subscribe"
-              className="inline-block mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-all"
-            >
-              Get Notified
-            </Link>
-          </div>
-        </div>
+        <EarningsCallsSection symbol={company.symbol} />
 
         {/* Related Companies */}
         {relatedCompanies.length > 0 && (

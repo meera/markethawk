@@ -12,9 +12,45 @@ Usage:
 import argparse
 import uuid
 import yaml
+import time
+import random
+import string
 from pathlib import Path
 from typing import List
 from datetime import datetime
+
+
+def generate_batch_code() -> str:
+    """
+    Generate 4-char time-sortable batch code (shared by all jobs in batch)
+
+    Format: 3 chars timestamp + 1 char random
+    Example: m7k9, n2p5, p8x3
+
+    Properties:
+    - Chronologically sortable (lexicographic order = time order)
+    - Unique across batches (timestamp + random)
+    - All jobs in same batch share same code
+
+    Returns:
+        4-character batch code
+    """
+    # Base36 alphabet (0-9a-z) for sortable IDs
+    alphabet = string.digits + string.ascii_lowercase
+
+    # Timestamp component (3 chars) - provides chronological ordering
+    timestamp_ms = int(time.time() * 1000)
+    ts_val = timestamp_ms % (36**3)  # Fit in 3 base36 chars (46,656 combinations)
+
+    ts_chars = ""
+    for _ in range(3):
+        ts_chars = alphabet[ts_val % 36] + ts_chars
+        ts_val //= 36
+
+    # Random component (1 char) - prevent collision if batches created same millisecond
+    random_char = random.choice(alphabet)
+
+    return ts_chars + random_char
 
 
 def generate_job_id(youtube_id: str) -> str:
@@ -58,8 +94,12 @@ def create_batch_structure(
     pipeline_dir = base_path / batch_name
     pipeline_dir.mkdir(parents=True, exist_ok=True, mode=0o755)
 
+    # Generate batch code (shared by all jobs in this batch)
+    batch_code = generate_batch_code()
+
     print(f"\n📁 Creating batch structure: {pipeline_dir}")
     print(f"   Batch name: {batch_name}")
+    print(f"   Batch code: {batch_code}")
     print(f"   Pipeline type: {pipeline_type}")
     print(f"   Total videos: {len(video_ids)}")
     print(f"   Batch size: {batch_size}")
@@ -100,6 +140,7 @@ def create_batch_structure(
         batch_config = {
             'batch_num': batch_num,
             'batch_name': batch_name,
+            'batch_code': batch_code,  # Shared by all jobs in this batch
             'pipeline_type': pipeline_type,
             'created_at': datetime.now().isoformat(),
             'status': 'pending',

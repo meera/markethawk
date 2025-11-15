@@ -10,9 +10,10 @@ export const metadata = {
 export default async function EarningsCallDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const result = await getEarningsCall(params.id);
+  const { id } = await params;
+  const result = await getEarningsCall(id);
 
   if (!result.success || !result.data) {
     notFound();
@@ -20,14 +21,20 @@ export default async function EarningsCallDetailPage({
 
   const call = result.data;
   const metadata = call.metadata || {};
+  const artifacts = call.artifacts || {};
 
-  // Get audio URL
+  // Get audio URL from R2
   let audioSignedUrl: string | null = null;
-  const r2Path = getR2PathFromMetadata(metadata);
+  let r2Key: string | null = null;
 
-  if (r2Path) {
+  // Parse media_url: r2://markeyhawkeye/path/to/audio.mp3
+  if (call.mediaUrl && call.mediaUrl.startsWith('r2://')) {
+    const urlParts = call.mediaUrl.replace('r2://', '').split('/');
+    const bucket = urlParts[0]; // markeyhawkeye
+    r2Key = urlParts.slice(1).join('/'); // path/to/audio.mp3
+
     try {
-      audioSignedUrl = await getSignedUrlForR2Media(r2Path);
+      audioSignedUrl = await getSignedUrlForR2Media(r2Key);
     } catch (error) {
       console.error('Failed to get signed URL:', error);
     }
@@ -83,9 +90,14 @@ export default async function EarningsCallDetailPage({
       ) : (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
           <p className="text-yellow-800">Audio file not available</p>
-          {r2Path && (
+          {call.mediaUrl && (
             <p className="text-sm text-yellow-600 mt-1">
-              R2 Path: {r2Path}
+              Media URL: {call.mediaUrl}
+            </p>
+          )}
+          {r2Key && (
+            <p className="text-sm text-yellow-600 mt-1">
+              R2 Key: {r2Key}
             </p>
           )}
         </div>
@@ -139,12 +151,12 @@ export default async function EarningsCallDetailPage({
             <dd className="mt-1 text-sm text-gray-900">{processedAt}</dd>
           </div>
 
-          {call.youtubeId && (
+          {metadata.youtube_id && (
             <div className="md:col-span-2">
               <dt className="text-sm font-medium text-gray-500">Source</dt>
               <dd className="mt-1">
                 <a
-                  href={`https://www.youtube.com/watch?v=${call.youtubeId}`}
+                  href={`https://www.youtube.com/watch?v=${metadata.youtube_id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-blue-600 hover:underline"
@@ -155,6 +167,51 @@ export default async function EarningsCallDetailPage({
             </div>
           )}
         </dl>
+
+        {/* Artifacts Section */}
+        {(artifacts.transcript || artifacts.insights) && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <h3 className="text-lg font-semibold mb-4">Artifacts</h3>
+            <div className="space-y-3">
+              {artifacts.transcript && (
+                <div className="flex items-center justify-between p-3 bg-blue-50 rounded">
+                  <div>
+                    <p className="font-medium text-sm">Transcript</p>
+                    <p className="text-xs text-gray-600">
+                      {artifacts.transcript.word_count} segments • {artifacts.transcript.speakers} speakers
+                    </p>
+                  </div>
+                  <a
+                    href={artifacts.transcript.r2_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-600 hover:underline"
+                  >
+                    Download JSON →
+                  </a>
+                </div>
+              )}
+              {artifacts.insights && (
+                <div className="flex items-center justify-between p-3 bg-green-50 rounded">
+                  <div>
+                    <p className="font-medium text-sm">Insights</p>
+                    <p className="text-xs text-gray-600">
+                      {artifacts.insights.metrics_count} metrics • {artifacts.insights.highlights_count} highlights
+                    </p>
+                  </div>
+                  <a
+                    href={artifacts.insights.r2_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-green-600 hover:underline"
+                  >
+                    Download JSON →
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

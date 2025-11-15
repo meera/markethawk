@@ -1,4 +1,4 @@
-import { pgTable, varchar, timestamp, integer, jsonb, index, pgSchema } from 'drizzle-orm/pg-core';
+import { pgTable, varchar, timestamp, integer, jsonb, boolean, index, pgSchema } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { z } from 'zod';
 
@@ -328,21 +328,21 @@ export const newsletterSubscribers = markethawkSchema.table(
 export const earningsCalls = markethawkSchema.table(
   'earnings_calls',
   {
-    id: varchar('id', { length: 255 }).primaryKey().$defaultFn(() => `ec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`),
+    id: varchar('id', { length: 255 }).primaryKey(), // Format: {SYMBOL}-{QUARTER}-{YEAR}-{BATCH_CODE} (e.g., AEHR-Q4-2023-m7k9)
     cikStr: varchar('cik_str', { length: 20 }).notNull(), // SEC Central Index Key
     symbol: varchar('symbol', { length: 10 }).notNull(), // Stock ticker (e.g., NVDA)
     quarter: varchar('quarter', { length: 10 }).notNull(), // Q1, Q2, Q3, Q4
     year: integer('year').notNull(), // Fiscal year
-    audioUrl: varchar('audio_url', { length: 512 }), // Public R2 URL to audio file
-    youtubeId: varchar('youtube_id', { length: 50 }), // Source YouTube video ID
-    metadata: jsonb('metadata').$type<Record<string, any>>().default({}), // Flexible metadata from pipeline
+    mediaUrl: varchar('media_url', { length: 512 }), // Public R2 URL to primary media (audio/video)
+    isLatest: boolean('is_latest').notNull().default(true), // Latest version flag (true = current, false = superseded)
+    metadata: jsonb('metadata').$type<Record<string, any>>().default({}), // Pipeline metadata (batch_code, job_id, youtube_id, etc.)
+    artifacts: jsonb('artifacts').$type<Record<string, any>>().default({}), // Artifacts (transcript, insights, thumbnails, etc.)
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
   (table) => ({
     symbolIdx: index('idx_earnings_calls_symbol').on(table.symbol),
     quarterYearIdx: index('idx_earnings_calls_quarter_year').on(table.quarter, table.year),
-    uniqueQuarter: index('idx_earnings_calls_unique').on(table.cikStr, table.quarter, table.year),
   })
 );
 

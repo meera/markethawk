@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db';
 import { earningsCalls } from '@/lib/db/schema';
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq, and } from 'drizzle-orm';
 
 /**
  * Get all earnings calls with pagination
@@ -40,5 +40,46 @@ export async function getEarningsCall(id: string) {
   } catch (error) {
     console.error('Error fetching earnings call:', error);
     return { success: false, error: 'Failed to fetch earnings call' };
+  }
+}
+
+/**
+ * Get earnings calls by symbol (latest versions only)
+ */
+export async function getEarningsCallsBySymbol(symbol: string) {
+  try {
+    const calls = await db
+      .select()
+      .from(earningsCalls)
+      .where(
+        and(
+          eq(earningsCalls.symbol, symbol.toUpperCase()),
+          eq(earningsCalls.isLatest, true)
+        )
+      )
+      .orderBy(desc(earningsCalls.year), desc(earningsCalls.quarter));
+
+    return { success: true, data: calls };
+  } catch (error) {
+    console.error('Error fetching earnings calls by symbol:', error);
+    return { success: false, error: 'Failed to fetch earnings calls' };
+  }
+}
+
+/**
+ * Get earnings calls by CIK
+ */
+export async function getEarningsCallsByCik(cikStr: string) {
+  try {
+    const calls = await db
+      .select()
+      .from(earningsCalls)
+      .where(eq(earningsCalls.cikStr, cikStr))
+      .orderBy(desc(earningsCalls.year), desc(earningsCalls.quarter));
+
+    return { success: true, data: calls };
+  } catch (error) {
+    console.error('Error fetching earnings calls by CIK:', error);
+    return { success: false, error: 'Failed to fetch earnings calls' };
   }
 }

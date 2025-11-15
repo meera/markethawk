@@ -1,5 +1,3 @@
-'use server';
-
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -23,6 +21,8 @@ const getR2Client = () => {
  * @returns Signed URL valid for 1 hour
  */
 export async function getSignedUrlForR2Media(key: string): Promise<string> {
+  'use server';
+
   console.log(`Getting signed URL for key: ${key}`);
   const r2Client = getR2Client();
 

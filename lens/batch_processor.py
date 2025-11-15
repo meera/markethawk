@@ -57,8 +57,9 @@ class BatchProcessor:
         with open(batch_yaml, 'r') as f:
             self.batch_config = yaml.safe_load(f)
 
-        # Get batch_name and pipeline type
+        # Get batch_name, batch_code, and pipeline type
         self.batch_name = self.batch_config.get('batch_name', 'unknown')
+        self.batch_code = self.batch_config.get('batch_code', 'xxxx')
         self.pipeline_type = self.batch_config.get('pipeline_type', 'audio-only')
 
         # Job storage directory (unified with single-job pipeline)
@@ -71,6 +72,7 @@ class BatchProcessor:
         self.log(f"Batch Processor initialized")
         self.log(f"Batch: {self.batch_dir.name}")
         self.log(f"Batch name: {self.batch_name}")
+        self.log(f"Batch code: {self.batch_code}")
         self.log(f"Pipeline type: {self.pipeline_type}")
         self.log(f"Jobs: {len(self.batch_config['jobs'])}")
 
@@ -565,6 +567,108 @@ class BatchProcessor:
             self.log(f"[{job['job_id']}] ✗ R2 upload failed: {error}", 'ERROR')
             return False
 
+    def step_upload_artifacts(self, job: Dict, job_dir: Path) -> bool:
+        """
+        Step 7.5: Upload artifacts (transcript, insights) to R2
+
+        Args:
+            job: Job dictionary
+            job_dir: Job directory path
+
+        Returns:
+            True if successful, False otherwise
+        """
+        self.log(f"[{job['job_id']}] Step 7.5: Upload Artifacts to R2")
+
+        company_slug = job['company_match']['slug']
+        quarter = job['insights']['quarter']
+        year = job['insights']['year']
+        job_id = job['job_id']
+
+        # R2 base path: {company_slug}/{quarter}-{year}/{batch_name}-{job_id}/
+        r2_base_path = f"{company_slug}/{quarter}-{year}/{self.batch_name}-{job_id}"
+
+        artifacts = {}
+
+        # Upload transcript.json
+        transcript_file = job_dir / 'transcripts' / 'transcript.json'
+        if transcript_file.exists():
+            r2_transcript_path = f"{r2_base_path}/transcript.json"
+            cmd = [
+                'rclone',
+                'copyto',
+                str(transcript_file),
+                f"r2-markethawkeye:markeyhawkeye/{r2_transcript_path}",
+                '--s3-no-check-bucket'
+            ]
+            returncode, stdout, stderr = self.run_command(cmd)
+
+            if returncode == 0:
+                transcript_url = f"https://a8e524fbf66f8c16fe95c513c6ef5dac.r2.cloudflarestorage.com/markeyhawkeye/{r2_transcript_path}"
+
+                # Get file metadata
+                file_size = transcript_file.stat().st_size
+                with open(transcript_file, 'r') as f:
+                    transcript_data = json.load(f)
+                    word_count = len(transcript_data.get('segments', []))
+                    speakers = len(set(seg.get('speaker', 'unknown') for seg in transcript_data.get('segments', [])))
+
+                artifacts['transcript'] = {
+                    'r2_url': transcript_url,
+                    'r2_path': r2_transcript_path,
+                    'file_size_bytes': file_size,
+                    'word_count': word_count,
+                    'speakers': speakers,
+                    'format': 'whisperx_json',
+                    'uploaded_at': datetime.now().isoformat()
+                }
+                self.log(f"[{job['job_id']}] ✓ Uploaded transcript: {r2_transcript_path}")
+            else:
+                self.log(f"[{job['job_id']}] ✗ Failed to upload transcript: {stderr}", 'ERROR')
+
+        # Upload insights.json
+        insights_file = job_dir / 'insights.raw.json'
+        if insights_file.exists():
+            r2_insights_path = f"{r2_base_path}/insights.json"
+            cmd = [
+                'rclone',
+                'copyto',
+                str(insights_file),
+                f"r2-markethawkeye:markeyhawkeye/{r2_insights_path}",
+                '--s3-no-check-bucket'
+            ]
+            returncode, stdout, stderr = self.run_command(cmd)
+
+            if returncode == 0:
+                insights_url = f"https://a8e524fbf66f8c16fe95c513c6ef5dac.r2.cloudflarestorage.com/markeyhawkeye/{r2_insights_path}"
+
+                # Get file metadata
+                file_size = insights_file.stat().st_size
+                with open(insights_file, 'r') as f:
+                    insights_data = json.load(f)
+                    # Extract from nested 'insights' object
+                    insights_obj = insights_data.get('insights', insights_data)
+                    metrics_count = len(insights_obj.get('financial_metrics', []))
+                    highlights_count = len(insights_obj.get('highlights', []))
+
+                artifacts['insights'] = {
+                    'r2_url': insights_url,
+                    'r2_path': r2_insights_path,
+                    'file_size_bytes': file_size,
+                    'metrics_count': metrics_count,
+                    'highlights_count': highlights_count,
+                    'format': 'openai_structured_output',
+                    'uploaded_at': datetime.now().isoformat()
+                }
+                self.log(f"[{job['job_id']}] ✓ Uploaded insights: {r2_insights_path}")
+            else:
+                self.log(f"[{job['job_id']}] ✗ Failed to upload insights: {stderr}", 'ERROR')
+
+        # Store artifacts in job config
+        job['artifacts_upload'] = artifacts
+
+        return len(artifacts) > 0
+
     def step_update_db(self, job: Dict) -> bool:
         """
         Step 8: Update PostgreSQL database using psql
@@ -583,30 +687,50 @@ class BatchProcessor:
         symbol = job['company_match']['symbol']
         quarter = job['insights']['quarter']
         year = job['insights']['year']
-        r2_url = job['r2_upload']['public_url']
+
+        # Store R2 path in r2:// format (signed URL generated on-demand)
+        r2_path = job['r2_upload']['path']
+        media_url = f"r2://markeyhawkeye/{r2_path}"
+
         youtube_id = job['youtube_id']
+
+        # Generate ID using batch_code: {SYMBOL}-{QUARTER}-{YEAR}-{BATCH_CODE}
+        # Example: AEHR-Q4-2023-m7k9
+        record_id = f"{symbol}-{quarter}-{year}-{self.batch_code}"
 
         # Metadata JSON
         metadata = {
             'youtube_id': youtube_id,
             'job_id': job['job_id'],
             'batch_name': self.batch_name,
+            'batch_code': self.batch_code,
             'pipeline_type': self.pipeline_type,
-            'r2_path': job['r2_upload']['path'],
+            'r2_path': r2_path,
             'processed_at': datetime.now().isoformat()
         }
 
+        # Artifacts JSONB (from step 7.5)
+        artifacts = job.get('artifacts_upload', {})
+
+        # Atomic transaction: Mark old as is_latest=false, insert new as is_latest=true
         sql = f"""
+BEGIN;
+
+-- Mark existing records for this company/quarter/year as NOT latest
+UPDATE markethawkeye.earnings_calls
+SET is_latest = false
+WHERE cik_str = '{cik_str}'
+  AND quarter = '{quarter}'
+  AND year = {year}
+  AND is_latest = true;
+
+-- Insert new record with is_latest=true
 INSERT INTO markethawkeye.earnings_calls
-  (cik_str, symbol, quarter, year, audio_url, youtube_id, metadata)
+  (id, cik_str, symbol, quarter, year, media_url, is_latest, metadata, artifacts)
 VALUES
-  ('{cik_str}', '{symbol}', '{quarter}', {year}, '{r2_url}', '{youtube_id}', '{json.dumps(metadata)}'::jsonb)
-ON CONFLICT (cik_str, quarter, year) DO UPDATE
-SET
-  audio_url = EXCLUDED.audio_url,
-  youtube_id = EXCLUDED.youtube_id,
-  metadata = EXCLUDED.metadata,
-  updated_at = NOW();
+  ('{record_id}', '{cik_str}', '{symbol}', '{quarter}', {year}, '{media_url}', true, '{json.dumps(metadata)}'::jsonb, '{json.dumps(artifacts)}'::jsonb);
+
+COMMIT;
 """
 
         # Write SQL to temp file
@@ -651,12 +775,60 @@ SET
         if returncode == 0:
             self.update_job_status(job, 'update_db', 'completed')
             self.log(f"[{job['job_id']}] ✓ Database updated")
+
+            # Export to JSONL after successful database update
+            self.export_to_jsonl(job, record_id, cik_str, symbol, quarter, year, media_url, metadata, artifacts)
+
             return True
         else:
             error = stderr or 'Database update failed'
             self.update_job_status(job, 'update_db', 'failed', error)
             self.log(f"[{job['job_id']}] ✗ Database update failed: {error}", 'ERROR')
             return False
+
+    def export_to_jsonl(self, job: Dict, record_id: str, cik_str: str, symbol: str,
+                       quarter: str, year: int, r2_url: str, metadata: dict, artifacts: dict):
+        """
+        Export earnings call record to JSONL file (one per batch)
+
+        Args:
+            job: Job dictionary
+            record_id: Database record ID
+            cik_str: CIK string
+            symbol: Stock symbol
+            quarter: Quarter (e.g., Q3)
+            year: Year (e.g., 2025)
+            r2_url: R2 media URL
+            metadata: Metadata JSON
+            artifacts: Artifacts JSON
+        """
+        # Export directory: /var/markethawk/batch_runs/{batch_name}/exports/
+        export_dir = Path('/var/markethawk/batch_runs') / self.batch_name / 'exports'
+        export_dir.mkdir(parents=True, exist_ok=True, mode=0o755)
+
+        # JSONL file (one per batch, append mode)
+        jsonl_file = export_dir / 'earnings_calls.jsonl'
+
+        # Construct record matching database schema
+        record = {
+            'id': record_id,
+            'cik_str': cik_str,
+            'symbol': symbol,
+            'quarter': quarter,
+            'year': year,
+            'media_url': r2_url,
+            'is_latest': True,
+            'metadata': metadata,
+            'artifacts': artifacts,
+            'created_at': datetime.now().isoformat(),
+            'updated_at': datetime.now().isoformat()
+        }
+
+        # Append to JSONL file (one JSON object per line)
+        with open(jsonl_file, 'a') as f:
+            f.write(json.dumps(record) + '\n')
+
+        self.log(f"[{job['job_id']}] ✓ Exported to JSONL: {jsonl_file}")
 
     def process_job(self, job: Dict) -> bool:
         """
@@ -752,12 +924,16 @@ SET
                 return False
             self.update_job_yaml(job, job_dir)
 
-        # Step 7: Upload R2
+        # Step 7: Upload R2 (audio)
         if job['steps']['upload_r2'] != 'completed':
             if not self.step_upload_r2(job, job_dir):
                 self.update_job_yaml(job, job_dir)
                 return False
             self.update_job_yaml(job, job_dir)
+
+        # Step 7.5: Upload Artifacts (transcript, insights)
+        self.step_upload_artifacts(job, job_dir)
+        self.update_job_yaml(job, job_dir)
 
         # Step 8: Update DB
         if job['steps']['update_db'] != 'completed':

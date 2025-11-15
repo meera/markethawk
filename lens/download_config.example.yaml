@@ -1,0 +1,45 @@
+# Download Pipeline Configuration Example
+#
+# Copy this file to download_config.yaml and customize
+
+# Number of parallel download workers
+workers: 3
+
+# Cache directory for downloaded videos
+cache_dir: /var/markethawk/_downloads
+
+# Skip videos already in cache
+skip_existing: true
+
+# Retry failed downloads
+retry_failed: false
+max_retries: 2
+
+# Rate limiting (optional)
+rate_limit:
+  enabled: false
+  max_per_minute: 10
+
+# Filtering (optional)
+filters:
+  # Only download videos matching these keywords
+  keywords:
+    - earnings
+    - quarterly results
+    - financial results
+    - q1
+    - q2
+    - q3
+    - q4
+
+  # Minimum video duration (seconds)
+  min_duration: 600  # 10 minutes
+
+  # Maximum video duration (seconds)
+  max_duration: 7200  # 2 hours
+
+# Notification (optional)
+notifications:
+  enabled: false
+  on_complete: true
+  on_error: true

@@ -722,3 +722,5 @@ chmod 755 /var/markethawk/jobs/{JOB_ID}/renders
 **Project Status:** Active Development - Job-based pipeline with audio-only support + Neon production database
 - Guidelines for Marketing Copy: Always talk in terms of User Benefits and not Product Features.
 - greenfield project - no legacy consideration
+- nextjs 15  use actions instead of API routes.
+- never output the source of earning calls media. Never expoise internal pipeline/job ids on external UI.
