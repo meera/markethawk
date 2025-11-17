@@ -137,9 +137,43 @@ function Metric({label, value, change}) {
 
 ---
 
-## Free Tier Strategy
+## Free Tier Strategy (MVP Simplified)
 
-### What Free Users Get
+### Video Access Control - "2 Videos Per Day"
+
+**MVP Approach:** Simple daily limit instead of complex 50% video paywalls.
+
+**✅ Free Tier Access:**
+- Watch **2 full videos per day** (resets every 24 hours)
+- View **basic company info** and earnings call metadata
+- Browse **all videos** (titles, thumbnails, descriptions)
+- Access **public videos** without login
+
+**❌ Free Tier Restrictions:**
+- Daily limit of 2 videos (tracked per user)
+- Must be logged in to watch videos
+- Cannot interact with advanced charts (future feature)
+- Cannot download transcripts (future feature)
+- No email alerts for earnings dates (future feature)
+
+**Database Implementation:**
+- `visibility` column on `earnings_calls` table: `'public' | 'freemium' | 'premium'`
+- `video_views` table tracks views with timestamps
+- Daily limit query: count views in last 24 hours
+
+**UI/UX Principles:**
+- **Optimistic UI**: Don't show limit upfront
+- **Fail Late**: Let users select video, show limit only when reached
+- **Clear feedback**: "You've watched 2/2 videos today. Upgrade for unlimited access."
+- **Contextual upgrade**: Show tier comparison when limit hit
+
+---
+
+### Legacy Paywall Strategy (For Reference - Not MVP)
+
+**Note:** The following 50% video progress paywall is documented for future consideration but not implemented in MVP.
+
+### What Free Users Get (Legacy Design)
 
 **✅ Free Tier Access:**
 - Watch **50% of video** (first half only)
@@ -157,7 +191,7 @@ function Metric({label, value, change}) {
 
 ---
 
-### Paywall Trigger Points
+### Paywall Trigger Points (Legacy - Not MVP)
 
 **1. 50% Video Progress**
 ```tsx

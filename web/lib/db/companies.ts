@@ -4,7 +4,7 @@ import { db } from './index';
 export interface Company {
   id: number;
   cik_str: string;
-  symbol: string;
+  ticker: string;
   name: string;
   slug: string;
   metadata: {
@@ -46,7 +46,7 @@ export async function getCompanies(options?: {
   if (search) {
     query = sql`${query} AND (
       name ILIKE ${`%${search}%`} OR
-      symbol ILIKE ${`%${search}%`}
+      ticker ILIKE ${`%${search}%`}
     )`;
   }
 
@@ -67,7 +67,7 @@ export async function getCompanyByTicker(ticker: string): Promise<Company | null
   const result = await db.execute(sql`
     SELECT *
     FROM markethawkeye.companies
-    WHERE UPPER(symbol) = UPPER(${ticker})
+    WHERE UPPER(ticker) = UPPER(${ticker})
     LIMIT 1
   `);
 
@@ -125,7 +125,7 @@ export async function getCompanyCount(options?: {
   if (search) {
     query = sql`${query} AND (
       name ILIKE ${`%${search}%`} OR
-      symbol ILIKE ${`%${search}%`}
+      ticker ILIKE ${`%${search}%`}
     )`;
   }
 

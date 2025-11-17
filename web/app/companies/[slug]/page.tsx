@@ -22,10 +22,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${company.symbol} - ${company.name} | Markey HawkEye`,
-    description: `Watch earnings call videos for ${company.name} (${company.symbol}). Hear actual executive voices with synchronized financial data. ${company.metadata.sector ? `Sector: ${company.metadata.sector}.` : ''} ${company.metadata.industry ? `Industry: ${company.metadata.industry}.` : ''}`,
+    title: `${company.ticker} - ${company.name} | Markey HawkEye`,
+    description: `Watch earnings call videos for ${company.name} (${company.ticker}). Hear actual executive voices with synchronized financial data. ${company.metadata.sector ? `Sector: ${company.metadata.sector}.` : ''} ${company.metadata.industry ? `Industry: ${company.metadata.industry}.` : ''}`,
     openGraph: {
-      title: `${company.symbol} - ${company.name}`,
+      title: `${company.ticker} - ${company.name}`,
       description: `Watch earnings call videos for ${company.name}. Hear what transcripts can't show.`,
       type: 'website',
     },
@@ -51,26 +51,7 @@ async function EarningsCallsSection({ symbol }: { symbol: string }) {
   const result = await getEarningsCallsBySymbol(symbol);
 
   if (!result.success || !result.data || result.data.length === 0) {
-    return (
-      <div className="bg-background-muted/40 border border-border rounded-2xl p-8 mb-8">
-        <h2 className="text-2xl font-bold text-text-primary mb-4">Earnings Call Videos</h2>
-        <div className="bg-background/50 rounded-lg p-8 text-center">
-          <div className="text-6xl mb-4">🎬</div>
-          <p className="text-text-secondary text-lg mb-4">
-            Earnings call videos for <strong className="text-primary">{symbol}</strong> are coming soon.
-          </p>
-          <p className="text-text-tertiary">
-            We're transforming earnings calls into visual insights. Subscribe to get notified when videos are available.
-          </p>
-          <Link
-            href="/#subscribe"
-            className="inline-block mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-all"
-          >
-            Get Notified
-          </Link>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   const calls = result.data;
@@ -161,7 +142,7 @@ export default async function CompanyPage({ params }: PageProps) {
               <span>→</span>
             </>
           )}
-          <span className="text-text-secondary">{company.symbol}</span>
+          <span className="text-text-secondary">{company.ticker}</span>
         </div>
 
         {/* Company Header */}
@@ -170,7 +151,7 @@ export default async function CompanyPage({ params }: PageProps) {
             <div>
               <h1 className="text-4xl font-bold text-text-primary mb-2">{company.name}</h1>
               <div className="flex items-center gap-4 text-text-tertiary">
-                <span className="text-primary font-bold text-xl">{company.symbol}</span>
+                <span className="text-primary font-bold text-xl">{company.ticker}</span>
                 {company.metadata.sector && <span>• {company.metadata.sector}</span>}
                 {company.metadata.exchange && <span>• {company.metadata.exchange}</span>}
               </div>
@@ -201,7 +182,7 @@ export default async function CompanyPage({ params }: PageProps) {
         </div>
 
         {/* Earnings Calls Section */}
-        <EarningsCallsSection symbol={company.symbol} />
+        <EarningsCallsSection symbol={company.ticker} />
 
         {/* Related Companies */}
         {relatedCompanies.length > 0 && (

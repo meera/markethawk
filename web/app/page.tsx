@@ -41,7 +41,7 @@ async function TopCompanies() {
           <div className="flex items-start justify-between mb-2">
             <div>
               <div className="text-primary font-bold text-lg group-hover:text-primary-light transition-colors">
-                {company.symbol}
+                {company.ticker}
               </div>
               <div className="text-text-tertiary text-xs mt-1">{company.metadata.sector || 'N/A'}</div>
             </div>
@@ -181,7 +181,7 @@ export default async function HomePage({
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="text-primary font-bold text-lg group-hover:text-primary-light transition-colors">
-                    {company.symbol}
+                    {company.ticker}
                   </div>
                   {company.metadata.market_cap && (
                     <div className="text-xs text-text-tertiary bg-background/50 px-2 py-1 rounded">

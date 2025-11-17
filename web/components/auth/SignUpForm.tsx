@@ -113,8 +113,8 @@ export function SignUpForm({
         <button
           type="submit"
           disabled={isGoogleLoading}
-          className={`w-full flex items-center justify-center gap-2 bg-white border border-border rounded-lg py-3 text-text-primary font-medium transition-all ${
-            isGoogleLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-background-muted'
+          className={`w-full flex items-center justify-center gap-2 bg-background-elevated border border-border rounded-lg py-3 text-text-primary font-medium transition-all ${
+            isGoogleLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-background-hover hover:border-primary'
           }`}
         >
           {isGoogleLoading ? (
@@ -141,7 +141,7 @@ export function SignUpForm({
           <div className="w-full border-t border-border"></div>
         </div>
         <div className="relative flex justify-center text-sm uppercase">
-          <span className="bg-white px-4 text-text-tertiary">Or continue with email</span>
+          <span className="bg-background px-4 text-text-tertiary">Or continue with email</span>
         </div>
       </div>
 

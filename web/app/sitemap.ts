@@ -9,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Generate stock page URLs
   const stockUrls = companies.map((company) => ({
-    url: `${baseUrl}/stocks/${company.symbol.toLowerCase()}`,
+    url: `${baseUrl}/stocks/${company.ticker.toLowerCase()}`,
     lastModified: company.updated_at,
     changeFrequency: 'weekly' as const,
     priority: 0.7,

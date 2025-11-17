@@ -3,11 +3,15 @@ CREATE SCHEMA "markethawkeye";
 CREATE TABLE "markethawkeye"."account" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"userId" varchar(255) NOT NULL,
-	"provider" varchar(50) NOT NULL,
-	"providerAccountId" varchar(255) NOT NULL,
+	"accountId" varchar(255) NOT NULL,
+	"providerId" varchar(50) NOT NULL,
 	"accessToken" text,
 	"refreshToken" text,
-	"expiresAt" timestamp,
+	"idToken" text,
+	"accessTokenExpiresAt" timestamp,
+	"refreshTokenExpiresAt" timestamp,
+	"scope" text,
+	"password" text,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
@@ -33,10 +37,16 @@ CREATE TABLE "markethawkeye"."click_throughs" (
 CREATE TABLE "markethawkeye"."companies" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"ticker" varchar(10) NOT NULL,
+	"cik_str" varchar(20) NOT NULL,
+	"slug" varchar(255) NOT NULL,
+	"name" varchar(255) NOT NULL,
 	"data" jsonb NOT NULL,
+	"metadata" jsonb DEFAULT '{}'::jsonb,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "companies_ticker_unique" UNIQUE("ticker")
+	CONSTRAINT "companies_ticker_unique" UNIQUE("ticker"),
+	CONSTRAINT "companies_cik_str_unique" UNIQUE("cik_str"),
+	CONSTRAINT "companies_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE "markethawkeye"."earnings_calls" (
@@ -45,9 +55,11 @@ CREATE TABLE "markethawkeye"."earnings_calls" (
 	"symbol" varchar(10) NOT NULL,
 	"quarter" varchar(10) NOT NULL,
 	"year" integer NOT NULL,
-	"audio_url" varchar(512),
+	"media_url" varchar(512),
 	"youtube_id" varchar(50),
 	"metadata" jsonb DEFAULT '{}'::jsonb,
+	"artifacts" jsonb,
+	"is_latest" boolean DEFAULT true,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -186,9 +198,6 @@ CREATE INDEX "idx_artifacts_type" ON "markethawkeye"."artifacts" USING btree ("t
 CREATE INDEX "idx_artifacts_status" ON "markethawkeye"."artifacts" USING btree ("status");--> statement-breakpoint
 CREATE INDEX "idx_click_throughs_video_id" ON "markethawkeye"."click_throughs" USING btree ("video_id");--> statement-breakpoint
 CREATE INDEX "idx_click_throughs_created_at" ON "markethawkeye"."click_throughs" USING btree ("created_at");--> statement-breakpoint
-CREATE INDEX "idx_earnings_calls_symbol" ON "markethawkeye"."earnings_calls" USING btree ("symbol");--> statement-breakpoint
-CREATE INDEX "idx_earnings_calls_quarter_year" ON "markethawkeye"."earnings_calls" USING btree ("quarter","year");--> statement-breakpoint
-CREATE INDEX "idx_earnings_calls_unique" ON "markethawkeye"."earnings_calls" USING btree ("cik_str","quarter","year");--> statement-breakpoint
 CREATE INDEX "idx_newsletter_email" ON "markethawkeye"."newsletter_subscribers" USING btree ("email");--> statement-breakpoint
 CREATE INDEX "idx_sources_company_id" ON "markethawkeye"."sources" USING btree ("company_id");--> statement-breakpoint
 CREATE INDEX "idx_sources_type" ON "markethawkeye"."sources" USING btree ("type");--> statement-breakpoint

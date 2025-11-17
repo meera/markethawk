@@ -1,5 +1,5 @@
 {
-  "id": "06f9e7f0-a8b7-4a4b-87c0-b7138b68f65c",
+  "id": "cf804050-9951-4e62-a141-97dc7e4eb2da",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -20,15 +20,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "provider": {
-          "name": "provider",
-          "type": "varchar(50)",
+        "accountId": {
+          "name": "accountId",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "providerAccountId": {
-          "name": "providerAccountId",
-          "type": "varchar(255)",
+        "providerId": {
+          "name": "providerId",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
@@ -44,9 +44,33 @@
           "primaryKey": false,
           "notNull": false
         },
-        "expiresAt": {
-          "name": "expiresAt",
+        "idToken": {
+          "name": "idToken",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "accessTokenExpiresAt": {
+          "name": "accessTokenExpiresAt",
           "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "refreshTokenExpiresAt": {
+          "name": "refreshTokenExpiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -313,11 +337,36 @@
           "primaryKey": false,
           "notNull": true
         },
+        "cik_str": {
+          "name": "cik_str",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "data": {
           "name": "data",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": true
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'::jsonb"
         },
         "created_at": {
           "name": "created_at",
@@ -343,6 +392,20 @@
           "nullsNotDistinct": false,
           "columns": [
             "ticker"
+          ]
+        },
+        "companies_cik_str_unique": {
+          "name": "companies_cik_str_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "cik_str"
+          ]
+        },
+        "companies_slug_unique": {
+          "name": "companies_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
           ]
         }
       },
@@ -384,8 +447,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "audio_url": {
-          "name": "audio_url",
+        "media_url": {
+          "name": "media_url",
           "type": "varchar(512)",
           "primaryKey": false,
           "notNull": false
@@ -403,6 +466,19 @@
           "notNull": false,
           "default": "'{}'::jsonb"
         },
+        "artifacts": {
+          "name": "artifacts",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_latest": {
+          "name": "is_latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -418,71 +494,7 @@
           "default": "now()"
         }
       },
-      "indexes": {
-        "idx_earnings_calls_symbol": {
-          "name": "idx_earnings_calls_symbol",
-          "columns": [
-            {
-              "expression": "symbol",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "idx_earnings_calls_quarter_year": {
-          "name": "idx_earnings_calls_quarter_year",
-          "columns": [
-            {
-              "expression": "quarter",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "year",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "idx_earnings_calls_unique": {
-          "name": "idx_earnings_calls_unique",
-          "columns": [
-            {
-              "expression": "cik_str",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "quarter",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "year",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

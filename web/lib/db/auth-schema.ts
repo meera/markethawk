@@ -47,11 +47,15 @@ export const session = markethawkSchema.table('session', {
 export const account = markethawkSchema.table('account', {
   id: varchar('id', { length: 255 }).primaryKey(),
   userId: varchar('userId', { length: 255 }).notNull().references(() => user.id, { onDelete: 'cascade' }),
-  provider: varchar('provider', { length: 50 }).notNull(),
-  providerAccountId: varchar('providerAccountId', { length: 255 }).notNull(),
+  accountId: varchar('accountId', { length: 255 }).notNull(),
+  providerId: varchar('providerId', { length: 50 }).notNull(),
   accessToken: text('accessToken'),
   refreshToken: text('refreshToken'),
-  expiresAt: timestamp('expiresAt'),
+  idToken: text('idToken'),
+  accessTokenExpiresAt: timestamp('accessTokenExpiresAt'),
+  refreshTokenExpiresAt: timestamp('refreshTokenExpiresAt'),
+  scope: text('scope'),
+  password: text('password'),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 });

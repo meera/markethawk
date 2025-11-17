@@ -884,6 +884,153 @@ const history = await db.query.watchHistory.findFirst({
 });
 ```
 
+#### `followed_companies` Table (User Engagement)
+
+Track which companies users are interested in (following/bookmarking):
+
+```typescript
+export const followedCompaniesTable = pgTable("followed_companies", {
+  id: varchar('id').primaryKey(),  // fol_{ulid}
+  userId: varchar('user_id').references(() => usersTable.id),
+  companyId: varchar('company_id').references(() => companiesTable.id),
+
+  // How user started following
+  followMethod: varchar('follow_method').notNull(),  // 'manual', 'auto_on_visit', 'auto_on_watch'
+
+  // Engagement tracking (basic fields for queries)
+  firstVisitedAt: timestamp('first_visited_at'),
+  lastVisitedAt: timestamp('last_visited_at'),
+  visitCount: integer('visit_count').default(1),
+
+  // Flexible metadata for future features (no schema changes needed)
+  metadata: jsonb('metadata').$type<FollowMetadata>().default({}),
+
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+// Composite unique constraint: one follow record per user per company
+// CREATE UNIQUE INDEX idx_followed_companies_user_company ON followed_companies(user_id, company_id);
+
+// TypeScript type for metadata
+interface FollowMetadata {
+  videos_watched_count?: number;
+  email_alerts_enabled?: boolean;  // Pro feature
+  alert_preferences?: {
+    before_earnings?: boolean;
+    price_changes?: boolean;
+    custom_thresholds?: Array<{
+      metric: string;
+      condition: 'above' | 'below';
+      value: number;
+    }>;
+  };
+  tags?: string[];  // User-defined tags
+  notes?: string;  // Personal notes about this company
+  last_earnings_watched?: string;  // Date of last earnings call watched
+  [key: string]: any;  // Future-proof
+}
+```
+
+**Follow Methods:**
+
+1. **`manual`** - User explicitly clicked "Follow Company" button
+2. **`auto_on_visit`** - User visited company page (implicit interest)
+3. **`auto_on_watch`** - User watched earnings call video (strong signal)
+
+**Usage Examples:**
+
+```typescript
+// Automatically track company visit
+await db.insert(followedCompaniesTable).values({
+  id: `fol_${ulid()}`,
+  userId: session.user.id,
+  companyId: 'company_nvda',
+  followMethod: 'auto_on_visit',
+  firstVisitedAt: new Date(),
+  lastVisitedAt: new Date(),
+  visitCount: 1,
+  metadata: {},
+}).onConflictDoUpdate({
+  target: [followedCompaniesTable.userId, followedCompaniesTable.companyId],
+  set: {
+    lastVisitedAt: new Date(),
+    visitCount: sql`${followedCompaniesTable.visitCount} + 1`,
+    updatedAt: new Date(),
+  },
+});
+
+// Track video watch (increment counter in metadata)
+const existingFollow = await db.query.followedCompanies.findFirst({
+  where: (f, { and, eq }) => and(
+    eq(f.userId, userId),
+    eq(f.companyId, companyId)
+  ),
+});
+
+await db.update(followedCompaniesTable)
+  .set({
+    followMethod: 'auto_on_watch',  // Upgrade to stronger signal
+    metadata: {
+      ...existingFollow.metadata,
+      videos_watched_count: (existingFollow.metadata.videos_watched_count || 0) + 1,
+      last_earnings_watched: new Date().toISOString(),
+    },
+    updatedAt: new Date(),
+  })
+  .where(and(
+    eq(followedCompaniesTable.userId, userId),
+    eq(followedCompaniesTable.companyId, companyId)
+  ));
+
+// Manual follow with email alerts (Pro feature)
+await db.insert(followedCompaniesTable).values({
+  id: `fol_${ulid()}`,
+  userId: session.user.id,
+  companyId: 'company_aapl',
+  followMethod: 'manual',
+  firstVisitedAt: new Date(),
+  lastVisitedAt: new Date(),
+  metadata: {
+    email_alerts_enabled: true,  // Pro users only
+    alert_preferences: {
+      before_earnings: true,
+      price_changes: false,
+    },
+    tags: ['tech', 'long-term-hold'],
+    notes: 'Watching for Q4 results',
+  },
+});
+
+// Query users who want earnings alerts
+const alertUsers = await db.execute(sql`
+  SELECT user_id, company_id
+  FROM markethawkeye.followed_companies
+  WHERE metadata->>'email_alerts_enabled' = 'true'
+    AND metadata->'alert_preferences'->>'before_earnings' = 'true'
+`);
+```
+
+**Personalization Use Cases:**
+
+- **Homepage Feed:** Show latest earnings calls from followed companies
+- **Earnings Calendar:** Highlight upcoming calls from followed companies
+- **Email Alerts:** Notify Pro users 1 day before earnings (if `emailAlertsEnabled`)
+- **Recommendations:** "Companies similar to ones you follow"
+- **Dashboard:** "Your followed companies" section with recent activity
+
+**Free vs Pro:**
+
+| Feature | Free | Pro |
+|---------|------|-----|
+| Follow companies | ✅ Unlimited | ✅ Unlimited |
+| Visit tracking | ✅ Automatic | ✅ Automatic |
+| View followed list | ✅ Yes | ✅ Yes |
+| Email alerts for earnings | ❌ No | ✅ Yes |
+| Custom alert thresholds | ❌ No | ❌ No (Team feature) |
+
+---
+
 #### `watchlist` Table (Team Feature)
 
 Shared watchlists for organizations:

@@ -11,7 +11,6 @@ export const markethawkSchema = pgSchema('markethawkeye');
 // ============================================
 
 export const companyDataSchema = z.object({
-  name: z.string(),
   industry: z.string(),
   sector: z.string().optional(),
   logoUrl: z.string().url().optional(),
@@ -144,13 +143,18 @@ export const videoDataSchema = z.object({
 // ============================================
 
 // Companies - Public companies we analyze (AAPL, MSFT, etc.)
-export const companies = markethawkSchema.table('companies', {
-  id: varchar('id', { length: 255 }).primaryKey(), // comp_aapl_a1b2
-  ticker: varchar('ticker', { length: 10 }).notNull().unique(), // "AAPL"
-  data: jsonb('data').$type<z.infer<typeof companyDataSchema>>().notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
+  export const companies = markethawkSchema.table('companies', {
+    id: varchar('id', { length: 255 }).primaryKey(),
+    ticker: varchar('ticker', { length: 10 }).notNull().unique(),
+    cikStr: varchar('cik_str', { length: 20 }).notNull().unique(),
+    slug: varchar('slug', { length: 255 }).notNull().unique(),
+    name: varchar('name', { length: 255 }).notNull(),
+    data: jsonb('data').$type<z.infer<typeof companyDataSchema>>().notNull(),
+    metadata: jsonb('metadata').$type<Record<string, any>>().default({}),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  });
+
 
 // Sources - Incoming raw materials (audio, video, documents from internet)
 export const sources = markethawkSchema.table(
@@ -325,26 +329,20 @@ export const newsletterSubscribers = markethawkSchema.table(
  * - duration_seconds: number
  * - file_size_mb: number
  */
-export const earningsCalls = markethawkSchema.table(
-  'earnings_calls',
-  {
-    id: varchar('id', { length: 255 }).primaryKey(), // Format: {SYMBOL}-{QUARTER}-{YEAR}-{BATCH_CODE} (e.g., AEHR-Q4-2023-m7k9)
-    cikStr: varchar('cik_str', { length: 20 }).notNull(), // SEC Central Index Key
-    symbol: varchar('symbol', { length: 10 }).notNull(), // Stock ticker (e.g., NVDA)
-    quarter: varchar('quarter', { length: 10 }).notNull(), // Q1, Q2, Q3, Q4
-    year: integer('year').notNull(), // Fiscal year
-    mediaUrl: varchar('media_url', { length: 512 }), // Public R2 URL to primary media (audio/video)
-    isLatest: boolean('is_latest').notNull().default(true), // Latest version flag (true = current, false = superseded)
-    metadata: jsonb('metadata').$type<Record<string, any>>().default({}), // Pipeline metadata (batch_code, job_id, youtube_id, etc.)
-    artifacts: jsonb('artifacts').$type<Record<string, any>>().default({}), // Artifacts (transcript, insights, thumbnails, etc.)
+  export const earningsCalls = markethawkSchema.table('earnings_calls', {
+    id: varchar('id', { length: 255 }).primaryKey(),
+    cikStr: varchar('cik_str', { length: 20 }).notNull(),
+    symbol: varchar('symbol', { length: 10 }).notNull(),
+    quarter: varchar('quarter', { length: 10 }).notNull(),
+    year: integer('year').notNull(),
+    mediaUrl: varchar('media_url', { length: 512 }),  // renamed from audioUrl
+    youtubeId: varchar('youtube_id', { length: 50 }),
+    metadata: jsonb('metadata').$type<Record<string, any>>().default({}),
+    artifacts: jsonb('artifacts').$type<Record<string, any>>(),  // NEW
+    isLatest: boolean('is_latest').default(true),  // NEW
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  },
-  (table) => ({
-    symbolIdx: index('idx_earnings_calls_symbol').on(table.symbol),
-    quarterYearIdx: index('idx_earnings_calls_quarter_year').on(table.quarter, table.year),
-  })
-);
+  });
 
 // ============================================
 // RELATIONS

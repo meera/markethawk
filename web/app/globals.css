@@ -94,3 +94,25 @@ body {
   color: var(--text-primary);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
+
+/* High contrast input fields for dark theme */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  color: #F9FAFB !important;
+  background-color: rgba(30, 41, 59, 0.5) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: rgba(249, 250, 251, 0.5) !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  border-color: #10B981 !important;
+}
