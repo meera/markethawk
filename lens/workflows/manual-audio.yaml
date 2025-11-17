@@ -52,35 +52,35 @@ steps:
     description: Upload transcript and insights JSON files to R2
     skip_if: "processing.refine_timestamps.status != 'completed'"
 
-  # Step 8: Render video (optional - can be done manually later)
-  - name: render
-    handler: remotion_render
-    required: false
-    description: Render audio-only video with Remotion (MP3 → MP4)
+  # Step 8: Create banner image for video background
+  - name: create_banner
+    handler: create_banner
+    required: true
+    description: Create static banner image with company info
     skip_if: "processing.refine_timestamps.status != 'completed'"
 
-  # Step 9: Upload rendered video to R2
+  # Step 9: Render video with FFmpeg (audio + banner)
+  - name: ffmpeg_render
+    handler: ffmpeg_render
+    required: true
+    description: Render video using FFmpeg (combine banner + audio)
+    skip_if: "processing.create_banner.status != 'completed'"
+
+  # Step 10: Upload rendered video to R2
   - name: upload_r2
     handler: upload_media_r2
-    required: false
+    required: true
     description: Upload rendered video to R2 storage
-    skip_if: "processing.render.status != 'completed'"
-
-  # Step 10: Generate thumbnails from rendered video
-  - name: generate_thumbnails
-    handler: generate_thumbnails
-    required: false
-    description: Generate 4 thumbnail variations from rendered video
-    skip_if: "processing.render.status != 'completed'"
+    skip_if: "processing.ffmpeg_render.status != 'completed'"
 
   # Step 11: Upload to YouTube
   - name: upload_youtube
     handler: upload_youtube
-    required: false
+    required: true
     description: Upload video to YouTube with metadata and chapters
-    skip_if: "processing.render.status != 'completed'"
+    skip_if: "processing.ffmpeg_render.status != 'completed'"
 
-  # Step 12: Update database with earnings call record
+  # Step 13: Update database with earnings call record
   - name: update_database
     handler: update_database
     required: false

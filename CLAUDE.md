@@ -764,6 +764,14 @@ chmod 755 /var/markethawk/jobs/{JOB_ID}/renders
 - Fade out title music (30 frames)
 - Fade in earnings audio (45 frames)
 
+### YouTube Upload Port Conflict
+- **Error:** `[Errno 98] Address already in use`
+- **Cause:** OAuth flow (port 8090) or media server (port 8080) conflict
+- **Ports used:**
+  - Media server: `8080` (npx serve)
+  - YouTube OAuth: `8090` (upload_youtube.py)
+- **Fix:** Keep media server running, OAuth will use 8090
+
 ---
 
 ## Related Documentation

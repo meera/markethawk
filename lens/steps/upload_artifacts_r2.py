@@ -26,6 +26,7 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
     confirmed_meta = job_data.get('processing', {}).get('confirm_metadata', {}).get('confirmed', {})
 
     # Use confirmed metadata if available, else fall back to company data
+    company_name = confirmed_meta.get('company') or company.get('name')
     ticker = confirmed_meta.get('ticker') or company.get('ticker')
     quarter = confirmed_meta.get('quarter') or company.get('quarter')
     year = confirmed_meta.get('year') or company.get('year')
@@ -36,8 +37,16 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
             f"Missing required fields for R2 path: ticker={ticker}, quarter={quarter}, year={year}, job_id={job_id}"
         )
 
-    # R2 base path: jobs/{JOB_ID}/artifacts/
-    r2_base_path = f"jobs/{job_id}/artifacts"
+    # Generate slug from company name
+    if company_name:
+        slug = company_name.lower().replace(' ', '-').replace('.', '').replace(',', '')
+    elif ticker:
+        slug = ticker.lower()
+    else:
+        slug = 'unknown'
+
+    # R2 base path: <company-slug>/<year>/<quarter>/<job-id>/
+    r2_base_path = f"{slug}/{year}/{quarter}/{job_id}"
 
     artifacts = {}
 
@@ -130,6 +139,88 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
             raise Exception(f"Insights upload failed: {result.stderr}")
     else:
         print(f"⚠️  Insights not found: {insights_file}")
+
+    # Upload job.json (with speakers list)
+    job_yaml_file = job_dir / 'job.yaml'
+    if job_yaml_file.exists():
+        # Convert job.yaml to job.json
+        import yaml
+        job_json_file = job_dir / 'job.json'
+
+        # Load YAML and save as JSON
+        with open(job_yaml_file, 'r') as f:
+            job_yaml_data = yaml.safe_load(f)
+
+        # Write to temp JSON file
+        with open(job_json_file, 'w') as f:
+            json.dump(job_yaml_data, f, indent=2)
+
+        r2_job_path = f"{r2_base_path}/job.json"
+        print(f"📤 Uploading job.json to R2: {r2_job_path}")
+
+        cmd = [
+            'rclone',
+            'copyto',
+            str(job_json_file),
+            f"r2-markethawkeye:markeyhawkeye/{r2_job_path}",
+            '--s3-no-check-bucket'
+        ]
+
+        result = subprocess.run(cmd, capture_output=True, text=True)
+
+        if result.returncode == 0:
+            job_r2_url = f"r2://markeyhawkeye/{r2_job_path}"
+
+            # Extract speakers from insights
+            speakers = []
+            if insights_file.exists():
+                with open(insights_file, 'r') as f:
+                    insights_data = json.load(f)
+                    insights_obj = insights_data.get('insights', insights_data)
+                    speakers = insights_obj.get('speakers', [])
+
+            artifacts['job'] = {
+                'r2_url': job_r2_url,
+                'r2_path': r2_job_path,
+                'file_size_bytes': job_json_file.stat().st_size,
+                'speakers_count': len(speakers),
+                'format': 'job_metadata_json',
+                'uploaded_at': datetime.now().isoformat()
+            }
+            print(f"✅ Job metadata uploaded: {job_r2_url}")
+        else:
+            print(f"❌ Failed to upload job.json: {result.stderr}")
+            # Don't raise exception, this is optional
+
+    # Upload paragraphs.json (if exists)
+    paragraphs_file = job_dir / 'transcripts' / 'paragraphs.json'
+    if paragraphs_file.exists():
+        r2_paragraphs_path = f"{r2_base_path}/paragraphs.json"
+        print(f"📤 Uploading paragraphs to R2: {r2_paragraphs_path}")
+
+        cmd = [
+            'rclone',
+            'copyto',
+            str(paragraphs_file),
+            f"r2-markethawkeye:markeyhawkeye/{r2_paragraphs_path}",
+            '--s3-no-check-bucket'
+        ]
+
+        result = subprocess.run(cmd, capture_output=True, text=True)
+
+        if result.returncode == 0:
+            paragraphs_r2_url = f"r2://markeyhawkeye/{r2_paragraphs_path}"
+
+            artifacts['paragraphs'] = {
+                'r2_url': paragraphs_r2_url,
+                'r2_path': r2_paragraphs_path,
+                'file_size_bytes': paragraphs_file.stat().st_size,
+                'format': 'whisperx_paragraphs',
+                'uploaded_at': datetime.now().isoformat()
+            }
+            print(f"✅ Paragraphs uploaded: {paragraphs_r2_url}")
+        else:
+            print(f"⚠️  Failed to upload paragraphs: {result.stderr}")
 
     if not artifacts:
         raise Exception("No artifacts uploaded")

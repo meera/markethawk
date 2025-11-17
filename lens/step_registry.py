@@ -11,14 +11,41 @@ LENS_DIR = Path(__file__).parent
 sys.path.insert(0, str(LENS_DIR / "scripts"))
 
 # Import existing step handlers
-from transcribe_whisperx import transcribe_earnings_call
-from extract_insights_structured import extract_earnings_insights, extract_earnings_insights_auto
-from refine_timestamps import refine_job_timestamps
+# (None - all wrapped in steps/)
 from scripts.download_source import download_video
 from scripts.parse_metadata import parse_video_metadata
-from scripts.upload_youtube import upload_video
 
 # Import new step handlers (will be created)
+try:
+    from steps.transcribe_step import transcribe_step
+except ImportError:
+    transcribe_step = None
+
+try:
+    from steps.extract_insights_step import extract_insights_step
+except ImportError:
+    extract_insights_step = None
+
+try:
+    from steps.refine_timestamps_step import refine_timestamps_step
+except ImportError:
+    refine_timestamps_step = None
+
+try:
+    from steps.create_banner import create_banner
+except ImportError:
+    create_banner = None
+
+try:
+    from steps.ffmpeg_render import ffmpeg_render
+except ImportError:
+    ffmpeg_render = None
+
+try:
+    from steps.upload_youtube_step import upload_youtube_step
+except ImportError:
+    upload_youtube_step = None
+
 try:
     from steps.copy_audio_to_job import copy_audio_to_job
 except ImportError:
@@ -89,16 +116,15 @@ except ImportError:
 # Maps handler names (from workflow YAML) to Python functions
 STEP_HANDLERS: Dict[str, Callable] = {
     # Core processing steps
-    'transcribe_whisperx': transcribe_earnings_call,
-    'extract_insights_structured': extract_earnings_insights,
-    'extract_insights_auto': extract_earnings_insights_auto,
-    'refine_timestamps': refine_job_timestamps,
+    'transcribe_whisperx': transcribe_step,
+    'extract_insights_structured': extract_insights_step,
+    'refine_timestamps': refine_timestamps_step,
 
     # Download/upload steps
     'download_source': download_video,
     'download_source_cached': download_source_cached,
     'parse_metadata': parse_video_metadata,
-    'upload_youtube': upload_video,
+    'upload_youtube': upload_youtube_step,
 
     # New step handlers (manual-audio workflow)
     'copy_audio_to_job': copy_audio_to_job,
@@ -110,6 +136,8 @@ STEP_HANDLERS: Dict[str, Callable] = {
     'upload_media_r2': upload_media_r2,
 
     # Rendering and thumbnails
+    'create_banner': create_banner,
+    'ffmpeg_render': ffmpeg_render,
     'remotion_render': remotion_render,
     'generate_thumbnails': generate_thumbnails_step,
 

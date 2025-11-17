@@ -94,6 +94,16 @@ def interactive_confirm_metadata(job_dir: Path, job_data: Dict[str, Any]) -> Dic
     print(f"   Quarter: {confirmed_quarter}")
     print(f"   Year: {confirmed_year}\n")
 
+    # IMPORTANT: Update top-level company section in job_data
+    # This ensures upload_youtube and other steps use correct company info
+    if 'company' not in job_data:
+        job_data['company'] = {}
+
+    job_data['company']['ticker'] = confirmed_ticker
+    job_data['company']['name'] = confirmed_company
+    job_data['company']['quarter'] = confirmed_quarter
+    job_data['company']['year'] = confirmed_year
+
     return {
         'confirmed': {
             'ticker': confirmed_ticker,
@@ -102,4 +112,5 @@ def interactive_confirm_metadata(job_dir: Path, job_data: Dict[str, Any]) -> Dic
             'year': confirmed_year,
         },
         'method': 'interactive',
+        'updated_job_company': True  # Flag that we updated top-level company
     }

@@ -59,7 +59,7 @@ def get_youtube_client():
                 client_secret_file,
                 SCOPES
             )
-            creds = flow.run_local_server(port=8080)
+            creds = flow.run_local_server(port=8090)  # Use 8090 to avoid conflict with media server on 8080
 
         # Save credentials for future use
         with open(token_file, 'w') as f:
@@ -78,16 +78,32 @@ def format_time(seconds: float) -> str:
 def build_description(job_data: Dict) -> str:
     """Build YouTube description with chapter markers and company info from job.yaml."""
 
-    insights = job_data.get('processing', {}).get('insights', {})
+    # Load insights from file (not stored in job.yaml, only metadata)
+    insights_file = job_data.get('processing', {}).get('extract_insights', {}).get('insights_file')
+    insights = {}
+    if insights_file and Path(insights_file).exists():
+        import json
+        with open(insights_file, 'r') as f:
+            insights_data = json.load(f)
+            insights = insights_data.get('insights', {})
+
     company = job_data.get('company', {})
 
-    # Extract company info
-    name = company.get('name', 'Company')
-    ticker = company.get('ticker', 'N/A')
+    # Prefer confirmed metadata (from manual-audio workflow) over top-level company
+    confirmed = job_data.get('processing', {}).get('confirm_metadata', {}).get('confirmed', {})
+
+    # Extract company info (confirmed metadata takes priority)
+    name = confirmed.get('company') or company.get('name', 'Company')
+    ticker = confirmed.get('ticker') or company.get('ticker', 'N/A')
     slug = company.get('slug', ticker.lower())
-    quarter = company.get('quarter', 'Q3-2025')
+    quarter = confirmed.get('quarter') or company.get('quarter', 'Q3-2025')
+    year = confirmed.get('year') or company.get('year', 2025)
     exchange = company.get('exchange', 'N/A')
     sector = company.get('sector', 'N/A')
+
+    # Combine quarter and year if separate
+    if isinstance(quarter, str) and '-' not in quarter and year:
+        quarter = f"{quarter}-{year}"
 
     # Summary
     summary = insights.get('summary', '')
@@ -160,12 +176,28 @@ def upload_video(video_path: str, job_yaml_path: str, thumbnail_path: Optional[s
         job_data = yaml.safe_load(f)
 
     company = job_data.get('company', {})
-    insights = job_data.get('processing', {}).get('insights', {})
     youtube_info = job_data.get('youtube', {})
+
+    # Load insights from file (not stored in job.yaml, only metadata)
+    insights_file = job_data.get('processing', {}).get('extract_insights', {}).get('insights_file')
+    insights = {}
+    if insights_file and Path(insights_file).exists():
+        import json
+        with open(insights_file, 'r') as f:
+            insights_data = json.load(f)
+            insights = insights_data.get('insights', {})
+
+    # Prefer confirmed metadata (from manual-audio workflow)
+    confirmed = job_data.get('processing', {}).get('confirm_metadata', {}).get('confirmed', {})
+
+    name = confirmed.get('company') or company.get('name', 'Company')
+    ticker = confirmed.get('ticker') or company.get('ticker', 'N/A')
+    quarter = confirmed.get('quarter') or company.get('quarter', 'Q3')
+    year = confirmed.get('year') or company.get('year', 2025)
 
     # Build title
     title = youtube_info.get('title') or insights.get('title') or \
-            f"{company.get('name', 'Company')} {company.get('quarter', 'Q3')} {company.get('year', 2025)} Earnings Call"
+            f"{name} {quarter} {year} Earnings Call"
 
     # Build description with chapter markers
     description = build_description(job_data)
@@ -175,10 +207,10 @@ def upload_video(video_path: str, job_yaml_path: str, thumbnail_path: Optional[s
     if not tags:
         # Default tags
         tags = [
-            company.get('ticker', ''),
-            company.get('name', ''),
-            company.get('quarter', ''),
-            str(company.get('year', '')),
+            ticker,
+            name,
+            quarter,
+            str(year),
             'earnings call',
             'investing',
             'stocks',

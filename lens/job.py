@@ -24,6 +24,8 @@ import sys
 import os
 import argparse
 import yaml
+import random
+import string
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, Optional
@@ -125,6 +127,13 @@ class JobManager:
         self._save()
 
 
+def generate_random_id(length: int = 4) -> str:
+    """Generate random alphanumeric ID (lowercase, no ambiguous chars)"""
+    # Exclude ambiguous characters: 0, O, 1, l, I
+    chars = 'abcdefghjkmnpqrstuvwxyz23456789'
+    return ''.join(random.choice(chars) for _ in range(length))
+
+
 def create_job(args):
     """Create new job"""
 
@@ -138,11 +147,10 @@ def create_job(args):
         print("  audio-batch     - For batch processing multiple videos")
         sys.exit(1)
 
-    # Generate job ID
-    ticker = args.ticker.upper() if args.ticker else 'UNKNOWN'
-    quarter = args.quarter if args.quarter else 'Q0-0000'
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    job_id = f"{ticker}_{quarter}_{timestamp}".replace("-", "_")
+    # Generate job ID: job_<workflow>_<4-char-random>
+    # Example: job_manual-audio_4egw
+    random_id = generate_random_id(4)
+    job_id = f"job_{workflow}_{random_id}"
 
     # Lookup company from database (if ticker provided)
     company_data = None
@@ -200,9 +208,9 @@ def create_job(args):
 
     # Update company fields (may be populated later for manual-audio)
     if args.ticker:
-        job['company']['ticker'] = ticker
+        job['company']['ticker'] = args.ticker.upper()
     if args.quarter:
-        job['company']['quarter'] = quarter
+        job['company']['quarter'] = args.quarter
 
     # Add company data from database
     if company_data:
@@ -242,7 +250,7 @@ def create_job(args):
     print(f"  Workflow: {workflow}")
     print(f"  Input: {input_type}")
     if args.ticker and args.quarter:
-        print(f"  Company: {ticker} {quarter}")
+        print(f"  Company: {args.ticker.upper()} {args.quarter}")
     print()
     print(f"Next: python lens/workflow.py {job_file}")
 

@@ -64,8 +64,26 @@ def upload_media_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
             f"Checked: {job_dir}/renders/*.mp4, {job_dir}/audio/audio.mp3, {job_dir}/input/source.*"
         )
 
-    # R2 path: jobs/{JOB_ID}/media/{filename}
-    r2_path = f"jobs/{job_id}/media/{media_file.name}"
+    # Get company info for path structure
+    company = job_data.get('company', {})
+    confirmed = job_data.get('processing', {}).get('confirm_metadata', {}).get('confirmed', {})
+
+    # Use confirmed metadata if available (manual-audio workflow)
+    company_name = confirmed.get('company') or company.get('name')
+    ticker = confirmed.get('ticker') or company.get('ticker')
+    quarter = confirmed.get('quarter') or company.get('quarter')
+    year = confirmed.get('year') or company.get('year')
+
+    # Generate slug from company name
+    if company_name:
+        slug = company_name.lower().replace(' ', '-').replace('.', '').replace(',', '')
+    elif ticker:
+        slug = ticker.lower()
+    else:
+        slug = 'unknown'
+
+    # R2 path: <company-slug>/<year>/<quarter>/<job-id>/rendered.mp4
+    r2_path = f"{slug}/{year}/{quarter}/{job_id}/{media_file.name}"
 
     print(f"📤 Uploading {media_type} to R2: {r2_path}")
     print(f"   Source: {media_file}")
