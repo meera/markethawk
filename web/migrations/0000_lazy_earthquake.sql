@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS "markethawkeye";
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."account" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."account" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"userId" varchar(255) NOT NULL,
 	"accountId" varchar(255) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE "markethawkeye"."account" (
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."artifacts" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."artifacts" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"company_id" varchar(255) NOT NULL,
 	"type" varchar(50) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE "markethawkeye"."artifacts" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."click_throughs" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."click_throughs" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"video_id" varchar(255) NOT NULL,
 	"user_id" varchar(255),
@@ -34,7 +34,7 @@ CREATE TABLE "markethawkeye"."click_throughs" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."companies" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."companies" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"ticker" varchar(10) NOT NULL,
 	"cik_str" varchar(20) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE "markethawkeye"."companies" (
 	CONSTRAINT "companies_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."earnings_calls" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."earnings_calls" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"cik_str" varchar(20) NOT NULL,
 	"symbol" varchar(10) NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE "markethawkeye"."earnings_calls" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."invitation" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."invitation" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"organizationId" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE "markethawkeye"."invitation" (
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."member" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."member" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"organizationId" varchar(255) NOT NULL,
 	"userId" varchar(255) NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE "markethawkeye"."member" (
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."newsletter_subscribers" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."newsletter_subscribers" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"subscribed_at" timestamp DEFAULT now() NOT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE "markethawkeye"."newsletter_subscribers" (
 	CONSTRAINT "newsletter_subscribers_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."organization" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."organization" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"slug" varchar(255),
@@ -105,7 +105,7 @@ CREATE TABLE "markethawkeye"."organization" (
 	CONSTRAINT "organization_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."session" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."session" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"userId" varchar(255) NOT NULL,
 	"expiresAt" timestamp NOT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE "markethawkeye"."session" (
 	CONSTRAINT "session_token_unique" UNIQUE("token")
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."sources" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."sources" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"company_id" varchar(255) NOT NULL,
 	"type" varchar(50) NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE "markethawkeye"."sources" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."user" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."user" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"name" varchar(255),
 	"email" varchar(255) NOT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE "markethawkeye"."user" (
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."verification" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."verification" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"identifier" varchar(255) NOT NULL,
 	"value" varchar(255) NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE "markethawkeye"."verification" (
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."video_engagement" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."video_engagement" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"video_id" varchar(255) NOT NULL,
 	"user_id" varchar(255),
@@ -157,7 +157,7 @@ CREATE TABLE "markethawkeye"."video_engagement" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."video_views" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."video_views" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"video_id" varchar(255) NOT NULL,
 	"user_id" varchar(255),
@@ -166,7 +166,7 @@ CREATE TABLE "markethawkeye"."video_views" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "markethawkeye"."videos" (
+CREATE TABLE IF NOT EXISTS "markethawkeye"."videos" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"company_id" varchar(255) NOT NULL,
 	"slug" varchar(255) NOT NULL,
