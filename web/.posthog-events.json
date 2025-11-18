@@ -1,0 +1,72 @@
+[
+  {
+    "eventName": "user_signed_up",
+    "description": "Track successful user registration with email provider type",
+    "filePath": "components/auth/SignUpForm.tsx"
+  },
+  {
+    "eventName": "user_signed_in",
+    "description": "Track successful user sign in with provider information",
+    "filePath": "components/auth/SignInForm.tsx"
+  },
+  {
+    "eventName": "company_viewed",
+    "description": "Track when a user views a company detail page",
+    "filePath": "app/companies/[slug]/page.tsx"
+  },
+  {
+    "eventName": "earnings_call_viewed",
+    "description": "Track when a user views an earnings call page - top of conversion funnel",
+    "filePath": "app/earnings/[company]/[quarter-year]/page.tsx"
+  },
+  {
+    "eventName": "video_played",
+    "description": "Track when a user starts playing an earnings call video",
+    "filePath": "app/actions/videoActions.ts"
+  },
+  {
+    "eventName": "paywall_hit",
+    "description": "Track when free users hit video time limit paywall - critical conversion event",
+    "filePath": "app/actions/videoActions.ts"
+  },
+  {
+    "eventName": "transcript_downloaded",
+    "description": "Track transcript download attempts (pro feature)",
+    "filePath": "app/actions/videoActions.ts"
+  },
+  {
+    "eventName": "pricing_page_viewed",
+    "description": "Track when users view pricing page - conversion funnel indicator",
+    "filePath": "app/pricing/page.tsx"
+  },
+  {
+    "eventName": "upgrade_clicked",
+    "description": "Track when user clicks upgrade CTA to Stripe checkout",
+    "filePath": "app/pricing/page.tsx"
+  },
+  {
+    "eventName": "subscription_completed",
+    "description": "Track successful subscription activation",
+    "filePath": "app/billing/page.tsx"
+  },
+  {
+    "eventName": "newsletter_subscribed",
+    "description": "Track newsletter subscription submissions",
+    "filePath": "app/api/newsletter/subscribe/route.ts"
+  },
+  {
+    "eventName": "search_performed",
+    "description": "Track company search queries to understand user intent",
+    "filePath": "app/page.tsx"
+  },
+  {
+    "eventName": "sector_filtered",
+    "description": "Track sector filtering to understand user interests",
+    "filePath": "app/page.tsx"
+  },
+  {
+    "eventName": "auth_error",
+    "description": "Track authentication errors for debugging and improving onboarding",
+    "filePath": "components/auth/SignInForm.tsx"
+  }
+]

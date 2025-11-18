@@ -1,54 +1,80 @@
-import Link from 'next/link';
+'use client';
 
-export const metadata = {
-  title: 'Pricing | MarketHawk',
-  description: 'Simple, transparent pricing for earnings call insights',
-};
+import Link from 'next/link';
+import posthog from 'posthog-js';
 
 export default function PricingPage() {
+  const handleUpgradeClick = (planName: string, planPrice: string) => {
+    posthog.capture('upgrade_clicked', {
+      plan_name: planName,
+      plan_price: planPrice,
+    });
+  };
+
   const plans = [
     {
-      name: 'Free',
+      name: 'Explorer',
       price: '$0',
-      period: 'forever',
-      description: 'Explore earnings calls',
+      period: '',
+      tagline: 'Test the waters',
       features: [
-        'Browse all 7,372 companies',
-        'View company information',
-        'Access public earnings calls',
-        'Community support',
+        'Screen 7,372 companies',
+        'Track earnings calendars',
+        'Preview transcript excerpts',
+        'Basic company data',
+        'Community access',
       ],
-      cta: 'Get Started',
+      cta: 'Start Free',
       href: '/auth/signin',
       highlighted: false,
     },
     {
-      name: 'Standard',
+      name: 'Professional',
       price: '$39',
-      period: 'per month',
-      description: 'Unlimited access to earnings calls',
+      period: '/month',
+      tagline: 'Full market intelligence',
       features: [
-        'Everything in Free',
-        'Unlimited full earnings call audio/video',
-        'AI-generated insights & analysis',
-        'Complete transcripts with search',
-        'Sentiment analysis',
-        'Key highlights & metrics',
+        'Complete earnings call access',
+        'Institutional-grade transcripts',
+        'AI-powered signal detection',
+        'Sentiment shifts & insider tone analysis',
+        'Export capabilities',
+        'Real-time alerts',
         'Priority support',
-        'Cancel anytime',
+        'Month-to-month',
       ],
-      cta: 'Subscribe Now',
-      // TODO: Replace with proper checkout flow once Stripe integration is complete
+      cta: 'Get Access',
       href: 'https://buy.stripe.com/9B65kCbaj0vc0CJbUu6AM00',
       highlighted: true,
+      external: true,
+    },
+    {
+      name: 'Institution',
+      price: '$297',
+      period: '/month',
+      tagline: 'Elite trader arsenal',
+      features: [
+        'Everything in Professional',
+        'API access for custom tools',
+        'Bulk transcript exports',
+        'White-label charts for content',
+        '10-user team seats',
+        'Custom alert parameters',
+        'Dedicated success manager',
+        'Early access to new features',
+        'Quarterly strategy calls',
+      ],
+      cta: 'Contact Sales',
+      href: 'mailto:thehawkeyemarket@gmail.com?subject=Institution%20Plan%20Inquiry',
+      highlighted: false,
       external: true,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background-elevated to-background">
       {/* Header */}
-      <header className="border-b border-border bg-background-elevated">
+      <header className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-xl font-bold text-primary">
@@ -70,21 +96,21 @@ export default function PricingPage() {
         {/* Hero */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
-            Simple, Transparent Pricing
+            Get The Same Earnings Intelligence Hedge Funds Pay $30K For
           </h1>
           <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-            Start free, upgrade when you're ready. No hidden fees.
+            Your edge in the market starts here.
           </p>
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative rounded-2xl border-2 p-8 ${
+              className={`relative rounded-2xl border-2 p-8 flex flex-col ${
                 plan.highlighted
-                  ? 'border-primary bg-primary/5'
+                  ? 'border-primary bg-primary/5 shadow-xl shadow-primary/20'
                   : 'border-border bg-background-elevated'
               }`}
             >
@@ -98,18 +124,20 @@ export default function PricingPage() {
                 <h3 className="text-2xl font-bold text-text-primary mb-2">
                   {plan.name}
                 </h3>
-                <div className="mb-2">
+                <div className="mb-4">
                   <span className="text-5xl font-bold text-text-primary">
                     {plan.price}
                   </span>
-                  <span className="text-text-secondary ml-2">
-                    {plan.period}
-                  </span>
+                  {plan.period && (
+                    <span className="text-text-secondary text-lg">
+                      {plan.period}
+                    </span>
+                  )}
                 </div>
-                <p className="text-text-secondary">{plan.description}</p>
+                <p className="text-text-secondary font-medium">{plan.tagline}</p>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-4 mb-8 flex-grow">
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-start">
                     <svg
@@ -134,42 +162,29 @@ export default function PricingPage() {
                 href={plan.href}
                 target={plan.external ? '_blank' : undefined}
                 rel={plan.external ? 'noopener noreferrer' : undefined}
-                className={`block w-full py-3 px-6 rounded-lg text-center font-medium transition-colors ${
+                onClick={() => handleUpgradeClick(plan.name, plan.price)}
+                className={`block w-full py-3 px-6 rounded-lg text-center font-medium transition-all ${
                   plan.highlighted
-                    ? 'bg-primary text-white hover:bg-primary-hover'
+                    ? 'bg-primary text-white hover:bg-primary-hover shadow-lg hover:shadow-xl'
                     : 'bg-background-muted text-text-primary hover:bg-border'
                 }`}
               >
                 {plan.cta}
               </Link>
-
-              {plan.external && (
-                <p className="text-xs text-text-tertiary text-center mt-4">
-                  You'll be redirected to Stripe to complete payment
-                </p>
-              )}
             </div>
           ))}
         </div>
 
-        {/* FAQ or Additional Info */}
+        {/* Contact Info */}
         <div className="mt-16 text-center">
           <p className="text-text-secondary">
             Questions? Email us at{' '}
             <a
-              href="mailto:support@markethawkeye.com"
+              href="mailto:thehawkeyemarket@gmail.com"
               className="text-primary hover:underline"
             >
-              support@markethawkeye.com
+              thehawkeyemarket@gmail.com
             </a>
-          </p>
-        </div>
-
-        {/* TODO Note */}
-        <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg max-w-2xl mx-auto">
-          <p className="text-sm text-yellow-800">
-            <strong>TODO:</strong> Implement proper Stripe integration with Better Auth plugin
-            and bookkeeping for subscription management. Current flow uses direct Stripe payment link.
           </p>
         </div>
       </div>

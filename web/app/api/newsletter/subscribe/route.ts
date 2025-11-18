@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendNewSubscriberNotification } from '@/lib/email';
+import { getPostHogClient } from '@/lib/posthog-server';
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,6 +24,17 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Track newsletter subscription in PostHog
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId: email,
+      event: 'newsletter_subscribed',
+      properties: {
+        email: email,
+      },
+    });
+    await posthog.shutdown();
 
     return NextResponse.json({ success: true });
   } catch (error) {

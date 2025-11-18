@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Eye, EyeOff, Mail, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
+import posthog from 'posthog-js';
 
 interface SignInFormProps {
   prefilledEmail?: string;
@@ -60,6 +61,15 @@ export function SignInForm({
           setIsLoading(true);
         },
         onSuccess: () => {
+          // Track successful sign in
+          posthog.identify(email, {
+            email: email,
+          });
+          posthog.capture('user_signed_in', {
+            provider: 'email',
+            email: email,
+          });
+
           router.push(redirectUrl);
         },
         onError: (ctx) => {
@@ -71,6 +81,15 @@ export function SignInForm({
             setError('Invalid email or password. Please try again.');
             setNeedsEmailVerification(false);
           }
+
+          // Track sign in error
+          posthog.captureException(ctx.error);
+          posthog.capture('auth_error', {
+            error_type: 'signin_failed',
+            provider: 'email',
+            error_message: ctx.error.message,
+            needs_verification: ctx.error.status === 403,
+          });
         },
       });
     } catch (err) {
@@ -118,6 +137,11 @@ export function SignInForm({
     setIsGoogleLoading(true);
 
     try {
+      // Track Google sign in attempt
+      posthog.capture('user_signed_in', {
+        provider: 'google',
+      });
+
       await signIn.social({
         provider: 'google',
         callbackURL,
@@ -125,6 +149,14 @@ export function SignInForm({
     } catch (err) {
       setError('Google sign-in failed. Please try again.');
       setIsGoogleLoading(false);
+
+      // Track Google sign in error
+      posthog.captureException(err);
+      posthog.capture('auth_error', {
+        error_type: 'signin_failed',
+        provider: 'google',
+        error_message: err instanceof Error ? err.message : 'Unknown error',
+      });
     }
   };
 

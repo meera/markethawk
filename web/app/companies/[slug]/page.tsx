@@ -4,6 +4,9 @@ import { Logo } from '@/components/Logo';
 import { getCompanyBySlug, getCompaniesBySector } from '@/lib/db/companies';
 import { getEarningsCallsBySymbol } from '@/app/earnings/actions';
 import type { Metadata } from 'next';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { getPostHogClient } from '@/lib/posthog-server';
 
 interface PageProps {
   params: Promise<{
@@ -62,30 +65,37 @@ async function EarningsCallsSection({ symbol }: { symbol: string }) {
         Earnings Call Videos ({calls.length})
       </h2>
       <div className="grid gap-4">
-        {calls.map((call) => (
-          <Link
-            key={call.id}
-            href={`/earnings/${call.id}`}
-            className="group bg-background/50 border border-border rounded-xl p-6 hover:bg-background-muted/60 hover:border-border-accent hover:shadow-lg hover:shadow-accent/10 transition-all"
-          >
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors">
-                  {call.quarter} {call.year} Earnings Call
-                </h3>
-                <p className="text-text-tertiary text-sm mt-1">{call.symbol}</p>
+        {calls.map((call) => {
+          // Generate SEO-friendly URL
+          const quarterSlug = call.quarter.toLowerCase();
+          const companySlug = call.companySlug || symbol.toLowerCase();
+          const earningsUrl = `/earnings/${companySlug}/${quarterSlug}-${call.year}`;
+
+          return (
+            <Link
+              key={call.id}
+              href={earningsUrl}
+              className="group bg-background/50 border border-border rounded-xl p-6 hover:bg-background-muted/60 hover:border-border-accent hover:shadow-lg hover:shadow-accent/10 transition-all"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors">
+                    {call.quarter} {call.year} Earnings Call
+                  </h3>
+                  <p className="text-text-tertiary text-sm mt-1">{call.symbol}</p>
+                </div>
+                <div className="text-sm text-text-tertiary bg-background/50 px-3 py-1 rounded">
+                  {new Date(call.createdAt).toLocaleDateString()}
+                </div>
               </div>
-              <div className="text-sm text-text-tertiary bg-background/50 px-3 py-1 rounded">
-                {new Date(call.createdAt).toLocaleDateString()}
-              </div>
-            </div>
-            {call.metadata && (call.metadata as any).pipeline_type && (
-              <div className="text-xs text-text-tertiary">
-                Pipeline: {(call.metadata as any).pipeline_type}
-              </div>
-            )}
-          </Link>
-        ))}
+              {call.metadata && (call.metadata as any).pipeline_type && (
+                <div className="text-xs text-text-tertiary">
+                  Pipeline: {(call.metadata as any).pipeline_type}
+                </div>
+              )}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
@@ -98,6 +108,28 @@ export default async function CompanyPage({ params }: PageProps) {
   if (!company) {
     notFound();
   }
+
+  // Track company page view with PostHog
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const posthog = getPostHogClient();
+  const distinctId = session?.user?.email || session?.user?.id || 'anonymous';
+
+  posthog.capture({
+    distinctId,
+    event: 'company_viewed',
+    properties: {
+      company_name: company.name,
+      ticker: company.ticker,
+      sector: company.metadata.sector,
+      industry: company.metadata.industry,
+      market_cap: company.metadata.market_cap,
+      exchange: company.metadata.exchange,
+      is_authenticated: !!session?.user,
+    },
+  });
+  await posthog.shutdown();
 
   // Get related companies in same sector
   const relatedCompanies = company.metadata.sector

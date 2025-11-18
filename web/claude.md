@@ -13,7 +13,9 @@
 - **Example**: For free plan limits (3 YouTube imports/day):
   - ❌ DON'T: Show "3/day limit" badges upfront
   - ✅ DO: Let users enter URL and import, show limit only when exceeded
-
+- NEVER generate "Coming soon" or "TODO". Never imply "MVP "or "still building". Always project a complete status. 
+- Never disclose internal ids such as taskids, workflowids, or source media urls.
+- 
 ### Task Management
 - Use TodoWrite tool for complex multi-step tasks
 - Mark todos as completed immediately after finishing each task

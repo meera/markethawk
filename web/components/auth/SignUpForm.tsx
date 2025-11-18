@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import posthog from 'posthog-js';
 
 interface SignUpFormProps {
   callbackURL?: string;
@@ -54,6 +55,18 @@ export function SignUpForm({
         onSuccess: () => {
           setIsLoading(false);
           setSuccess('Account created! Please check your email to verify your account.');
+
+          // Track successful signup
+          posthog.identify(email, {
+            email: email,
+            name: name,
+          });
+          posthog.capture('user_signed_up', {
+            provider: 'email',
+            email: email,
+            name: name,
+          });
+
           setTimeout(() => {
             router.push(`${redirectAfterSignup}?email=${encodeURIComponent(email)}&verify=true`);
           }, 2000);
@@ -66,6 +79,14 @@ export function SignUpForm({
           } else {
             setError(ctx.error.message);
           }
+
+          // Track signup error
+          posthog.captureException(ctx.error);
+          posthog.capture('auth_error', {
+            error_type: 'signup_failed',
+            provider: 'email',
+            error_message: ctx.error.message,
+          });
         },
       });
     } catch (err) {
@@ -79,6 +100,11 @@ export function SignUpForm({
     setIsGoogleLoading(true);
 
     try {
+      // Track Google signup attempt
+      posthog.capture('user_signed_up', {
+        provider: 'google',
+      });
+
       await signIn.social({
         provider: 'google',
         callbackURL,
@@ -86,6 +112,14 @@ export function SignUpForm({
     } catch (err) {
       setError('Google sign-up failed. Please try again.');
       setIsGoogleLoading(false);
+
+      // Track Google signup error
+      posthog.captureException(err);
+      posthog.capture('auth_error', {
+        error_type: 'signup_failed',
+        provider: 'google',
+        error_message: err instanceof Error ? err.message : 'Unknown error',
+      });
     }
   };
 

@@ -6,6 +6,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
 import { sql } from 'drizzle-orm';
+import { getPostHogClient } from '@/lib/posthog-server';
 
 export const metadata: Metadata = {
   title: 'Billing - Markey HawkEye',
@@ -59,6 +60,23 @@ export default async function BillingPage({
   const planName = getPlanName(subscription?.stripe_plan_id);
   const isActive = subscription?.stripe_subscription_status === 'active';
   const isCanceled = subscription?.stripe_subscription_status === 'canceled';
+
+  // Track successful subscription completion
+  if (params.success && isActive) {
+    const posthog = getPostHogClient();
+    const distinctId = session.user.email || session.user.id;
+
+    posthog.capture({
+      distinctId,
+      event: 'subscription_completed',
+      properties: {
+        plan_name: planName,
+        stripe_subscription_id: subscription?.stripe_subscription_id,
+        stripe_plan_id: subscription?.stripe_plan_id,
+      },
+    });
+    await posthog.shutdown();
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background-elevated to-background">

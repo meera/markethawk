@@ -5,6 +5,7 @@ import { headers } from 'next/headers';
 import { db } from '@/lib/db';
 import { user as userTable, organization as organizationTable } from '@/lib/db/auth-schema';
 import { eq } from 'drizzle-orm';
+import { getPostHogClient } from '@/lib/posthog-server';
 
 /**
  * Access tier type
@@ -117,6 +118,23 @@ export async function trackVideoView(videoId: string, data: {
   });
 
   try {
+    // Track in PostHog
+    const posthog = getPostHogClient();
+    const distinctId = session?.user?.email || session?.user?.id || 'anonymous';
+
+    posthog.capture({
+      distinctId,
+      event: 'video_played',
+      properties: {
+        video_id: videoId,
+        duration_watched: data.durationWatched,
+        progress_percent: data.progressPercent,
+        source: data.source,
+        is_authenticated: !!session?.user,
+      },
+    });
+    await posthog.shutdown();
+
     // TODO: Insert into videoViews table
     // For now, just log
     console.log('Video view tracked:', {
@@ -166,6 +184,26 @@ export async function trackEngagement(videoId: string, eventType: string, data: 
  * Track paywall hit (for analytics)
  */
 export async function trackPaywallHit(videoId: string, progressPercent: number) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  // Track in PostHog - critical conversion funnel event
+  const posthog = getPostHogClient();
+  const distinctId = session?.user?.email || session?.user?.id || 'anonymous';
+
+  posthog.capture({
+    distinctId,
+    event: 'paywall_hit',
+    properties: {
+      video_id: videoId,
+      progress_percent: progressPercent,
+      is_authenticated: !!session?.user,
+      user_tier: session?.user ? 'free' : 'anonymous', // TODO: Get actual tier from subscription
+    },
+  });
+  await posthog.shutdown();
+
   return trackEngagement(videoId, 'paywall_hit', { progressPercent });
 }
 
@@ -180,5 +218,24 @@ export async function trackChartInteraction(videoId: string, chartType: string) 
  * Track download attempt
  */
 export async function trackDownloadAttempt(videoId: string, fileType: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  // Track in PostHog
+  const posthog = getPostHogClient();
+  const distinctId = session?.user?.email || session?.user?.id || 'anonymous';
+
+  posthog.capture({
+    distinctId,
+    event: 'transcript_downloaded',
+    properties: {
+      video_id: videoId,
+      file_type: fileType,
+      is_authenticated: !!session?.user,
+    },
+  });
+  await posthog.shutdown();
+
   return trackEngagement(videoId, 'download_attempt', { fileType });
 }

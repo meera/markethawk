@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Logo } from '@/components/Logo';
 import { UserProfileMenu } from '@/components/UserProfileMenu';
 import { getCompanies, getSectors, getTopCompaniesByMarketCap } from '@/lib/db/companies';
+import { SearchForm } from '@/components/SearchForm';
+import { SectorLink } from '@/components/SectorLink';
 
 export const metadata = {
   title: 'Markey HawkEye - Stock Earnings Call Videos',
@@ -63,13 +65,7 @@ async function SectorsList() {
   return (
     <div className="flex flex-wrap gap-2">
       {sectors.map((sector) => (
-        <Link
-          key={sector.sector}
-          href={`/?sector=${encodeURIComponent(sector.sector)}`}
-          className="px-4 py-2 bg-background-muted/40 border border-border rounded-lg hover:bg-primary/10 hover:border-primary transition-all text-text-secondary hover:text-primary text-sm"
-        >
-          {sector.sector} <span className="text-text-tertiary">({sector.count})</span>
-        </Link>
+        <SectorLink key={sector.sector} sector={sector.sector} count={sector.count} />
       ))}
     </div>
   );
@@ -127,32 +123,17 @@ export default async function HomePage({
 
         {/* Search Bar - Prominent */}
         <section className="mb-12">
-          <form method="get" className="max-w-3xl mx-auto">
-            <div className="flex gap-3">
-              <input
-                type="text"
-                name="search"
-                defaultValue={search}
-                placeholder="Search by company name or ticker (e.g., AAPL, Apple, Microsoft)..."
-                className="flex-1 px-6 py-4 rounded-lg bg-background-muted border border-border text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary text-lg"
-                autoFocus={!!search}
-              />
-              <button
-                type="submit"
-                className="px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-all shadow-lg shadow-primary/20"
+          <SearchForm defaultValue={search} />
+          {(search || sector) && (
+            <div className="max-w-3xl mx-auto mt-3 text-center">
+              <Link
+                href="/"
+                className="inline-block px-6 py-2 bg-background-muted hover:bg-background-elevated border border-border text-text-secondary hover:text-primary rounded-lg font-semibold transition-all"
               >
-                Search
-              </button>
-              {(search || sector) && (
-                <Link
-                  href="/"
-                  className="px-6 py-4 bg-background-muted hover:bg-background-elevated border border-border text-text-secondary hover:text-primary rounded-lg font-semibold transition-all"
-                >
-                  Clear
-                </Link>
-              )}
+                Clear
+              </Link>
             </div>
-          </form>
+          )}
         </section>
 
         {/* Top Companies */}

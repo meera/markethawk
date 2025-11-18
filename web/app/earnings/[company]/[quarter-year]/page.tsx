@@ -5,6 +5,9 @@ import { EarningsCallViewer } from './EarningsCallViewer';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { getPostHogClient } from '@/lib/posthog-server';
 
 // Helper to parse quarter-year slug (e.g., "q3-2025" -> { quarter: "Q3", year: 2025 })
 function parseQuarterYear(slug: string): { quarter: string; year: number } | null {
@@ -93,6 +96,32 @@ export default async function EarningsCallPage({
   const transcripts = call.transcripts || {};
   const insights = call.insights || {};
 
+  // Debug: Log mediaUrl
+  console.log('[DEBUG] call.mediaUrl:', call.mediaUrl);
+  console.log('[DEBUG] call.youtubeId:', call.youtubeId);
+
+  // Track earnings call page view with PostHog
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const posthog = getPostHogClient();
+  const distinctId = session?.user?.email || session?.user?.id || 'anonymous';
+
+  posthog.capture({
+    distinctId,
+    event: 'earnings_call_viewed',
+    properties: {
+      company_name: call.companyName || insights.company_name,
+      symbol: call.symbol,
+      quarter: call.quarter,
+      year: call.year,
+      management_tone: insights.sentiment?.management_tone,
+      has_video: !!call.mediaUrl,
+      is_authenticated: !!session?.user,
+    },
+  });
+  await posthog.shutdown();
+
   // Fetch transcript paragraphs from R2
   let transcriptData = null;
   let speakers = [];
@@ -115,15 +144,20 @@ export default async function EarningsCallPage({
   let mediaSignedUrl: string | null = null;
   let r2Key: string | null = null;
 
+  console.log('[DEBUG] Processing mediaUrl for R2...');
   if (call.mediaUrl && call.mediaUrl.startsWith('r2://')) {
     const urlParts = call.mediaUrl.replace('r2://', '').split('/');
     r2Key = urlParts.slice(1).join('/');
+    console.log('[DEBUG] Extracted r2Key:', r2Key);
 
     try {
       mediaSignedUrl = await getSignedUrlForR2Media(r2Key);
+      console.log('[DEBUG] Generated signed URL:', mediaSignedUrl ? 'YES' : 'NO');
     } catch (error) {
-      console.error('Failed to get signed URL:', error);
+      console.error('[DEBUG] Failed to get signed URL:', error);
     }
+  } else {
+    console.log('[DEBUG] mediaUrl does not start with r2://, value:', call.mediaUrl);
   }
 
   const companyName = call.companyName || insights.company_name || metadata.company_name || 'Unknown Company';

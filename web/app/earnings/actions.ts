@@ -61,13 +61,30 @@ export async function getEarningsCall(id: string) {
 }
 
 /**
- * Get earnings calls by symbol (latest versions only)
+ * Get earnings calls by symbol (latest versions only) with company slug
  */
 export async function getEarningsCallsBySymbol(symbol: string) {
   try {
     const calls = await db
-      .select()
+      .select({
+        id: earningsCalls.id,
+        cikStr: earningsCalls.cikStr,
+        symbol: earningsCalls.symbol,
+        quarter: earningsCalls.quarter,
+        year: earningsCalls.year,
+        mediaUrl: earningsCalls.mediaUrl,
+        youtubeId: earningsCalls.youtubeId,
+        metadata: earningsCalls.metadata,
+        transcripts: earningsCalls.transcripts,
+        insights: earningsCalls.insights,
+        isLatest: earningsCalls.isLatest,
+        createdAt: earningsCalls.createdAt,
+        updatedAt: earningsCalls.updatedAt,
+        companySlug: companies.slug,
+        companyName: companies.name,
+      })
       .from(earningsCalls)
+      .leftJoin(companies, eq(earningsCalls.symbol, companies.ticker))
       .where(
         and(
           eq(earningsCalls.symbol, symbol.toUpperCase()),
