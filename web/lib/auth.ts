@@ -226,8 +226,36 @@ export const auth = betterAuth({
     stripe({
       stripeClient,
       stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || 'placeholder_webhook_secret',
-      // TODO: Full Stripe configuration pending
-      // Products, webhooks, and authorization will be configured when implementing subscription features
+      createCustomerOnSignUp: true,
+
+      subscription: {
+        enabled: true,
+
+        // Get Premium price ID from existing payment link
+        // https://buy.stripe.com/9B65kCbaj0vc0CJbUu6AM00
+        plans: [
+          {
+            name: 'premium',
+            priceId: process.env.STRIPE_PREMIUM_PRICE_ID || '', // Will get from Stripe dashboard
+          },
+        ],
+
+        // Lifecycle hooks
+        onSubscriptionComplete: async ({ plan }) => {
+          console.log(`✅ New subscription to ${plan.name}`);
+          // Future: Send welcome email
+        },
+
+        onSubscriptionCancel: async () => {
+          console.log(`❌ Subscription canceled`);
+          // Future: Send cancellation survey
+        },
+      },
+
+      // Customer creation
+      onCustomerCreate: async ({ stripeCustomer, user }) => {
+        console.log(`✅ Stripe customer ${stripeCustomer.id} created for ${user.email}`);
+      },
     }),
   ],
 
