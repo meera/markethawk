@@ -1,7 +1,7 @@
 import { getEarningsCallBySlug } from '../../actions';
 import { getSignedUrlForR2Media } from '@/lib/r2';
-import { getTranscriptFromR2 } from '../../[id]/transcript-actions';
-import { TranscriptViewer } from '../../[id]/TranscriptViewer';
+import { getTranscriptFromR2 } from '../../components/transcript-actions';
+import { TranscriptViewer } from '../../components/TranscriptViewer';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
