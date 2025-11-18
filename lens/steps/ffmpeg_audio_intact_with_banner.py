@@ -40,8 +40,8 @@ def ffmpeg_audio_intact_with_banner(job_dir: Path, job_data: Dict[str, Any]) -> 
     # Renders directory
     renders_dir = job_dir / "renders"
 
-    # Output video path
-    output_video = renders_dir / "ffmpeg_render.mp4"
+    # Output video path - ALWAYS use "rendered.mp4" regardless of render method
+    output_video = renders_dir / "rendered.mp4"
 
     print(f"🎬 Rendering video with FFmpeg...")
     print(f"   Input video: {input_video.name}")

@@ -49,8 +49,12 @@ def load_environment():
         else:
             print(f"⚠️  Warning: DEV_MODE=false but .env.production not found")
 
+    # Set R2 bucket to always use production bucket (no dev bucket)
+    if not os.getenv('R2_BUCKET_NAME'):
+        os.environ['R2_BUCKET_NAME'] = 'markeyhawkeye'
+
     # Validate required environment variables
-    required_vars = ['DATABASE_URL', 'R2_BUCKET_NAME']
+    required_vars = ['DATABASE_URL']
     missing_vars = [var for var in required_vars if not os.getenv(var)]
 
     if missing_vars:

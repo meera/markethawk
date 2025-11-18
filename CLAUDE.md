@@ -36,6 +36,19 @@ Markey HawkEye transforms earnings call audio into visually-enhanced YouTube vid
 - Carefully vet all data sources
 - If uncertain, don't show it
 
+### Pipeline Consistency (CRITICAL)
+
+**Render Output Filename:**
+- ALL render methods MUST produce `rendered.mp4` (never method-specific names like `ffmpeg_render.mp4` or `remotion_render.mp4`)
+- This ensures consistent R2 URLs regardless of render method used
+- Location: `{job_dir}/renders/rendered.mp4`
+
+**R2 Bucket Name:**
+- ALWAYS use `markeyhawkeye` bucket (production bucket)
+- NO separate dev bucket (`dev-markethawkeye` is deprecated)
+- This ensures R2 URLs are portable between dev and production databases
+- Dev/prod separation is ONLY at database level, NOT R2 storage
+
 ### Approved Data Sources (Trust Hierarchy)
 
 **Tier 1 (Always Trust):**
