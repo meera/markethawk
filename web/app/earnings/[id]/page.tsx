@@ -1,5 +1,7 @@
 import { getEarningsCall } from '../actions';
 import { getSignedUrlForR2Media, getR2PathFromMetadata } from '@/lib/r2';
+import { getTranscriptFromR2 } from './transcript-actions';
+import { TranscriptViewer } from './TranscriptViewer';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
@@ -23,6 +25,24 @@ export default async function EarningsCallDetailPage({
   const metadata = call.metadata || {};
   const transcripts = call.transcripts || {};
   const insights = call.insights || {};
+
+  // Fetch transcript paragraphs from R2
+  let transcriptData = null;
+  let speakers = [];
+
+  if (transcripts.paragraphs_url) {
+    const r2Path = transcripts.paragraphs_url.replace(/^r2:\/\/[^/]+\//, '');
+    const transcriptResult = await getTranscriptFromR2(r2Path);
+
+    if (transcriptResult.success) {
+      transcriptData = transcriptResult.data;
+    }
+  }
+
+  // Get speakers from insights
+  if (insights.speakers) {
+    speakers = insights.speakers;
+  }
 
   // Get audio URL from R2
   let audioSignedUrl: string | null = null;
@@ -149,51 +169,15 @@ export default async function EarningsCallDetailPage({
           )}
         </dl>
 
-        {/* Transcripts & Insights Section */}
-        {(transcripts || insights) && (
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <h3 className="text-lg font-semibold mb-4">Transcripts & Insights</h3>
-            <div className="space-y-3">
-              {transcripts && transcripts.r2_url && (
-                <div className="flex items-center justify-between p-3 bg-blue-50 rounded">
-                  <div>
-                    <p className="font-medium text-sm">Transcript</p>
-                    <p className="text-xs text-gray-600">
-                      {transcripts.word_count} segments • {transcripts.speakers} speakers
-                    </p>
-                  </div>
-                  <a
-                    href={transcripts.r2_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-600 hover:underline"
-                  >
-                    Download JSON →
-                  </a>
-                </div>
-              )}
-              {insights && insights.r2_url && (
-                <div className="flex items-center justify-between p-3 bg-green-50 rounded">
-                  <div>
-                    <p className="font-medium text-sm">Insights</p>
-                    <p className="text-xs text-gray-600">
-                      {insights.metrics_count} metrics • {insights.highlights_count} highlights
-                    </p>
-                  </div>
-                  <a
-                    href={insights.r2_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-green-600 hover:underline"
-                  >
-                    Download JSON →
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Transcript Section */}
+      {transcriptData && (
+        <div className="bg-white border border-gray-200 rounded-lg p-6 mt-6">
+          <h2 className="text-xl font-semibold mb-4">Transcript</h2>
+          <TranscriptViewer transcript={transcriptData} speakers={speakers} />
+        </div>
+      )}
     </div>
   );
 }

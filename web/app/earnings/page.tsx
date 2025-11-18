@@ -37,8 +37,6 @@ export default async function EarningsCallsPage() {
           {calls.map((call) => {
             const metadata = call.metadata || {};
             const companyName = metadata.company_name || 'Unknown Company';
-            const pipelineType = metadata.pipeline_type || 'unknown';
-            const batchName = metadata.batch_name || 'unknown';
             const processedAt = metadata.processed_at
               ? new Date(metadata.processed_at).toLocaleDateString()
               : 'Unknown date';
@@ -59,10 +57,6 @@ export default async function EarningsCallsPage() {
                       <span>
                         {call.quarter} {call.year}
                       </span>
-                      <span className="text-gray-400">•</span>
-                      <span>Pipeline: {pipelineType}</span>
-                      <span className="text-gray-400">•</span>
-                      <span>Batch: {batchName}</span>
                     </div>
                     {call.youtubeId && (
                       <div className="mt-2">
