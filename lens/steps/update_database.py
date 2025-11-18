@@ -64,7 +64,7 @@ def update_database(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
     metadata = {
         'job_id': job_id,
         'company_name': company_name,
-        'source': 'manual-audio',
+        'source': job_data.get('input', {}).get('type', 'unknown'),
         'processed_at': datetime.now().isoformat(),
     }
 
@@ -72,6 +72,23 @@ def update_database(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
     youtube_upload_result = job_data.get('processing', {}).get('upload_youtube', {})
     if youtube_upload_result and youtube_upload_result.get('youtube_id'):
         metadata['youtube_id'] = youtube_upload_result['youtube_id']
+
+    # Load insights from insights.raw.json
+    insights = {}
+    insights_file = job_data.get('processing', {}).get('extract_insights', {}).get('insights_file')
+    if insights_file and Path(insights_file).exists():
+        import json
+        with open(insights_file, 'r') as f:
+            insights_data = json.load(f)
+            insights = insights_data.get('insights', {})
+
+    # Build transcripts object (URLs to transcript files in R2)
+    transcripts = {}
+    if artifacts:
+        if 'transcript' in artifacts:
+            transcripts['transcript_url'] = artifacts['transcript'].get('r2_url')
+        if 'paragraphs' in artifacts:
+            transcripts['paragraphs_url'] = artifacts['paragraphs'].get('r2_url')
 
     # Build SQL INSERT statement
     # First mark any existing records as not latest
@@ -88,6 +105,7 @@ WHERE symbol = '{ticker}'
 INSERT INTO markethawkeye.earnings_calls (
     id, cik_str, symbol, quarter, year,
     media_url, is_latest, metadata, artifacts,
+    insights, transcripts,
     created_at, updated_at
 ) VALUES (
     '{record_id}',
@@ -99,6 +117,8 @@ INSERT INTO markethawkeye.earnings_calls (
     true,
     '{json.dumps(metadata)}'::jsonb,
     '{json.dumps(artifacts)}'::jsonb,
+    '{json.dumps(insights)}'::jsonb,
+    '{json.dumps(transcripts)}'::jsonb,
     NOW(),
     NOW()
 )
@@ -108,6 +128,8 @@ SET
     is_latest = EXCLUDED.is_latest,
     metadata = EXCLUDED.metadata,
     artifacts = EXCLUDED.artifacts,
+    insights = EXCLUDED.insights,
+    transcripts = EXCLUDED.transcripts,
     updated_at = NOW();
 """
 

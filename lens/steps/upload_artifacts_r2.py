@@ -99,7 +99,7 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
         insights_file = job_dir / 'insights.json'
 
     if insights_file.exists():
-        r2_insights_path = f"{r2_base_path}/transcripts/insights.json"
+        r2_insights_path = f"{r2_base_path}/insights.json"
         print(f"📤 Uploading insights to R2: {r2_insights_path}")
 
         cmd = [
