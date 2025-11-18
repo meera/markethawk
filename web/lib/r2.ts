@@ -2,7 +2,12 @@ import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const r2Endpoint = `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
-const BUCKET_NAME = 'markeyhawkeye';
+
+if (!process.env.R2_BUCKET_NAME) {
+  throw new Error('R2_BUCKET_NAME environment variable is required');
+}
+
+const BUCKET_NAME = process.env.R2_BUCKET_NAME;
 
 const getR2Client = () => {
   return new S3Client({
