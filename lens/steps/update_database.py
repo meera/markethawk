@@ -110,7 +110,7 @@ WHERE symbol = '{ticker}'
     insert_sql = f"""
 INSERT INTO markethawkeye.earnings_calls (
     id, cik_str, symbol, quarter, year,
-    media_url, is_latest, metadata, artifacts,
+    media_url, is_latest, metadata,
     insights, transcripts,
     created_at, updated_at
 ) VALUES (
@@ -122,7 +122,6 @@ INSERT INTO markethawkeye.earnings_calls (
     '{media_url}',
     true,
     $metadata${json.dumps(metadata)}$metadata$::jsonb,
-    $artifacts${json.dumps(artifacts)}$artifacts$::jsonb,
     $insights${json.dumps(insights)}$insights$::jsonb,
     $transcripts${json.dumps(transcripts)}$transcripts$::jsonb,
     NOW(),
@@ -133,7 +132,6 @@ SET
     media_url = EXCLUDED.media_url,
     is_latest = EXCLUDED.is_latest,
     metadata = EXCLUDED.metadata,
-    artifacts = EXCLUDED.artifacts,
     insights = EXCLUDED.insights,
     transcripts = EXCLUDED.transcripts,
     updated_at = NOW();
