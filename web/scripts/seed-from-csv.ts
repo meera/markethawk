@@ -111,7 +111,9 @@ async function seedEarningsCalls() {
     year: string;
     media_url: string;
     metadata: string;
-    artifacts: string;
+    artifacts?: string;  // Legacy field
+    transcripts?: string;  // New field
+    insights?: string;  // New field
     is_latest: string;
   }>;
 
@@ -133,7 +135,8 @@ async function seedEarningsCalls() {
       };
 
       const metadata = JSON.parse(stripQuotes(record.metadata));
-      const artifacts = JSON.parse(stripQuotes(record.artifacts));
+      const transcripts = JSON.parse(stripQuotes(record.transcripts || record.artifacts || '{}'));
+      const insights = record.insights ? JSON.parse(stripQuotes(record.insights)) : null;
 
       await db.insert(earningsCalls).values({
         id: record.id,
@@ -144,7 +147,8 @@ async function seedEarningsCalls() {
         mediaUrl: record.media_url || null,
         youtubeId: metadata.youtube_id || null,
         metadata,
-        artifacts,
+        transcripts,
+        insights,
         isLatest: record.is_latest === 'true' || record.is_latest === '1',
       }).onConflictDoNothing();
 

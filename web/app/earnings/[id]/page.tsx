@@ -21,7 +21,8 @@ export default async function EarningsCallDetailPage({
 
   const call = result.data;
   const metadata = call.metadata || {};
-  const artifacts = call.artifacts || {};
+  const transcripts = call.transcripts || {};
+  const insights = call.insights || {};
 
   // Get audio URL from R2
   let audioSignedUrl: string | null = null;
@@ -148,21 +149,21 @@ export default async function EarningsCallDetailPage({
           )}
         </dl>
 
-        {/* Artifacts Section */}
-        {(artifacts.transcript || artifacts.insights) && (
+        {/* Transcripts & Insights Section */}
+        {(transcripts || insights) && (
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <h3 className="text-lg font-semibold mb-4">Artifacts</h3>
+            <h3 className="text-lg font-semibold mb-4">Transcripts & Insights</h3>
             <div className="space-y-3">
-              {artifacts.transcript && (
+              {transcripts && transcripts.r2_url && (
                 <div className="flex items-center justify-between p-3 bg-blue-50 rounded">
                   <div>
                     <p className="font-medium text-sm">Transcript</p>
                     <p className="text-xs text-gray-600">
-                      {artifacts.transcript.word_count} segments • {artifacts.transcript.speakers} speakers
+                      {transcripts.word_count} segments • {transcripts.speakers} speakers
                     </p>
                   </div>
                   <a
-                    href={artifacts.transcript.r2_url}
+                    href={transcripts.r2_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-blue-600 hover:underline"
@@ -171,16 +172,16 @@ export default async function EarningsCallDetailPage({
                   </a>
                 </div>
               )}
-              {artifacts.insights && (
+              {insights && insights.r2_url && (
                 <div className="flex items-center justify-between p-3 bg-green-50 rounded">
                   <div>
                     <p className="font-medium text-sm">Insights</p>
                     <p className="text-xs text-gray-600">
-                      {artifacts.insights.metrics_count} metrics • {artifacts.insights.highlights_count} highlights
+                      {insights.metrics_count} metrics • {insights.highlights_count} highlights
                     </p>
                   </div>
                   <a
-                    href={artifacts.insights.r2_url}
+                    href={insights.r2_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-green-600 hover:underline"
