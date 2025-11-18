@@ -9,6 +9,9 @@ from pathlib import Path
 from typing import Dict, Any
 from datetime import datetime
 
+# Get R2 bucket name from environment (dev vs prod)
+R2_BUCKET = os.getenv('R2_BUCKET_NAME', 'markeyhawkeye')
+
 
 def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -60,7 +63,7 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
             'rclone',
             'copyto',
             str(transcript_file),
-            f"r2-markethawkeye:markeyhawkeye/{r2_transcript_path}",
+            f"r2-markethawkeye:{R2_BUCKET}/{r2_transcript_path}",
             '--s3-no-check-bucket'
         ]
 
@@ -68,7 +71,7 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
 
         if result.returncode == 0:
             # Use r2:// URL format (signed URL generated on-demand)
-            transcript_r2_url = f"r2://markeyhawkeye/{r2_transcript_path}"
+            transcript_r2_url = f"r2://{R2_BUCKET}/{r2_transcript_path}"
 
             # Get file metadata
             file_size = transcript_file.stat().st_size
@@ -106,14 +109,14 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
             'rclone',
             'copyto',
             str(insights_file),
-            f"r2-markethawkeye:markeyhawkeye/{r2_insights_path}",
+            f"r2-markethawkeye:{R2_BUCKET}/{r2_insights_path}",
             '--s3-no-check-bucket'
         ]
 
         result = subprocess.run(cmd, capture_output=True, text=True)
 
         if result.returncode == 0:
-            insights_r2_url = f"r2://markeyhawkeye/{r2_insights_path}"
+            insights_r2_url = f"r2://{R2_BUCKET}/{r2_insights_path}"
 
             # Get file metadata
             file_size = insights_file.stat().st_size
@@ -162,14 +165,14 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
             'rclone',
             'copyto',
             str(job_json_file),
-            f"r2-markethawkeye:markeyhawkeye/{r2_job_path}",
+            f"r2-markethawkeye:{R2_BUCKET}/{r2_job_path}",
             '--s3-no-check-bucket'
         ]
 
         result = subprocess.run(cmd, capture_output=True, text=True)
 
         if result.returncode == 0:
-            job_r2_url = f"r2://markeyhawkeye/{r2_job_path}"
+            job_r2_url = f"r2://{R2_BUCKET}/{r2_job_path}"
 
             # Extract speakers from insights
             speakers = []
@@ -202,14 +205,14 @@ def upload_artifacts_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, An
             'rclone',
             'copyto',
             str(paragraphs_file),
-            f"r2-markethawkeye:markeyhawkeye/{r2_paragraphs_path}",
+            f"r2-markethawkeye:{R2_BUCKET}/{r2_paragraphs_path}",
             '--s3-no-check-bucket'
         ]
 
         result = subprocess.run(cmd, capture_output=True, text=True)
 
         if result.returncode == 0:
-            paragraphs_r2_url = f"r2://markeyhawkeye/{r2_paragraphs_path}"
+            paragraphs_r2_url = f"r2://{R2_BUCKET}/{r2_paragraphs_path}"
 
             artifacts['paragraphs'] = {
                 'r2_url': paragraphs_r2_url,

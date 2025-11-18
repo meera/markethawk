@@ -2,10 +2,14 @@
 Upload Media to R2 - Upload audio/video file to R2 storage
 """
 
+import os
 import subprocess
 from pathlib import Path
 from typing import Dict, Any
 from datetime import datetime
+
+# Get R2 bucket name from environment (dev vs prod)
+R2_BUCKET = os.getenv('R2_BUCKET_NAME', 'markeyhawkeye')
 
 
 def upload_media_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -94,7 +98,7 @@ def upload_media_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
         'rclone',
         'copyto',
         str(media_file),
-        f"r2-markethawkeye:markeyhawkeye/{r2_path}",
+        f"r2-markethawkeye:{R2_BUCKET}/{r2_path}",
         '--s3-no-check-bucket',
         '--progress'
     ]
@@ -105,7 +109,7 @@ def upload_media_r2(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
         raise Exception(f"Media upload failed: {result.stderr}")
 
     # Use r2:// URL format (signed URL generated on-demand)
-    media_r2_url = f"r2://markeyhawkeye/{r2_path}"
+    media_r2_url = f"r2://{R2_BUCKET}/{r2_path}"
 
     # Get file metadata
     file_size = media_file.stat().st_size
