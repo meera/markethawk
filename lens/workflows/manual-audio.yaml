@@ -86,3 +86,10 @@ steps:
     required: false
     description: Insert/update earnings_calls table with metadata and artifacts
     skip_if: "processing.upload_r2.status != 'completed'"
+
+  # Step 13: Notify search engines (production only)
+  - name: notify_seo
+    handler: notify_seo
+    required: false
+    description: Notify Google and Bing of new earnings call page (production only, skipped in dev)
+    skip_if: "processing.update_database.status != 'completed'"
