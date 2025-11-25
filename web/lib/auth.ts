@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { organization } from 'better-auth/plugins/organization';
+import { createAuthMiddleware } from 'better-auth/api';
 // import { stripe } from '@better-auth/stripe';  // TODO: Enable when implementing monetization
 import { db } from './db';
 import * as schema from './db/schema';
@@ -164,21 +165,27 @@ export const auth = betterAuth({
     },
   },
 
-  // TODO: Add hooks for welcome emails after Better Auth upgrade
-  // hooks: {
-  //   after: async (ctx) => {
-  //     if (ctx.type === 'session' && ctx.session && ctx.user) {
-  //       const isNewUser = ctx.context?.isNewUser || false;
-  //       if (isNewUser) {
-  //         try {
-  //           await sendWelcomeEmail(ctx.user.email, ctx.user.name || undefined);
-  //         } catch (error) {
-  //           console.error('Failed to send welcome email:', error);
-  //         }
-  //       }
-  //     }
-  //   }
-  // },
+  // Hooks for welcome emails and post-signup actions
+  hooks: {
+    after: createAuthMiddleware(async (ctx) => {
+      // Send welcome email when user signs up
+      if (ctx.path.startsWith('/sign-up')) {
+        const newSession = ctx.context.newSession;
+        if (newSession?.user) {
+          try {
+            await sendWelcomeEmail(
+              newSession.user.email,
+              newSession.user.name || undefined
+            );
+            console.log(`Welcome email sent to ${newSession.user.email}`);
+          } catch (error) {
+            console.error('Failed to send welcome email:', error);
+            // Don't fail the signup if email fails
+          }
+        }
+      }
+    }),
+  },
 
   plugins: [
     organization({
