@@ -8,6 +8,7 @@ import { member as memberTable } from './db/auth-schema';
 import { eq } from 'drizzle-orm';
 // import Stripe from 'stripe';  // TODO: Enable when implementing monetization
 import { sendEmail } from './email';
+import { sendWelcomeEmail } from './mailerlite';
 
 // ============================================
 // HELPER FUNCTIONS
@@ -164,11 +165,31 @@ export const auth = betterAuth({
     },
   },
 
-  // TODO: Add hooks for custom user ID generation and welcome emails
-  // hooks: {
-  //   before: createAuthMiddleware(async (ctx) => { ... }),
-  //   after: createAuthMiddleware(async (ctx) => { ... }),
-  // },
+  // Hooks for welcome emails and post-signup actions
+  hooks: {
+    after: [
+      {
+        matcher: () => true,
+        handler: async (ctx) => {
+          // Send welcome email when user signs up
+          if (ctx.type === 'session' && ctx.session && ctx.user) {
+            // Check if this is a new user (just created)
+            const isNewUser = ctx.context?.isNewUser || false;
+
+            if (isNewUser) {
+              try {
+                await sendWelcomeEmail(ctx.user.email, ctx.user.name || undefined);
+                console.log(`Welcome email sent to ${ctx.user.email}`);
+              } catch (error) {
+                console.error('Failed to send welcome email:', error);
+                // Don't fail the signup if email fails
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
 
   plugins: [
     organization({

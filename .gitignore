@@ -25,11 +25,14 @@ yarn-error.log*
 
 # Local env files
 .env
+.env.*
 .env*.local
+!.env.example
 
 # Secrets and credentials
 *client_secret*.json
 *.pem
+*secret*.json
 
 # Vercel
 .vercel

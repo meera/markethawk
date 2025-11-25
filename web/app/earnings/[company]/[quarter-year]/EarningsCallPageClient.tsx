@@ -41,7 +41,7 @@ export function EarningsCallPageClient({
         <div className="mb-8">
           <Link
             href={`/companies/${company}`}
-            className="text-blue-600 hover:underline mb-4 inline-block"
+            className="text-gray-600 hover:text-gray-900 mb-4 inline-block"
           >
             ← Back to {companyName}
           </Link>
@@ -105,8 +105,28 @@ export function EarningsCallPageClient({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content - 2 columns */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Media Player + Transcript */}
-            <EarningsCallViewer mediaUrl={mediaSignedUrl} transcript={transcriptData} speakers={speakers} />
+            {/* Media Player */}
+            <EarningsCallViewer mediaUrl={mediaSignedUrl} />
+
+            {/* Link to Transcript Page */}
+            {transcriptData && (
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-semibold mb-2">Full Transcript</h2>
+                    <p className="text-gray-600 text-sm">
+                      Read the complete earnings call transcript with search and download options.
+                    </p>
+                  </div>
+                  <Link
+                    href={`/earnings/${company}/${call.quarter.toLowerCase()}-${call.year}/transcript`}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium whitespace-nowrap"
+                  >
+                    View Transcript
+                  </Link>
+                </div>
+              </div>
+            )}
 
             {/* Executive Summary (after video) */}
             {summary && (
