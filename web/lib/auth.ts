@@ -117,7 +117,6 @@ export const auth = betterAuth({
     },
   },
   logger: {
-    verboseLogging: true,
     disabled: false,
   },
   emailAndPassword: {
@@ -165,31 +164,21 @@ export const auth = betterAuth({
     },
   },
 
-  // Hooks for welcome emails and post-signup actions
-  hooks: {
-    after: [
-      {
-        matcher: () => true,
-        handler: async (ctx) => {
-          // Send welcome email when user signs up
-          if (ctx.type === 'session' && ctx.session && ctx.user) {
-            // Check if this is a new user (just created)
-            const isNewUser = ctx.context?.isNewUser || false;
-
-            if (isNewUser) {
-              try {
-                await sendWelcomeEmail(ctx.user.email, ctx.user.name || undefined);
-                console.log(`Welcome email sent to ${ctx.user.email}`);
-              } catch (error) {
-                console.error('Failed to send welcome email:', error);
-                // Don't fail the signup if email fails
-              }
-            }
-          }
-        }
-      }
-    ]
-  },
+  // TODO: Add hooks for welcome emails after Better Auth upgrade
+  // hooks: {
+  //   after: async (ctx) => {
+  //     if (ctx.type === 'session' && ctx.session && ctx.user) {
+  //       const isNewUser = ctx.context?.isNewUser || false;
+  //       if (isNewUser) {
+  //         try {
+  //           await sendWelcomeEmail(ctx.user.email, ctx.user.name || undefined);
+  //         } catch (error) {
+  //           console.error('Failed to send welcome email:', error);
+  //         }
+  //       }
+  //     }
+  //   }
+  // },
 
   plugins: [
     organization({

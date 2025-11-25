@@ -31,15 +31,18 @@ export async function subscribeToNewsletter(
       email: data.email,
       ...(data.name && { name: data.name }),
       ...(data.fields && { fields: data.fields }),
-      status: 'active', // Set to 'unconfirmed' if you want double opt-in
+      status: 'active' as const, // Set to 'unconfirmed' if you want double opt-in
     };
 
     const response = await mailerlite.subscribers.createOrUpdate(params);
     console.log('MailerLite subscription successful:', response.data);
 
     // Add to group if specified
-    if (groupId && response.data?.id) {
-      await addToGroup(response.data.id, groupId);
+    if (groupId && response.data) {
+      const subscriberId = (response.data as any).id;
+      if (subscriberId) {
+        await addToGroup(subscriberId, groupId);
+      }
     }
 
     return true;
@@ -101,8 +104,8 @@ export async function addToGroup(subscriberId: string, groupId: string): Promise
   }
 
   try {
-    // Add to group
-    await mailerlite.subscribers.assignToGroup(subscriberId, groupId);
+    // Add to group using the correct API method
+    await (mailerlite as any).groups.assignSubscriber(groupId, subscriberId);
 
     console.log(`Added subscriber ${subscriberId} to group ${groupId}`);
     return true;
@@ -121,7 +124,7 @@ export async function getGroups() {
   }
 
   try {
-    const response = await mailerlite.groups.get();
+    const response = await (mailerlite as any).groups.get({});
     return response.data;
   } catch (error: any) {
     console.error('Failed to fetch groups:', error.response?.data || error.message);
