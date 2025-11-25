@@ -13,7 +13,8 @@
     "db:studio": "drizzle-kit studio",
     "db:drop": "drizzle-kit drop",
     "db:seed": "tsx scripts/seed.ts",
-    "db:seed-csv": "tsx scripts/seed-from-csv.ts"
+    "db:seed-csv": "tsx scripts/seed-from-csv.ts",
+    "delete-user": "tsx scripts/delete-user.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.932.0",

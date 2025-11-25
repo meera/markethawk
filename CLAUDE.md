@@ -160,7 +160,47 @@ npm run db:push
 
 # Open Drizzle Studio
 npm run db:studio
+
+# Delete a user (development)
+npm run delete-user -- user@example.com
+
+# Delete a user (production)
+DEV_MODE=false npm run delete-user -- user@example.com
+
+# Delete by user ID
+npm run delete-user -- --id usr_abc123
 ```
+
+### User Management
+
+**Delete User Script:** Safely delete users and all related data.
+
+```bash
+cd /Users/Meera/markethawk/web
+
+# Delete by email (development)
+npm run delete-user -- simran.gupt.497@gmail.com
+
+# Delete by email (production)
+DEV_MODE=false npm run delete-user -- user@example.com
+
+# Delete by user ID
+npm run delete-user -- --id usr_abc123
+```
+
+**What gets deleted:**
+- User account
+- Sessions (cascade)
+- OAuth accounts (cascade)
+- Organization memberships (cascade)
+- Invitations sent by user (cascade)
+- Video views
+- Video engagement records
+- Click through tracking
+
+**Environment Selection:**
+- `DEV_MODE=true` (default): Uses `.env.local` → Local PostgreSQL
+- `DEV_MODE=false`: Uses `.env.production` → Neon database
 
 ---
 
@@ -169,14 +209,15 @@ npm run db:studio
 ### Frontend
 - Next.js 15 (App Router), TypeScript (strict mode)
 - TailwindCSS, shadcn/ui
-- React Context / Zustand
+- React Context for state management
+- Zod for schema validation
 - Use server actions instead of API routes
 
 ### Backend
 - PostgreSQL with Drizzle ORM
 - Better Auth with Google One Tap
 - Stripe (via Better Auth plugin)
-- Cloudflare R2 storage
+- Cloudflare R2 storage (bucket: `markethawkeye`)
 
 ### Video Pipeline
 - **Transcription:** WhisperX 3.3.1 (speaker diarization + word-level timestamps)
@@ -250,8 +291,9 @@ markethawk/
 ```
 
 **Key Points:**
-- Dependencies are hoisted to root `node_modules`
-- Binaries (e.g., `drizzle-kit`) live in `root/node_modules/.bin`
+- **Local:** Monorepo with hoisted dependencies in root `node_modules`
+- **Deployment:** Web app deployed standalone to Vercel (root: `/web`)
+- Drizzle runs from `web/` directory
 - `.env` files are package-specific, NOT committed to git
 - Video files, transcripts → `/var/markethawk/` (shared, NOT in git)
 - Code, compositions → `~/markethawk/` (git repo)
@@ -558,8 +600,15 @@ npm run db:studio
 
 ### Vercel Deployment
 
+**Project Structure:**
+- Monorepo locally, but **web is deployed standalone** to Vercel
+- Vercel project root: `/web` directory
+- Drizzle runs from web directory
+
+**Deploy Commands:**
 ```bash
 # Deploy to preview
+cd /Users/Meera/markethawk/web
 vercel
 
 # Deploy to production
@@ -570,6 +619,12 @@ vercel --prod
 1. Go to Vercel project settings → Environment Variables
 2. Add all variables from `.env.production`
 3. Set `DEV_MODE=false` for production
+
+**Build Settings in Vercel:**
+- Framework Preset: Next.js
+- Root Directory: `web`
+- Build Command: `npm run build`
+- Output Directory: `.next`
 
 ---
 
