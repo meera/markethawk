@@ -1,13 +1,13 @@
 # YouTube Thumbnail Generator
 
-Automatically generates professional YouTube thumbnails for EarningLens earnings call videos.
+Automatically generates professional YouTube thumbnails for MarketHawk earnings call videos.
 
 ## Features
 
 - **Professional Design**: Gradient background with modern styling
 - **Company Branding**: Company name, ticker symbol prominently displayed
 - **Earnings Info**: Quarter, fiscal year, and call date
-- **EarningLens Badge**: Branded logo in bottom-right corner
+- **MarketHawk Badge**: Branded logo in bottom-right corner
 - **YouTube Optimized**: 1280x720 resolution, JPEG format, ~100KB file size
 
 ## Thumbnail Elements
@@ -17,7 +17,7 @@ The thumbnail includes:
 2. **Ticker Symbol** - In parentheses, blue color (e.g., "(AAPL)")
 3. **Quarter & Year** - Highlighted yellow box (e.g., "Q4 2024")
 4. **Event Date** - Formatted date (e.g., "Earnings Call • Nov 01, 2024")
-5. **EarningLens Logo** - Bottom-right corner with branding
+5. **MarketHawk Logo** - Bottom-right corner with branding
 
 ## Usage
 
@@ -203,7 +203,7 @@ os.makedirs(output_dir, exist_ok=True)
 2. **Ticker in Parentheses** - Quick investor identification
 3. **Quarter Highlighted** - Visual emphasis on reporting period
 4. **Date Included** - Temporal context
-5. **EarningLens Badge** - Brand awareness, trust signal
+5. **MarketHawk Badge** - Brand awareness, trust signal
 
 ### Why This Layout?
 
@@ -225,4 +225,4 @@ Potential improvements:
 
 ## License
 
-Part of EarningLens project.
+Part of MarketHawk project.

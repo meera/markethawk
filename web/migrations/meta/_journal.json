@@ -22,6 +22,13 @@
       "when": 1763425049751,
       "tag": "0002_lovely_nico_minoru",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764200825962,
+      "tag": "0003_large_supreme_intelligence",
+      "breakpoints": true
     }
   ]
 }

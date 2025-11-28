@@ -150,20 +150,20 @@
 
 **Template:**
 ```
-[Company] ([TICKER]) [Quarter] [Year] Earnings - [Hook] | EarningLens
+[Company] ([TICKER]) [Quarter] [Year] Earnings - [Hook] | MarketHawk
 ```
 
 **Examples:**
-- ✅ `Apple (AAPL) Q4 2024 Earnings - Revenue Beats by 12% | EarningLens`
-- ✅ `Tesla (TSLA) Q3 2024 Earnings - Misses Estimates | EarningLens`
-- ✅ `Microsoft (MSFT) Q1 2025 Earnings - Cloud Growth Surges | EarningLens`
+- ✅ `Apple (AAPL) Q4 2024 Earnings - Revenue Beats by 12% | MarketHawk`
+- ✅ `Tesla (TSLA) Q3 2024 Earnings - Misses Estimates | MarketHawk`
+- ✅ `Microsoft (MSFT) Q1 2025 Earnings - Cloud Growth Surges | MarketHawk`
 
 **Key Elements:**
 - Company name (search traffic)
 - Ticker symbol (investors search this)
 - Quarter + year (timely)
 - Hook (click-worthy)
-- Brand (EarningLens)
+- Brand (MarketHawk)
 
 ### Description Format
 
@@ -191,11 +191,11 @@
 5:30 Key Takeaways
 
 🔗 Resources:
-- Full analysis: https://earninglens.com/[ticker]/[quarter]-[year]
+- Full analysis: https://markethawkeye.com/[ticker]/[quarter]-[year]
 - [Company] Investor Relations: [URL]
 - SEC 10-Q Filing: [URL]
 
-📈 About EarningLens:
+📈 About MarketHawk:
 We transform earnings calls into visually-enhanced videos with charts, data, and analysis. Subscribe for more earnings coverage!
 
 #[TICKER] #[CompanyName] #earnings #investing #stocks #finance #[Industry]
@@ -427,7 +427,7 @@ Avg view duration:  X:XX
 - Professional portfolio (showcases your work)
 - SEO traffic driver (Google → YouTube)
 - Email capture (future newsletter)
-- Brand building (earninglens.com)
+- Brand building (markethawkeye.com)
 
 **Website is NOT:**
 - Primary revenue source (yet)
@@ -437,7 +437,7 @@ Avg view duration:  X:XX
 **Simple Landing Page:**
 ```
 ┌────────────────────────────────┐
-│  EarningLens                   │
+│  MarketHawk                   │
 │                                │
 │  Visual Earnings Call Coverage│
 │                                │

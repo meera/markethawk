@@ -1,4 +1,5 @@
 import { getEarningsCallBySlug } from '../../../actions';
+import { getSignedUrlForR2Media } from '@/lib/r2';
 import { getTranscriptFromR2 } from '../../../components/transcript-actions';
 import { TranscriptPageClient } from './TranscriptPageClient';
 import { notFound } from 'next/navigation';
@@ -93,6 +94,20 @@ export default async function TranscriptPage({
 
   const companyName = call.companyName || insights.company_name || 'Unknown Company';
 
+  // Get audio/video URL from R2
+  let mediaSignedUrl: string | null = null;
+
+  if (call.mediaUrl && call.mediaUrl.startsWith('r2://')) {
+    const urlParts = call.mediaUrl.replace('r2://', '').split('/');
+    const r2Key = urlParts.slice(1).join('/');
+
+    try {
+      mediaSignedUrl = await getSignedUrlForR2Media(r2Key);
+    } catch (error) {
+      console.error('Failed to get signed URL:', error);
+    }
+  }
+
   return (
     <TranscriptPageClient
       company={company}
@@ -101,6 +116,7 @@ export default async function TranscriptPage({
       transcriptData={transcriptData}
       speakers={speakers}
       quarterYear={quarterYear}
+      mediaSignedUrl={mediaSignedUrl}
     />
   );
 }

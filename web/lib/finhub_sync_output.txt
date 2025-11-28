@@ -1,0 +1,1033 @@
+[Finnhub] Created BLZE Q4 2025: 2026-02-23
+[Finnhub] Created CIVI Q4 2025: 2026-02-23
+[Finnhub] Created HLX Q4 2025: 2026-02-23
+[Finnhub] Skipping WK - not in companies table
+[Finnhub] Skipping HOV - not in companies table
+[Finnhub] Created BEAM Q4 2025: 2026-02-23
+[Finnhub] Created AROC Q4 2025: 2026-02-23
+[Finnhub] Skipping AZUL - not in companies table
+[Finnhub] Created VVX Q4 2025: 2026-02-23
+[Finnhub] Created O Q4 2025: 2026-02-23
+[Finnhub] Created FIHL Q4 2025: 2026-02-23
+[Finnhub] Created INN Q4 2025: 2026-02-23
+[Finnhub] Created PRA Q4 2025: 2026-02-23
+[Finnhub] Created UVE Q4 2025: 2026-02-23
+[Finnhub] Created ADUS Q4 2025: 2026-02-23
+[Finnhub] Created PLNT Q4 2025: 2026-02-23
+[Finnhub] Created UCTT Q4 2025: 2026-02-23
+[Finnhub] Created AHCO Q4 2025: 2026-02-23
+[Finnhub] Created HYLN Q4 2025: 2026-02-23
+[Finnhub] Created SLRC Q4 2025: 2026-02-23
+[Finnhub] Created TZOO Q4 2025: 2026-02-23
+[Finnhub] Created CPSS Q4 2025: 2026-02-23
+[Finnhub] Created VCYT Q4 2025: 2026-02-23
+[Finnhub] Created BKV Q4 2025: 2026-02-23
+[Finnhub] Created ONTF Q4 2025: 2026-02-23
+[Finnhub] Created MGEE Q4 2025: 2026-02-23
+[Finnhub] Skipping BOW - not in companies table
+[Finnhub] Created HSTM Q4 2025: 2026-02-23
+[Finnhub] Created AXGN Q4 2025: 2026-02-23
+[Finnhub] Created INGN Q4 2025: 2026-02-23
+[Finnhub] Created TREX Q4 2025: 2026-02-23
+[Finnhub] Skipping CCC - not in companies table
+[Finnhub] Created USNA Q4 2025: 2026-02-23
+[Finnhub] Created MSVB Q4 2025: 2026-02-23
+[Finnhub] Created SAM Q4 2025: 2026-02-23
+[Finnhub] Created EXR Q4 2025: 2026-02-23
+[Finnhub] Skipping AWI - not in companies table
+[Finnhub] Skipping WDAY - not in companies table
+[Finnhub] Skipping MFIC - not in companies table
+[Finnhub] Created DOCN Q4 2025: 2026-02-23
+[Finnhub] Created BASE Q4 2026: 2026-02-23
+[Finnhub] Created QUIK Q4 2025: 2026-02-23
+[Finnhub] Created HSIC Q4 2025: 2026-02-23
+[Finnhub] Created RVLV Q4 2025: 2026-02-23
+[Finnhub] Created ELAN Q4 2025: 2026-02-23
+[Finnhub] Created BTDR Q4 2025: 2026-02-23
+[Finnhub] Created NOVT Q4 2025: 2026-02-23
+[Finnhub] Created HVT Q4 2025: 2026-02-23
+[Finnhub] Created CAVA Q4 2025: 2026-02-23
+[Finnhub] Created DRVN Q4 2025: 2026-02-23
+[Finnhub] Created EDRY Q4 2025: 2026-02-23
+[Finnhub] Created NERV Q4 2025: 2026-02-23
+[Finnhub] Skipping BWIN - not in companies table
+[Finnhub] Created BCYC Q4 2025: 2026-02-23
+[Finnhub] Created ITRI Q4 2025: 2026-02-23
+[Finnhub] Created BTO Q4 2025: 2026-02-23
+[Finnhub] Created SAFT Q4 2025: 2026-02-23
+[Finnhub] Created FSLR Q4 2025: 2026-02-23
+[Finnhub] Created ZM Q4 2026: 2026-02-23
+[Finnhub] Created PRCH Q4 2025: 2026-02-23
+[Finnhub] Created SPXC Q4 2025: 2026-02-23
+[Finnhub] Created API Q4 2025: 2026-02-23
+[Finnhub] Created TARS Q4 2025: 2026-02-23
+[Finnhub] Created ICCC Q4 2025: 2026-02-23
+[Finnhub] Created SILA Q4 2025: 2026-02-23
+[Finnhub] Created BLD Q4 2025: 2026-02-23
+[Finnhub] Created NOMD Q4 2025: 2026-02-23
+[Finnhub] Created LMND Q4 2025: 2026-02-23
+[Finnhub] Created CNNE Q4 2025: 2026-02-23
+[Finnhub] Skipping PLOW - not in companies table
+[Finnhub] Created SEE Q4 2025: 2026-02-23
+[Finnhub] Created LGIH Q4 2025: 2026-02-23
+[Finnhub] Created LTC Q4 2025: 2026-02-23
+[Finnhub] Created UFPT Q4 2025: 2026-02-23
+[Finnhub] Created RCKY Q4 2025: 2026-02-23
+[Finnhub] Skipping SRE - not in companies table
+[Finnhub] Created LIVN Q4 2025: 2026-02-23
+[Finnhub] Created TTI Q4 2025: 2026-02-23
+[Finnhub] Created PR Q4 2025: 2026-02-23
+[Finnhub] Created SBGI Q4 2025: 2026-02-23
+[Finnhub] Skipping WBHC - not in companies table
+[Finnhub] Created MIDD Q4 2025: 2026-02-23
+[Finnhub] Created KBR Q4 2025: 2026-02-23
+[Finnhub] Created FULC Q4 2025: 2026-02-23
+[Finnhub] Created MATX Q4 2025: 2026-02-23
+[Finnhub] Created LXFR Q4 2025: 2026-02-23
+[Finnhub] Created MMSI Q4 2025: 2026-02-23
+[Finnhub] Skipping FLYW - not in companies table
+[Finnhub] Created CNDA Q4 2025: 2026-02-23
+[Finnhub] Created OC Q4 2025: 2026-02-23
+[Finnhub] Created OFIX Q4 2025: 2026-02-23
+[Finnhub] Created SPT Q4 2025: 2026-02-23
+[Finnhub] Created COGT Q4 2025: 2026-02-23
+[Finnhub] Created CERT Q4 2025: 2026-02-23
+[Finnhub] Created DSX Q4 2025: 2026-02-23
+[Finnhub] Created CHGG Q4 2025: 2026-02-23
+[Finnhub] Created OPAD Q4 2025: 2026-02-23
+[Finnhub] Created CCO Q4 2025: 2026-02-23
+[Finnhub] Created BGFV Q4 2025: 2026-02-23
+[Finnhub] Created DNUT Q4 2025: 2026-02-23
+[Finnhub] Created HUSA Q4 2025: 2026-02-23
+[Finnhub] Skipping BRDG - not in companies table
+[Finnhub] Created BBBY Q4 2025: 2026-02-23
+[Finnhub] Created PARR Q4 2025: 2026-02-23
+[Finnhub] Created RIOT Q4 2025: 2026-02-23
+[Finnhub] Created HY Q4 2025: 2026-02-23
+[Finnhub] Created BGS Q4 2025: 2026-02-23
+[Finnhub] Created PRIM Q4 2025: 2026-02-23
+[Finnhub] Created CIFR Q4 2025: 2026-02-23
+[Finnhub] Created IART Q4 2025: 2026-02-23
+[Finnhub] Created ZD Q4 2025: 2026-02-23
+[Finnhub] Created PEPG Q4 2025: 2026-02-23
+[Finnhub] Created SCKT Q4 2025: 2026-02-23
+[Finnhub] Created XHR Q4 2025: 2026-02-23
+[Finnhub] Created PEG Q4 2025: 2026-02-23
+[Finnhub] Created TLSS Q3 2025: 2026-02-23
+[Finnhub] Created SOLV Q4 2025: 2026-02-23
+[Finnhub] Created ATEC Q4 2025: 2026-02-23
+[Finnhub] Created GTE Q4 2025: 2026-02-23
+[Finnhub] Created JAZZ Q4 2025: 2026-02-23
+[Finnhub] Created PRGO Q4 2025: 2026-02-23
+[Finnhub] Created CBLL Q4 2025: 2026-02-23
+[Finnhub] Created CART Q4 2025: 2026-02-23
+[Finnhub] Created OUT Q4 2025: 2026-02-23
+[Finnhub] Created FANG Q4 2025: 2026-02-23
+[Finnhub] Created NVCR Q4 2025: 2026-02-23
+[Finnhub] Created STRL Q4 2025: 2026-02-23
+[Finnhub] Created HLIO Q4 2025: 2026-02-23
+[Finnhub] Created NXRT Q4 2025: 2026-02-23
+[Finnhub] Created FTCO Q4 2025: 2026-02-23
+[Finnhub] Skipping CWH - not in companies table
+[Finnhub] Created HIMS Q4 2025: 2026-02-23
+[Finnhub] Skipping OLO - not in companies table
+[Finnhub] Created DPZ Q4 2025: 2026-02-23
+[Finnhub] Created BCRX Q4 2025: 2026-02-23
+[Finnhub] Created NTST Q4 2025: 2026-02-23
+[Finnhub] Created NVTS Q4 2025: 2026-02-23
+[Finnhub] Created SBAC Q4 2025: 2026-02-23
+[Finnhub] Created DK Q4 2025: 2026-02-23
+[Finnhub] Created PSA Q4 2025: 2026-02-23
+[Finnhub] Skipping DHC - not in companies table
+[Finnhub] Created KEYS Q1 2026: 2026-02-23
+[Finnhub] Created AMC Q4 2025: 2026-02-23
+[Finnhub] Created BRSL Q4 2025: 2026-02-23
+[Finnhub] Created SUPN Q4 2025: 2026-02-23
+[Finnhub] Created AHR Q4 2025: 2026-02-23
+[Finnhub] Created GSHD Q4 2025: 2026-02-23
+[Finnhub] Created OSUR Q4 2025: 2026-02-23
+[Finnhub] Created APLE Q4 2025: 2026-02-23
+[Finnhub] Created SGHC Q4 2025: 2026-02-23
+[Finnhub] Created RRC Q4 2025: 2026-02-23
+[Finnhub] Created CPNG Q4 2025: 2026-02-23
+[Finnhub] Created BSM Q4 2025: 2026-02-23
+[Finnhub] Created PRPO Q4 2025: 2026-02-23
+[Finnhub] Created MAX Q4 2025: 2026-02-23
+[Finnhub] Created NVCT Q4 2025: 2026-02-23
+[Finnhub] Created ODD Q4 2025: 2026-02-23
+[Finnhub] Created VTEX Q4 2025: 2026-02-23
+[Finnhub] Created YSXT Q2 2026: 2026-02-23
+[Finnhub] Created LCID Q4 2025: 2026-02-23
+[Finnhub] Created XPRO Q4 2025: 2026-02-23
+[Finnhub] Created INTU Q2 2026: 2026-02-23
+[Finnhub] Created AIV Q4 2025: 2026-02-23
+[Finnhub] Created AGL Q4 2025: 2026-02-23
+[Finnhub] Created HURN Q4 2025: 2026-02-23
+[Finnhub] Created DEA Q4 2025: 2026-02-23
+[Finnhub] Created ALLT Q4 2025: 2026-02-23
+[Finnhub] Created AORT Q4 2025: 2026-02-23
+[Finnhub] Created JACK Q1 2026: 2026-02-23
+[Finnhub] Created YSG Q4 2025: 2026-02-23
+[Finnhub] Created KOS Q4 2025: 2026-02-23
+[Finnhub] Skipping WLK - not in companies table
+[Finnhub] Created KDP Q4 2025: 2026-02-23
+[Finnhub] Created CRI Q4 2025: 2026-02-23
+[Finnhub] Created NHI Q4 2025: 2026-02-23
+[Finnhub] Created FUN Q4 2025: 2026-02-23
+[Finnhub] Skipping LNW - not in companies table
+[Finnhub] Created SMMT Q4 2025: 2026-02-23
+[Finnhub] Created SHLS Q4 2025: 2026-02-23
+[Finnhub] Created CTEV Q4 2025: 2026-02-23
+[Finnhub] Skipping CGBD - not in companies table
+[Finnhub] Created GO Q4 2025: 2026-02-23
+[Finnhub] Created SSTI Q4 2025: 2026-02-23
+[Finnhub] Created PCVX Q4 2025: 2026-02-23
+[Finnhub] Created GTM Q4 2025: 2026-02-23
+[Finnhub] Created SSTK Q4 2025: 2026-02-23
+[Finnhub] Created CECO Q4 2025: 2026-02-23
+[Finnhub] Created PRCT Q4 2025: 2026-02-23
+[Finnhub] Created DFH Q4 2025: 2026-02-23
+[Finnhub] Created SEZL Q4 2025: 2026-02-23
+[Finnhub] Created FDP Q4 2025: 2026-02-23
+[Finnhub] Skipping BWXT - not in companies table
+[Finnhub] Created DBX Q4 2025: 2026-02-20
+[Finnhub] Skipping NTAI - not in companies table
+[Finnhub] Created DINO Q4 2025: 2026-02-20
+[Finnhub] Created PRM Q4 2025: 2026-02-20
+[Finnhub] Created HE Q4 2025: 2026-02-19
+[Finnhub] Created PTGX Q4 2025: 2026-02-19
+[Finnhub] Created OIS Q4 2025: 2026-02-19
+[Finnhub] Created SHO Q4 2025: 2026-02-19
+[Finnhub] Created GTBP Q4 2025: 2026-02-19
+[Finnhub] Created BCPC Q4 2025: 2026-02-19
+[Finnhub] Created TXNM Q4 2025: 2026-02-19
+[Finnhub] Created TDS Q4 2025: 2026-02-19
+[Finnhub] Created VIPS Q4 2025: 2026-02-19
+[Finnhub] Created TNK Q4 2025: 2026-02-19
+[Finnhub] Created UNIT Q4 2025: 2026-02-19
+[Finnhub] Created ATMU Q4 2025: 2026-02-19
+[Finnhub] Created JXN Q4 2025: 2026-02-19
+[Finnhub] Skipping WMT - not in companies table
+[Finnhub] Created XP Q4 2025: 2026-02-19
+[Finnhub] Created CCSI Q4 2025: 2026-02-19
+[Finnhub] Created IMUX Q4 2025: 2026-02-19
+[Finnhub] Skipping TRVR - not in companies table
+[Finnhub] Created LKQ Q4 2025: 2026-02-19
+[Finnhub] Created NPK Q4 2025: 2026-02-19
+[Finnhub] Created CDE Q4 2025: 2026-02-19
+[Finnhub] Created GASS Q4 2025: 2026-02-19
+[Finnhub] Created ASIX Q4 2025: 2026-02-19
+[Finnhub] Created AGM Q4 2025: 2026-02-19
+[Finnhub] Skipping UWHR - not in companies table
+[Finnhub] Created ENZN Q4 2025: 2026-02-19
+[Finnhub] Created TK Q4 2025: 2026-02-19
+[Finnhub] Created INTE Q4 2025: 2026-02-19
+[Finnhub] Created BRC Q2 2026: 2026-02-19
+[Finnhub] Created ABR Q4 2025: 2026-02-19
+[Finnhub] Created NTCL Q4 2025: 2026-02-18
+[Finnhub] Created INDI Q4 2025: 2026-02-18
+[Finnhub] Created TXRH Q4 2025: 2026-02-18
+[Finnhub] Created FCN Q4 2025: 2026-02-18
+[Finnhub] Created FRPT Q4 2025: 2026-02-18
+[Finnhub] Created LYV Q4 2025: 2026-02-18
+[Finnhub] Created DVAX Q4 2025: 2026-02-18
+[Finnhub] Created ALRM Q4 2025: 2026-02-18
+[Finnhub] Created CPRT Q2 2026: 2026-02-18
+[Finnhub] Created BBIO Q4 2025: 2026-02-18
+[Finnhub] Created GDYN Q4 2025: 2026-02-18
+[Finnhub] Created AMH Q4 2025: 2026-02-18
+[Finnhub] Created EIG Q4 2025: 2026-02-18
+[Finnhub] Created TECK Q4 2025: 2026-02-18
+[Finnhub] Created NBIS Q4 2025: 2026-02-18
+[Finnhub] Skipping PWR - not in companies table
+[Finnhub] Skipping EIC - not in companies table
+[Finnhub] Created REZI Q4 2025: 2026-02-18
+[Finnhub] Created GHI Q4 2025: 2026-02-18
+[Finnhub] Created GLOB Q4 2025: 2026-02-18
+[Finnhub] Created BVN Q4 2025: 2026-02-18
+[Finnhub] Created BBDC Q4 2025: 2026-02-18
+[Finnhub] Skipping JSHG - not in companies table
+[Finnhub] Created ED Q4 2025: 2026-02-18
+[Finnhub] Skipping LAW - not in companies table
+[Finnhub] Created RYAN Q4 2025: 2026-02-18
+[Finnhub] Created DMLP Q4 2025: 2026-02-18
+[Finnhub] Created BIRK Q1 2026: 2026-02-18
+[Finnhub] Created LNT Q4 2025: 2026-02-18
+[Finnhub] Created ALIT Q4 2025: 2026-02-18
+[Finnhub] Created CNR Q4 2025: 2026-02-18
+[Finnhub] Created NVRI Q4 2025: 2026-02-18
+[Finnhub] Created EXPI Q4 2025: 2026-02-18
+[Finnhub] Created RXT Q4 2025: 2026-02-18
+[Finnhub] Created SHEN Q4 2025: 2026-02-18
+[Finnhub] Created RS Q4 2025: 2026-02-18
+[Finnhub] Created SEM Q4 2025: 2026-02-18
+[Finnhub] Created COKE Q4 2025: 2026-02-18
+[Finnhub] Created RYI Q4 2025: 2026-02-18
+[Finnhub] Created PSNY Q4 2025: 2026-02-18
+[Finnhub] Created LAUR Q4 2025: 2026-02-18
+[Finnhub] Created CERS Q4 2025: 2026-02-18
+[Finnhub] Created UPBD Q4 2025: 2026-02-18
+[Finnhub] Created UTZ Q4 2025: 2026-02-18
+[Finnhub] Created BABA Q3 2026: 2026-02-18
+[Finnhub] Created CSTM Q4 2025: 2026-02-18
+[Finnhub] Created LAMR Q4 2025: 2026-02-18
+[Finnhub] Created BAND Q4 2025: 2026-02-18
+[Finnhub] Skipping NVEE - not in companies table
+[Finnhub] Created SEI Q4 2025: 2026-02-18
+[Finnhub] Created CIO Q4 2025: 2026-02-18
+[Finnhub] Created FIX Q4 2025: 2026-02-18
+[Finnhub] Created INDV Q4 2025: 2026-02-18
+[Finnhub] Created REAL Q4 2025: 2026-02-18
+[Finnhub] Created CENX Q4 2025: 2026-02-18
+[Finnhub] Created PAGS Q4 2025: 2026-02-18
+[Finnhub] Skipping BURCA - not in companies table
+[Finnhub] Skipping SO - not in companies table
+[Finnhub] Created HAS Q4 2025: 2026-02-18
+[Finnhub] Created CQP Q4 2025: 2026-02-18
+[Finnhub] Created CDRO Q4 2025: 2026-02-18
+[Finnhub] Created BCC Q4 2025: 2026-02-18
+[Finnhub] Created NU Q4 2025: 2026-02-18
+[Finnhub] Created SABR Q4 2025: 2026-02-18
+[Finnhub] Skipping DNB - not in companies table
+[Finnhub] Created ATHM Q4 2025: 2026-02-18
+[Finnhub] Created PODD Q4 2025: 2026-02-18
+[Finnhub] Created UEIC Q4 2025: 2026-02-18
+[Finnhub] Created ZEUS Q4 2025: 2026-02-18
+[Finnhub] Created JMIA Q4 2025: 2026-02-18
+[Finnhub] Created SHAK Q4 2025: 2026-02-18
+[Finnhub] Created MD Q4 2025: 2026-02-18
+[Finnhub] Created GTX Q4 2025: 2026-02-18
+[Finnhub] Created PKST Q4 2025: 2026-02-18
+[Finnhub] Created PSHG Q4 2025: 2026-02-18
+[Finnhub] Created SGI Q4 2025: 2026-02-18
+[Finnhub] Created COLD Q4 2025: 2026-02-18
+[Finnhub] Created EPAM Q4 2025: 2026-02-18
+[Finnhub] Created DAO Q4 2025: 2026-02-18
+[Finnhub] Skipping WFCF - not in companies table
+[Finnhub] Created RMAX Q4 2025: 2026-02-18
+[Finnhub] Created VICI Q4 2025: 2026-02-18
+[Finnhub] Created USA Q4 2025: 2026-02-18
+[Finnhub] Created RGEN Q4 2025: 2026-02-18
+[Finnhub] Created IVDN Q4 2025: 2026-02-18
+[Finnhub] Skipping WKC - not in companies table
+[Finnhub] Skipping FG - not in companies table
+[Finnhub] Skipping W - not in companies table
+[Finnhub] Created JAKK Q4 2025: 2026-02-18
+[Finnhub] Created SBLK Q4 2025: 2026-02-18
+[Finnhub] Created GYRE Q4 2025: 2026-02-18
+[Finnhub] Created PRTA Q4 2025: 2026-02-18
+[Finnhub] Created CCRD Q4 2025: 2026-02-18
+[Finnhub] Created TRGP Q4 2025: 2026-02-18
+[Finnhub] Created RNG Q4 2025: 2026-02-18
+[Finnhub] Created BLDR Q4 2025: 2026-02-18
+[Finnhub] Created CELH Q4 2025: 2026-02-18
+[Finnhub] Created RHP Q4 2025: 2026-02-18
+[Finnhub] Created EVH Q4 2025: 2026-02-18
+[Finnhub] Created IRTC Q4 2025: 2026-02-18
+[Finnhub] Created FYBR Q4 2025: 2026-02-18
+[Finnhub] Skipping WSC - not in companies table
+[Finnhub] Created AKAM Q4 2025: 2026-02-18
+[Finnhub] Created KLTR Q4 2025: 2026-02-18
+[Finnhub] Created IDA Q4 2025: 2026-02-18
+[Finnhub] Created BAX Q4 2025: 2026-02-18
+[Finnhub] Created CNP Q4 2025: 2026-02-18
+[Finnhub] Created ACCO Q4 2025: 2026-02-18
+[Finnhub] Created CARG Q4 2025: 2026-02-18
+[Finnhub] Skipping SEBC - not in companies table
+[Finnhub] Created IVR Q4 2025: 2026-02-18
+[Finnhub] Skipping SHYF - not in companies table
+[Finnhub] Created LNG Q4 2025: 2026-02-18
+[Finnhub] Created CMRC Q4 2025: 2026-02-18
+[Finnhub] Created INSM Q4 2025: 2026-02-18
+[Finnhub] Created NTES Q4 2025: 2026-02-18
+[Finnhub] Created DRS Q4 2025: 2026-02-18
+[Finnhub] Created U Q4 2025: 2026-02-18
+[Finnhub] Created LIDR Q4 2025: 2026-02-18
+[Finnhub] Created AMN Q4 2025: 2026-02-18
+[Finnhub] Created GKOS Q4 2025: 2026-02-18
+[Finnhub] Created INOD Q4 2025: 2026-02-18
+[Finnhub] Skipping ECC - not in companies table
+[Finnhub] Skipping TDAY - not in companies table
+[Finnhub] Created LKNCY Q4 2025: 2026-02-18
+[Finnhub] Skipping TPIC - not in companies table
+[Finnhub] Created NEXA Q4 2025: 2026-02-18
+[Finnhub] Created TRN Q4 2025: 2026-02-18
+[Finnhub] Skipping CWK - not in companies table
+[Finnhub] Skipping DGICA - not in companies table
+[Finnhub] Created HPP Q4 2025: 2026-02-18
+[Finnhub] Created BKNG Q4 2025: 2026-02-18
+[Finnhub] Created MP Q4 2025: 2026-02-18
+[Finnhub] Created SFM Q4 2025: 2026-02-18
+[Finnhub] Created POOL Q4 2025: 2026-02-18
+[Finnhub] Created GH Q4 2025: 2026-02-18
+[Finnhub] Created XYZ Q4 2025: 2026-02-18
+[Finnhub] Created TALK Q4 2025: 2026-02-18
+[Finnhub] Created AXTI Q4 2025: 2026-02-18
+[Finnhub] Created FND Q4 2025: 2026-02-18
+[Finnhub] Created TVTX Q4 2025: 2026-02-18
+[Finnhub] Created DBRG Q4 2025: 2026-02-18
+[Finnhub] Created CHH Q4 2025: 2026-02-18
+[Finnhub] Created CTO Q4 2025: 2026-02-18
+[Finnhub] Created OLED Q4 2025: 2026-02-18
+[Finnhub] Created ARDX Q4 2025: 2026-02-18
+[Finnhub] Created NEM Q4 2025: 2026-02-18
+[Finnhub] Created VICR Q4 2025: 2026-02-18
+[Finnhub] Created PDYN Q4 2025: 2026-02-18
+[Finnhub] Created RIVN Q4 2025: 2026-02-18
+[Finnhub] Created ESAB Q4 2025: 2026-02-18
+[Finnhub] Created CRAI Q4 2025: 2026-02-18
+[Finnhub] Created GLPI Q4 2025: 2026-02-18
+[Finnhub] Created FIVN Q4 2025: 2026-02-18
+[Finnhub] Created HNI Q4 2025: 2026-02-18
+[Finnhub] Created ITGR Q4 2025: 2026-02-18
+[Finnhub] Created BJRI Q4 2025: 2026-02-18
+[Finnhub] Skipping PNST - not in companies table
+[Finnhub] Created LOPE Q4 2025: 2026-02-17
+[Finnhub] Created AU Q4 2025: 2026-02-17
+[Finnhub] Created CLH Q4 2025: 2026-02-17
+[Finnhub] Skipping OSW - not in companies table
+[Finnhub] Created CAKE Q4 2025: 2026-02-17
+[Finnhub] Created CLVT Q4 2025: 2026-02-17
+[Finnhub] Created MANU Q2 2026: 2026-02-17
+[Finnhub] Created NPO Q4 2025: 2026-02-17
+[Finnhub] Skipping AXXA - not in companies table
+[Finnhub] Created OBDC Q4 2025: 2026-02-17
+[Finnhub] Created OGE Q4 2025: 2026-02-17
+[Finnhub] Created PERI Q4 2025: 2026-02-17
+[Finnhub] Created HR Q4 2025: 2026-02-17
+[Finnhub] Created MGRC Q4 2025: 2026-02-17
+[Finnhub] Created LUNG Q4 2025: 2026-02-17
+[Finnhub] Created CNK Q4 2025: 2026-02-17
+[Finnhub] Created GNK Q4 2025: 2026-02-17
+[Finnhub] Created KVYO Q4 2025: 2026-02-17
+[Finnhub] Created GRAB Q4 2025: 2026-02-17
+[Finnhub] Skipping LILA - not in companies table
+[Finnhub] Created CDNS Q4 2025: 2026-02-17
+[Finnhub] Created HST Q4 2025: 2026-02-17
+[Finnhub] Created TBI Q4 2025: 2026-02-17
+[Finnhub] Skipping CCAP - not in companies table
+[Finnhub] Created SCL Q4 2025: 2026-02-17
+[Finnhub] Created ICLR Q4 2025: 2026-02-17
+[Finnhub] Created MDT Q3 2026: 2026-02-17
+[Finnhub] Created PRG Q4 2025: 2026-02-17
+[Finnhub] Created LEGT Q4 2025: 2026-02-17
+[Finnhub] Created KALU Q4 2025: 2026-02-17
+[Finnhub] Created MATV Q4 2025: 2026-02-17
+[Finnhub] Created TEM Q4 2025: 2026-02-17
+[Finnhub] Created IONS Q4 2025: 2026-02-17
+[Finnhub] Created SGLY Q2 2026: 2026-02-17
+[Finnhub] Created VMEO Q4 2025: 2026-02-17
+[Finnhub] Skipping MFA - not in companies table
+[Finnhub] Skipping AWR - not in companies table
+[Finnhub] Created IMAX Q4 2025: 2026-02-17
+[Finnhub] Created VTLE Q4 2025: 2026-02-17
+[Finnhub] Skipping FBAK - not in companies table
+[Finnhub] Created MNOV Q4 2025: 2026-02-17
+[Finnhub] Created PK Q4 2025: 2026-02-17
+[Finnhub] Created APPN Q4 2025: 2026-02-17
+[Finnhub] Skipping ANSS - not in companies table
+[Finnhub] Created OII Q4 2025: 2026-02-17
+[Finnhub] Created TRMB Q4 2025: 2026-02-17
+[Finnhub] Skipping AWK - not in companies table
+[Finnhub] Created SBRA Q4 2025: 2026-02-17
+[Finnhub] Skipping CWAN - not in companies table
+[Finnhub] Created GSM Q4 2025: 2026-02-17
+[Finnhub] Created KAR Q4 2025: 2026-02-17
+[Finnhub] Skipping MCW - not in companies table
+[Finnhub] Created OGS Q4 2025: 2026-02-17
+[Finnhub] Created VAL Q4 2025: 2026-02-17
+[Finnhub] Created BNL Q4 2025: 2026-02-17
+[Finnhub] Created ROCK Q4 2025: 2026-02-17
+[Finnhub] Created BORR Q4 2025: 2026-02-17
+[Finnhub] Created KRYS Q4 2025: 2026-02-17
+[Finnhub] Created ACVA Q4 2025: 2026-02-17
+[Finnhub] Created FPI Q4 2025: 2026-02-17
+[Finnhub] Skipping LNAI - not in companies table
+[Finnhub] Created PUMP Q4 2025: 2026-02-17
+[Finnhub] Created NOG Q4 2025: 2026-02-17
+[Finnhub] Created CF Q4 2025: 2026-02-17
+[Finnhub] Skipping WINA - not in companies table
+[Finnhub] Skipping WING - not in companies table
+[Finnhub] Created DROR Q4 2025: 2026-02-17
+[Finnhub] Created THRM Q4 2025: 2026-02-17
+[Finnhub] Created NDSN Q1 2026: 2026-02-17
+[Finnhub] Created HLF Q4 2025: 2026-02-17
+[Finnhub] Created BCRD Q3 2025: 2026-02-17
+[Finnhub] Skipping ADAM - not in companies table
+[Finnhub] Skipping MNMB - not in companies table
+[Finnhub] Created MHH Q4 2025: 2026-02-17
+[Finnhub] Created TRUP Q4 2025: 2026-02-17
+[Finnhub] Created FVRR Q4 2025: 2026-02-17
+[Finnhub] Skipping WWW - not in companies table
+[Finnhub] Created KPTI Q4 2025: 2026-02-17
+[Finnhub] Created BMRN Q4 2025: 2026-02-17
+[Finnhub] Created MTRN Q4 2025: 2026-02-17
+[Finnhub] Created ENVX Q4 2025: 2026-02-17
+[Finnhub] Skipping LAND - not in companies table
+[Finnhub] Created SKT Q4 2025: 2026-02-17
+[Finnhub] Created LPX Q4 2025: 2026-02-17
+[Finnhub] Skipping WIX - not in companies table
+[Finnhub] Created CMTG Q4 2025: 2026-02-17
+[Finnhub] Created RGR Q4 2025: 2026-02-17
+[Finnhub] Created CHDN Q4 2025: 2026-02-17
+[Finnhub] Created FOLD Q4 2025: 2026-02-17
+[Finnhub] Created ETSY Q4 2025: 2026-02-17
+[Finnhub] Created EQX Q4 2025: 2026-02-17
+[Finnhub] Created ADI Q1 2026: 2026-02-17
+[Finnhub] Created TNL Q4 2025: 2026-02-17
+[Finnhub] Created JLL Q4 2025: 2026-02-17
+[Finnhub] Created ESRT Q4 2025: 2026-02-17
+[Finnhub] Created EXAS Q4 2025: 2026-02-17
+[Finnhub] Created ROG Q4 2025: 2026-02-17
+[Finnhub] Created CRL Q4 2025: 2026-02-17
+[Finnhub] Created SEDG Q4 2025: 2026-02-17
+[Finnhub] Created PRAA Q4 2025: 2026-02-17
+[Finnhub] Created BINI Q1 2026: 2026-02-17
+[Finnhub] Created CVNA Q4 2025: 2026-02-17
+[Finnhub] Created AHH Q4 2025: 2026-02-17
+[Finnhub] Created GRMN Q4 2025: 2026-02-17
+[Finnhub] Created PSN Q4 2025: 2026-02-17
+[Finnhub] Created TPL Q4 2025: 2026-02-17
+[Finnhub] Created INSG Q4 2025: 2026-02-17
+[Finnhub] Created IIPR Q4 2025: 2026-02-17
+[Finnhub] Created SM Q4 2025: 2026-02-17
+[Finnhub] Created BLKB Q4 2025: 2026-02-16
+[Finnhub] Created ORIC Q4 2025: 2026-02-16
+[Finnhub] Created SB Q4 2025: 2026-02-16
+[Finnhub] Created DVN Q4 2025: 2026-02-16
+[Finnhub] Skipping GNW - not in companies table
+[Finnhub] Created ALLE Q4 2025: 2026-02-16
+[Finnhub] Created AIP Q4 2025: 2026-02-16
+[Finnhub] Created ETR Q4 2025: 2026-02-16
+[Finnhub] Created CSGP Q4 2025: 2026-02-16
+[Finnhub] Created FLS Q4 2025: 2026-02-16
+[Finnhub] Created CE Q4 2025: 2026-02-16
+[Finnhub] Created NGVT Q4 2025: 2026-02-16
+[Finnhub] Created CVI Q4 2025: 2026-02-16
+[Finnhub] Created OTTR Q4 2025: 2026-02-16
+[Finnhub] Created BRSP Q4 2025: 2026-02-16
+[Finnhub] Created TRTX Q4 2025: 2026-02-16
+[Finnhub] Created SES Q4 2025: 2026-02-16
+[Finnhub] Created LZB Q3 2026: 2026-02-16
+[Finnhub] Created HLMN Q4 2025: 2026-02-16
+[Finnhub] Skipping RUSHA - not in companies table
+[Finnhub] Created SMLR Q4 2025: 2026-02-16
+[Finnhub] Skipping WTTR - not in companies table
+[Finnhub] Created DJCO Q1 2026: 2026-02-16
+[Finnhub] Created SPNS Q4 2025: 2026-02-16
+[Finnhub] Created VMC Q4 2025: 2026-02-16
+[Finnhub] Created SOHU Q4 2025: 2026-02-16
+[Finnhub] Created FLR Q4 2025: 2026-02-16
+[Finnhub] Created JELD Q4 2025: 2026-02-16
+[Finnhub] Skipping GOOD - not in companies table
+[Finnhub] Skipping WAY - not in companies table
+[Finnhub] Created ANET Q4 2025: 2026-02-16
+[Finnhub] Created FONR Q2 2026: 2026-02-16
+[Finnhub] Created CSR Q4 2025: 2026-02-16
+[Finnhub] Created OXY Q4 2025: 2026-02-16
+[Finnhub] Created MTDR Q4 2025: 2026-02-16
+[Finnhub] Created FELE Q4 2025: 2026-02-16
+[Finnhub] Created CHCT Q4 2025: 2026-02-16
+[Finnhub] Created ANDE Q4 2025: 2026-02-16
+[Finnhub] Created MBC Q4 2025: 2026-02-16
+[Finnhub] Created UIS Q4 2025: 2026-02-16
+[Finnhub] Created EDXC Q1 2026: 2026-02-16
+[Finnhub] Created MTLS Q4 2025: 2026-02-16
+[Finnhub] Skipping SKWD - not in companies table
+[Finnhub] Created SSRM Q4 2025: 2026-02-16
+[Finnhub] Created GLDD Q4 2025: 2026-02-16
+[Finnhub] Created JBGS Q4 2025: 2026-02-16
+[Finnhub] Created HCKT Q4 2025: 2026-02-16
+[Finnhub] Created IFF Q4 2025: 2026-02-16
+[Finnhub] Created CYH Q4 2025: 2026-02-16
+[Finnhub] Created MED Q4 2025: 2026-02-16
+[Finnhub] Created NEO Q4 2025: 2026-02-16
+[Finnhub] Created ADEA Q4 2025: 2026-02-16
+[Finnhub] Created AGTX Q3 2025: 2026-02-16
+[Finnhub] Created AXSM Q4 2025: 2026-02-16
+[Finnhub] Created IOSP Q4 2025: 2026-02-16
+[Finnhub] Created QUAD Q4 2025: 2026-02-16
+[Finnhub] Created HUN Q4 2025: 2026-02-16
+[Finnhub] Skipping LBTYA - not in companies table
+[Finnhub] Skipping RNW - not in companies table
+[Finnhub] Created BMBL Q4 2025: 2026-02-16
+[Finnhub] Created BIDU Q4 2025: 2026-02-16
+[Finnhub] Created BABB Q4 2025: 2026-02-16
+[Finnhub] Created TOL Q1 2026: 2026-02-16
+[Finnhub] Created COMP Q4 2025: 2026-02-16
+[Finnhub] Created DFIN Q4 2025: 2026-02-16
+[Finnhub] Created TNC Q4 2025: 2026-02-16
+[Finnhub] Created EQT Q4 2025: 2026-02-16
+[Finnhub] Created IQ Q4 2025: 2026-02-16
+[Finnhub] Created GPC Q4 2025: 2026-02-16
+[Finnhub] Created TRUE Q4 2025: 2026-02-16
+[Finnhub] Created CC Q4 2025: 2026-02-16
+[Finnhub] Created ILPT Q4 2025: 2026-02-16
+[Finnhub] Created CLF Q4 2025: 2026-02-16
+[Finnhub] Created TX Q4 2025: 2026-02-16
+[Finnhub] Created ELC Q4 2025: 2026-02-16
+[Finnhub] Created RTON Q3 2026: 2026-02-16
+[Finnhub] Created UFPI Q4 2025: 2026-02-16
+[Finnhub] Skipping BELFA - not in companies table
+[Finnhub] Created PEN Q4 2025: 2026-02-16
+[Finnhub] Created TCMD Q4 2025: 2026-02-16
+[Finnhub] Created BXC Q4 2025: 2026-02-16
+[Finnhub] Created PRMB Q4 2025: 2026-02-16
+[Finnhub] Created CRK Q4 2025: 2026-02-16
+[Finnhub] Skipping CYFL - not in companies table
+[Finnhub] Created MGY Q4 2025: 2026-02-16
+[Finnhub] Created TPH Q4 2025: 2026-02-16
+[Finnhub] Created FOUR Q4 2025: 2026-02-16
+[Finnhub] Skipping UCFI - not in companies table
+[Finnhub] Created BKD Q4 2025: 2026-02-16
+[Finnhub] Created NE Q4 2025: 2026-02-16
+[Finnhub] Created SON Q4 2025: 2026-02-16
+[Finnhub] Skipping WSO - not in companies table
+[Finnhub] Skipping WDLF - not in companies table
+[Finnhub] Skipping WGS - not in companies table
+[Finnhub] Created STHO Q4 2025: 2026-02-16
+[Finnhub] Created ESI Q4 2025: 2026-02-16
+[Finnhub] Created VC Q4 2025: 2026-02-16
+[Finnhub] Created BTCY Q3 2026: 2026-02-16
+[Finnhub] Created ULS Q4 2025: 2026-02-16
+[Finnhub] Created RIG Q4 2025: 2026-02-16
+[Finnhub] Created SEVN Q4 2025: 2026-02-16
+[Finnhub] Created UAN Q4 2025: 2026-02-16
+[Finnhub] Created CEG Q4 2025: 2026-02-16
+[Finnhub] Created SPNT Q4 2025: 2026-02-16
+[Finnhub] Created VMI Q4 2025: 2026-02-16
+[Finnhub] Created DAN Q4 2025: 2026-02-16
+[Finnhub] Created PRDO Q4 2025: 2026-02-16
+[Finnhub] Created KNSA Q4 2025: 2026-02-16
+[Finnhub] Created INFA Q4 2025: 2026-02-14
+[Finnhub] Created LSE Q4 2025: 2026-02-13
+[Finnhub] Created VRDR Q2 2026: 2026-02-13
+[Finnhub] Skipping IMPP - not in companies table
+[Finnhub] Created UPXI Q2 2026: 2026-02-13
+[Finnhub] Created CCJ Q4 2025: 2026-02-13
+[Finnhub] Created AERT Q3 2026: 2026-02-13
+[Finnhub] Created GRCE Q3 2026: 2026-02-13
+[Finnhub] Created FRT Q4 2025: 2026-02-13
+[Finnhub] Created BLCO Q4 2025: 2026-02-13
+[Finnhub] Created GEHC Q4 2025: 2026-02-13
+[Finnhub] Created VRDR Q4 2025: 2026-02-13
+[Finnhub] Created ADMT Q3 2026: 2026-02-12
+[Finnhub] Created NGTF Q2 2026: 2026-02-12
+[Finnhub] Created PCSV Q3 2026: 2026-02-12
+[Finnhub] Created AUR Q4 2025: 2026-02-12
+[Finnhub] Skipping SRNN - not in companies table
+[Finnhub] Created CLPR Q4 2025: 2026-02-12
+[Finnhub] Created ABAT Q2 2026: 2026-02-12
+[Finnhub] Created APVO Q4 2025: 2026-02-12
+[Finnhub] Created CAHO Q3 2025: 2026-02-12
+[Finnhub] Created IXHL Q2 2026: 2026-02-12
+[Finnhub] Created INTG Q2 2026: 2026-02-12
+[Finnhub] Created CTXR Q1 2026: 2026-02-12
+[Finnhub] Created AMCX Q4 2025: 2026-02-12
+[Finnhub] Created LBUY Q2 2026: 2026-02-12
+[Finnhub] Created MERC Q4 2025: 2026-02-12
+[Finnhub] Skipping PPBN - not in companies table
+[Finnhub] Created SXT Q4 2025: 2026-02-12
+[Finnhub] Created PRSI Q2 2026: 2026-02-12
+[Finnhub] Created USBC Q1 2026: 2026-02-12
+[Finnhub] Skipping WSTL - not in companies table
+[Finnhub] Created FOXX Q2 2026: 2026-02-12
+[Finnhub] Created OTLK Q1 2026: 2026-02-12
+[Finnhub] Created DYNT Q2 2026: 2026-02-12
+[Finnhub] Created ADX Q4 2025: 2026-02-12
+[Finnhub] Created AXL Q4 2025: 2026-02-12
+[Finnhub] Created BNTC Q2 2026: 2026-02-12
+[Finnhub] Created NXEN Q2 2026: 2026-02-12
+[Finnhub] Skipping INTV - not in companies table
+[Finnhub] Created NNE Q1 2026: 2026-02-12
+[Finnhub] Created GTLL Q2 2026: 2026-02-12
+[Finnhub] Created COIN Q4 2025: 2026-02-12
+[Finnhub] Created ROKU Q4 2025: 2026-02-12
+[Finnhub] Created ZBRA Q4 2025: 2026-02-12
+[Finnhub] Created AIHS Q3 2026: 2026-02-12
+[Finnhub] Created XERI Q2 2026: 2026-02-12
+[Finnhub] Created ASTC Q2 2026: 2026-02-12
+[Finnhub] Skipping FKWL - not in companies table
+[Finnhub] Created BSBK Q4 2025: 2026-02-12
+[Finnhub] Skipping ACAN - not in companies table
+[Finnhub] Created NAII Q2 2026: 2026-02-12
+[Finnhub] Skipping CTA PR A - not in companies table
+[Finnhub] Created CVAT Q2 2026: 2026-02-12
+[Finnhub] Created CVM Q1 2026: 2026-02-12
+[Finnhub] Created NNVC Q2 2026: 2026-02-12
+[Finnhub] Created XITO Q3 2026: 2026-02-12
+[Finnhub] Skipping DFPH - not in companies table
+[Finnhub] Created SUND Q3 2025: 2026-02-12
+[Finnhub] Created CBL Q4 2025: 2026-02-12
+[Finnhub] Created BRN Q1 2026: 2026-02-12
+[Finnhub] Created SCIA Q4 2025: 2026-02-12
+[Finnhub] Created NMRK Q4 2025: 2026-02-12
+[Finnhub] Created MMI Q4 2025: 2026-02-12
+[Finnhub] Created LVO Q3 2026: 2026-02-12
+[Finnhub] Created THS Q4 2025: 2026-02-12
+[Finnhub] Created IGC Q3 2026: 2026-02-12
+[Finnhub] Created VIVC Q2 2026: 2026-02-12
+[Finnhub] Created MSN Q3 2026: 2026-02-12
+[Finnhub] Created SISI Q2 2026: 2026-02-12
+[Finnhub] Created BNET Q2 2026: 2026-02-12
+[Finnhub] Created ANEB Q2 2026: 2026-02-12
+[Finnhub] Created FUST Q1 2026: 2026-02-12
+[Finnhub] Created PETV Q3 2026: 2026-02-12
+[Finnhub] Created VPLM Q1 2026: 2026-02-12
+[Finnhub] Created FNMA Q4 2025: 2026-02-12
+[Finnhub] Created MRNA Q4 2025: 2026-02-12
+[Finnhub] Created TGL Q2 2026: 2026-02-12
+[Finnhub] Created GLNS Q2 2026: 2026-02-12
+[Finnhub] Created NEUP Q2 2026: 2026-02-12
+[Finnhub] Created GRVY Q4 2025: 2026-02-12
+[Finnhub] Created EDSA Q1 2026: 2026-02-12
+[Finnhub] Skipping CYCA - not in companies table
+[Finnhub] Created ECIA Q3 2026: 2026-02-12
+[Finnhub] Created SIF Q1 2026: 2026-02-12
+[Finnhub] Created BAP Q4 2025: 2026-02-12
+[Finnhub] Created CTOR Q1 2026: 2026-02-12
+[Finnhub] Created OTLY Q4 2025: 2026-02-12
+[Finnhub] Created CETX Q1 2026: 2026-02-12
+[Finnhub] Created UUU Q3 2026: 2026-02-12
+[Finnhub] Created POR Q4 2025: 2026-02-12
+[Finnhub] Created BGC Q4 2025: 2026-02-12
+[Finnhub] Skipping SOMC - not in companies table
+[Finnhub] Skipping DMN - not in companies table
+[Finnhub] Created FEAM Q2 2026: 2026-02-11
+[Finnhub] Created LXP Q4 2025: 2026-02-11
+[Finnhub] Created VERU Q1 2026: 2026-02-11
+[Finnhub] Created AENT Q2 2026: 2026-02-11
+[Finnhub] Created LEG Q4 2025: 2026-02-11
+[Finnhub] Created UDMY Q4 2025: 2026-02-11
+[Finnhub] Created PHIN Q4 2025: 2026-02-11
+[Finnhub] Created SBH Q1 2026: 2026-02-11
+[Finnhub] Created MITQ Q2 2026: 2026-02-11
+[Finnhub] Skipping SMWB - not in companies table
+[Finnhub] Created PX Q4 2025: 2026-02-11
+[Finnhub] Created AGIO Q4 2025: 2026-02-11
+[Finnhub] Created AEE Q4 2025: 2026-02-11
+[Finnhub] Created TSLX Q4 2025: 2026-02-11
+[Finnhub] Skipping GLOP PR A - not in companies table
+[Finnhub] Created BTOC Q2 2026: 2026-02-11
+[Finnhub] Skipping DTE - not in companies table
+[Finnhub] Created RARE Q4 2025: 2026-02-11
+[Finnhub] Skipping HWM - not in companies table
+[Finnhub] Skipping HNNA - not in companies table
+[Finnhub] Created PPL Q4 2025: 2026-02-11
+[Finnhub] Created CARV Q3 2025: 2026-02-11
+[Finnhub] Skipping RWT - not in companies table
+[Finnhub] Created ALDS Q2 2026: 2026-02-11
+[Finnhub] Created ESNT Q4 2025: 2026-02-11
+[Finnhub] Created FBRT Q4 2025: 2026-02-11
+[Finnhub] Created RSSS Q2 2026: 2026-02-11
+[Finnhub] Created HOUS Q4 2025: 2026-02-11
+[Finnhub] Created IRM Q4 2025: 2026-02-11
+[Finnhub] Created CEVA Q4 2025: 2026-02-11
+[Finnhub] Created H Q4 2025: 2026-02-11
+[Finnhub] Created YETI Q4 2025: 2026-02-11
+[Finnhub] Created TIKK Q3 2026: 2026-02-11
+[Finnhub] Created RSG Q4 2025: 2026-02-11
+[Finnhub] Created PGY Q4 2025: 2026-02-11
+[Finnhub] Skipping AILLP - not in companies table
+[Finnhub] Created CURB Q4 2025: 2026-02-11
+[Finnhub] Skipping PANW - not in companies table
+[Finnhub] Created KNSL Q4 2025: 2026-02-11
+[Finnhub] Created NVMI Q4 2025: 2026-02-11
+[Finnhub] Created ALE Q4 2025: 2026-02-11
+[Finnhub] Created OPI Q4 2025: 2026-02-11
+[Finnhub] Skipping WYNN - not in companies table
+[Finnhub] Skipping GROW - not in companies table
+[Finnhub] Skipping FWDI - not in companies table
+[Finnhub] Created DXCM Q4 2025: 2026-02-11
+[Finnhub] Created ITIC Q4 2025: 2026-02-11
+[Finnhub] Created IDYA Q4 2025: 2026-02-11
+[Finnhub] Created YELP Q4 2025: 2026-02-11
+[Finnhub] Created BFAM Q4 2025: 2026-02-11
+[Finnhub] Created ISSC Q1 2026: 2026-02-11
+[Finnhub] Created MATH Q2 2026: 2026-02-11
+[Finnhub] Created HBI Q4 2025: 2026-02-11
+[Finnhub] Created VTGN Q3 2026: 2026-02-11
+[Finnhub] Created TCX Q4 2025: 2026-02-11
+[Finnhub] Created NMM Q4 2025: 2026-02-11
+[Finnhub] Created GT Q4 2025: 2026-02-11
+[Finnhub] Skipping IBAC - not in companies table
+[Finnhub] Created CYBR Q4 2025: 2026-02-11
+[Finnhub] Created R Q4 2025: 2026-02-11
+[Finnhub] Created AEP Q4 2025: 2026-02-11
+[Finnhub] Created AMAT Q1 2026: 2026-02-11
+[Finnhub] Created BLIN Q1 2026: 2026-02-11
+[Finnhub] Created DKNG Q4 2025: 2026-02-11
+[Finnhub] Created ABNB Q4 2025: 2026-02-11
+[Finnhub] Created KNF Q4 2025: 2026-02-11
+[Finnhub] Created IGR Q4 2025: 2026-02-11
+[Finnhub] Skipping BNBX - not in companies table
+[Finnhub] Created CLBT Q4 2025: 2026-02-11
+[Finnhub] Created ZTS Q4 2025: 2026-02-11
+[Finnhub] Created PDFS Q4 2025: 2026-02-11
+[Finnhub] Created YCBD Q1 2026: 2026-02-11
+[Finnhub] Skipping KELYA - not in companies table
+[Finnhub] Created PDM Q4 2025: 2026-02-11
+[Finnhub] Created CPS Q4 2025: 2026-02-11
+[Finnhub] Created SONN Q1 2026: 2026-02-11
+[Finnhub] Created LECO Q4 2025: 2026-02-11
+[Finnhub] Created MVBF Q4 2025: 2026-02-11
+[Finnhub] Created GDDY Q4 2025: 2026-02-11
+[Finnhub] Created PBF Q4 2025: 2026-02-11
+[Finnhub] Created MARPS Q2 2026: 2026-02-11
+[Finnhub] Created USFD Q4 2025: 2026-02-11
+[Finnhub] Created CROX Q4 2025: 2026-02-11
+[Finnhub] Created PACB Q4 2025: 2026-02-11
+[Finnhub] Created PAMT Q4 2025: 2026-02-11
+[Finnhub] Created JOB Q1 2026: 2026-02-11
+[Finnhub] Created MSI Q4 2025: 2026-02-11
+[Finnhub] Created PAG Q4 2025: 2026-02-11
+[Finnhub] Created IRMD Q4 2025: 2026-02-11
+[Finnhub] Created POCI Q2 2026: 2026-02-11
+[Finnhub] Created CNVS Q3 2026: 2026-02-11
+[Finnhub] Skipping BN - not in companies table
+[Finnhub] Created CBRE Q4 2025: 2026-02-11
+[Finnhub] Skipping TWLO - not in companies table
+[Finnhub] Skipping HTGC - not in companies table
+[Finnhub] Created GVA Q4 2025: 2026-02-11
+[Finnhub] Skipping VWFB - not in companies table
+[Finnhub] Skipping NTWK - not in companies table
+[Finnhub] Created TRU Q4 2025: 2026-02-11
+[Finnhub] Created PCG Q4 2025: 2026-02-11
+[Finnhub] Created SN Q4 2025: 2026-02-11
+[Finnhub] Skipping OPTU - not in companies table
+[Finnhub] Created GEL Q4 2025: 2026-02-11
+[Finnhub] Created FROG Q4 2025: 2026-02-11
+[Finnhub] Created ELTP Q3 2026: 2026-02-11
+[Finnhub] Created IRDM Q4 2025: 2026-02-11
+[Finnhub] Created HRI Q4 2025: 2026-02-11
+[Finnhub] Created HTZ Q4 2025: 2026-02-11
+[Finnhub] Created BIO Q4 2025: 2026-02-11
+[Finnhub] Created HCC Q4 2025: 2026-02-11
+[Finnhub] Created NUS Q4 2025: 2026-02-11
+[Finnhub] Created VNT Q4 2025: 2026-02-11
+[Finnhub] Created COHU Q4 2025: 2026-02-11
+[Finnhub] Skipping SANW - not in companies table
+[Finnhub] Created IR Q4 2025: 2026-02-11
+[Finnhub] Created HL Q4 2025: 2026-02-11
+[Finnhub] Created GMGI Q4 2025: 2026-02-11
+[Finnhub] Created VNDA Q4 2025: 2026-02-11
+[Finnhub] Created TNET Q4 2025: 2026-02-11
+[Finnhub] Created MCO Q4 2025: 2026-02-11
+[Finnhub] Created RCEL Q4 2025: 2026-02-11
+[Finnhub] Created GPN Q4 2025: 2026-02-11
+[Finnhub] Created GGR Q4 2025: 2026-02-11
+[Finnhub] Created EGAN Q2 2026: 2026-02-11
+[Finnhub] Created AL Q4 2025: 2026-02-11
+[Finnhub] Created FMCC Q4 2025: 2026-02-11
+[Finnhub] Created PCOR Q4 2025: 2026-02-11
+[Finnhub] Created OGN Q4 2025: 2026-02-11
+[Finnhub] Skipping CLW - not in companies table
+[Finnhub] Skipping WST - not in companies table
+[Finnhub] Skipping WD - not in companies table
+[Finnhub] Created DVA Q4 2025: 2026-02-11
+[Finnhub] Skipping PCG PR A - not in companies table
+[Finnhub] Created AVNT Q4 2025: 2026-02-11
+[Finnhub] Created ELME Q4 2025: 2026-02-11
+[Finnhub] Skipping DNOW - not in companies table
+[Finnhub] Created ONIT Q4 2025: 2026-02-11
+[Finnhub] Skipping PTN - not in companies table
+[Finnhub] Created QDEL Q4 2025: 2026-02-11
+[Finnhub] Skipping DUK - not in companies table
+[Finnhub] Created TAP Q4 2025: 2026-02-11
+[Finnhub] Created DE Q1 2026: 2026-02-11
+[Finnhub] Created LPTH Q2 2026: 2026-02-11
+[Finnhub] Created SEB Q4 2025: 2026-02-11
+[Finnhub] Created GPMT Q4 2025: 2026-02-11
+[Finnhub] Created DLR Q4 2025: 2026-02-11
+[Finnhub] Created HIMX Q4 2025: 2026-02-11
+[Finnhub] Created KN Q4 2025: 2026-02-11
+[Finnhub] Created TRT Q2 2026: 2026-02-11
+[Finnhub] Created INBP Q2 2026: 2026-02-11
+[Finnhub] Skipping WEN - not in companies table
+[Finnhub] Skipping BRKR - not in companies table
+[Finnhub] Created RGLD Q4 2025: 2026-02-11
+[Finnhub] Created DDOG Q4 2025: 2026-02-11
+[Finnhub] Created APP Q4 2025: 2026-02-10
+[Finnhub] Created VPG Q4 2025: 2026-02-10
+[Finnhub] Skipping WHG - not in companies table
+[Finnhub] Created ALCO Q1 2026: 2026-02-10
+[Finnhub] Skipping WMB - not in companies table
+[Finnhub] Created FCPT Q4 2025: 2026-02-10
+[Finnhub] Created PAL Q4 2025: 2026-02-10
+[Finnhub] Created EQIX Q4 2025: 2026-02-10
+[Finnhub] Skipping AIRT - not in companies table
+[Finnhub] Created ALKS Q4 2025: 2026-02-10
+[Finnhub] Created PEGA Q4 2025: 2026-02-10
+[Finnhub] Created IPG Q4 2025: 2026-02-10
+[Finnhub] Created TROX Q4 2025: 2026-02-10
+[Finnhub] Created SCI Q4 2025: 2026-02-10
+[Finnhub] Created HOOD Q4 2025: 2026-02-10
+[Finnhub] Created TMHC Q4 2025: 2026-02-10
+[Finnhub] Created SITE Q4 2025: 2026-02-10
+[Finnhub] Created LITS Q2 2026: 2026-02-10
+[Finnhub] Created HASI Q4 2025: 2026-02-10
+[Finnhub] Created D Q4 2025: 2026-02-10
+[Finnhub] Created SFL Q4 2025: 2026-02-10
+[Finnhub] Created FMAO Q4 2025: 2026-02-10
+[Finnhub] Created CNDT Q4 2025: 2026-02-10
+[Finnhub] Skipping RDWR - not in companies table
+[Finnhub] Created MKSI Q4 2025: 2026-02-10
+[Finnhub] Created QS Q4 2025: 2026-02-10
+[Finnhub] Created RBBN Q4 2025: 2026-02-10
+[Finnhub] Created AVXL Q1 2026: 2026-02-10
+[Finnhub] Created INM Q2 2026: 2026-02-10
+[Finnhub] Created CHEF Q4 2025: 2026-02-10
+[Finnhub] Skipping CRWS - not in companies table
+[Finnhub] Created BROS Q4 2025: 2026-02-10
+[Finnhub] Created VECO Q4 2025: 2026-02-10
+[Finnhub] Created QSR Q4 2025: 2026-02-10
+[Finnhub] Created THC Q4 2025: 2026-02-10
+[Finnhub] Created FAF Q4 2025: 2026-02-10
+[Finnhub] Skipping SW - not in companies table
+[Finnhub] Created TYL Q4 2025: 2026-02-10
+[Finnhub] Created ASPN Q4 2025: 2026-02-10
+[Finnhub] Created GTY Q4 2025: 2026-02-10
+[Finnhub] Created PAYC Q4 2025: 2026-02-10
+[Finnhub] Created HCSG Q4 2025: 2026-02-10
+[Finnhub] Created CFSB Q2 2026: 2026-02-10
+[Finnhub] Skipping SPMC - not in companies table
+[Finnhub] Created AEMD Q3 2026: 2026-02-10
+[Finnhub] Created COOP Q4 2025: 2026-02-10
+[Finnhub] Created UE Q4 2025: 2026-02-10
+[Finnhub] Created KAI Q4 2025: 2026-02-10
+[Finnhub] Created PPC Q4 2025: 2026-02-10
+[Finnhub] Created RZLT Q2 2026: 2026-02-10
+[Finnhub] Created ALB Q4 2025: 2026-02-10
+[Finnhub] Created ESP Q2 2026: 2026-02-10
+[Finnhub] Created GNRC Q4 2025: 2026-02-10
+[Finnhub] Created PAX Q4 2025: 2026-02-10
+[Finnhub] Created CET Q4 2025: 2026-02-10
+[Finnhub] Skipping WH - not in companies table
+[Finnhub] Created ASND Q4 2025: 2026-02-10
+[Finnhub] Skipping CWST - not in companies table
+[Finnhub] Created ARQT Q4 2025: 2026-02-10
+[Finnhub] Created TDC Q4 2025: 2026-02-10
+[Finnhub] Created REPL Q3 2026: 2026-02-10
+[Finnhub] Created BIIB Q4 2025: 2026-02-10
+[Finnhub] Created CFBK Q4 2025: 2026-02-10
+[Finnhub] Skipping CW - not in companies table
+[Finnhub] Created SLVM Q4 2025: 2026-02-10
+[Finnhub] Created PYYX Q3 2026: 2026-02-10
+[Finnhub] Created EXC Q4 2025: 2026-02-10
+[Finnhub] Created SAH Q4 2025: 2026-02-10
+[Finnhub] Created ROL Q4 2025: 2026-02-10
+[Finnhub] Created MGM Q4 2025: 2026-02-10
+[Finnhub] Created VRT Q4 2025: 2026-02-10
+[Finnhub] Created PHBI Q1 2026: 2026-02-10
+[Finnhub] Skipping MTW - not in companies table
+[Finnhub] Skipping ABHBY - not in companies table
+[Finnhub] Created HUBS Q4 2025: 2026-02-10
+[Finnhub] Created AYTU Q2 2026: 2026-02-10
+[Finnhub] Created LAD Q4 2025: 2026-02-10
+[Finnhub] Created KRNT Q4 2025: 2026-02-10
+[Finnhub] Created PLMR Q4 2025: 2026-02-10
+[Finnhub] Created RPD Q4 2025: 2026-02-10
+[Finnhub] Skipping AMWL - not in companies table
+[Finnhub] Created SOND Q3 2025: 2026-02-10
+[Finnhub] Skipping GAIN - not in companies table
+[Finnhub] Created AR Q4 2025: 2026-02-10
+[Finnhub] Created MLM Q4 2025: 2026-02-10
+[Finnhub] Created NBR Q4 2025: 2026-02-10
+[Finnhub] Created CME Q4 2025: 2026-02-10
+[Finnhub] Created BAM Q4 2025: 2026-02-10
+[Finnhub] Created MLYS Q4 2025: 2026-02-10
+[Finnhub] Created IRT Q4 2025: 2026-02-10
+[Finnhub] Created AEIS Q4 2025: 2026-02-10
+[Finnhub] Created SPTN Q4 2025: 2026-02-10
+[Finnhub] Created NMTC Q1 2026: 2026-02-10
+[Finnhub] Created CAMT Q4 2025: 2026-02-10
+[Finnhub] Created TRAK Q2 2026: 2026-02-10
+[Finnhub] Skipping CIM - not in companies table
+[Finnhub] Created OPRT Q4 2025: 2026-02-10
+[Finnhub] Created PYPD Q4 2025: 2026-02-10
+[Finnhub] Created BXMT Q4 2025: 2026-02-10
+[Finnhub] Created RDCM Q4 2025: 2026-02-10
+[Finnhub] Created ARR Q4 2025: 2026-02-10
+[Finnhub] Created MSA Q4 2025: 2026-02-10
+[Finnhub] Created EEFT Q4 2025: 2026-02-10
+[Finnhub] Created VTR Q4 2025: 2026-02-10
+[Finnhub] Created GLBE Q4 2025: 2026-02-10
+[Finnhub] Created IREN Q2 2026: 2026-02-10
+[Finnhub] Created STAG Q4 2025: 2026-02-10
+[Finnhub] Created PZG Q2 2026: 2026-02-10
+[Finnhub] Skipping VINOQ - not in companies table
+[Finnhub] Created CRSR Q4 2025: 2026-02-10
+[Finnhub] Created RGS Q2 2026: 2026-02-10
+[Finnhub] Created CTRE Q4 2025: 2026-02-10
+[Finnhub] Skipping UPWK - not in companies table
+[Finnhub] Created TTD Q4 2025: 2026-02-10
+[Finnhub] Created GXO Q4 2025: 2026-02-10
+[Finnhub] Created ATRC Q4 2025: 2026-02-10
+[Finnhub] Created CSCO Q2 2026: 2026-02-10
+[Finnhub] Created FSLY Q4 2025: 2026-02-10
+[Finnhub] Skipping PXLW - not in companies table
+[Finnhub] Created CXT Q4 2025: 2026-02-10
+[Finnhub] Skipping NWE - not in companies table
+[Finnhub] Created NI Q4 2025: 2026-02-10
+[Finnhub] Created KHC Q4 2025: 2026-02-10
+[Finnhub] Created MMLP Q4 2025: 2026-02-10
+[Finnhub] Created QMCO Q3 2026: 2026-02-10
+[Finnhub] Created AM Q4 2025: 2026-02-10
+[Finnhub] Created GMED Q4 2025: 2026-02-10
+[Finnhub] Skipping WAT - not in companies table
+[Finnhub] Created PEBK Q4 2025: 2026-02-10
+[Finnhub] Skipping WAB - not in companies table
+[Finnhub] Created NRDS Q4 2025: 2026-02-10
+[Finnhub] Created IMAQ Q3 2025: 2026-02-10
+[Finnhub] Skipping LOGN - not in companies table
+[Finnhub] Created DBD Q4 2025: 2026-02-10
+[Finnhub] Created ACRE Q4 2025: 2026-02-10
+[Finnhub] Created TR Q4 2025: 2026-02-10
+[Finnhub] Created GILT Q4 2025: 2026-02-10
+[Finnhub] Created CGNX Q4 2025: 2026-02-10
+[Finnhub] Created EPRT Q4 2025: 2026-02-10
+[Finnhub] Skipping CRBG - not in companies table
+[Finnhub] Created CPA Q4 2025: 2026-02-10
+[Finnhub] Created ECG Q4 2025: 2026-02-10
+[Finnhub] Created CVS Q4 2025: 2026-02-10
+[Finnhub] Created PETS Q3 2026: 2026-02-09
+[Finnhub] Skipping HIW - not in companies table
+[Finnhub] Created COOT Q1 2026: 2026-02-09
+[Finnhub] Created RPRX Q4 2025: 2026-02-09
+[Finnhub] Skipping WCC - not in companies table
+[Finnhub] Created CRNT Q4 2025: 2026-02-09
+[Finnhub] Created PCMC Q1 2026: 2026-02-09
+[Finnhub] Created ALSN Q4 2025: 2026-02-09
+[Finnhub] Created ADC Q4 2025: 2026-02-09
+[Finnhub] Skipping AMIH - not in companies table
+[Finnhub] Created RRR Q4 2025: 2026-02-09
+[Finnhub] Created MCD Q4 2025: 2026-02-09
+[Finnhub] Skipping SWI - not in companies table
+[Finnhub] Created GILD Q4 2025: 2026-02-09
+[Finnhub] Created CAR Q4 2025: 2026-02-09
+[Finnhub] Created ROK Q1 2026: 2026-02-09
+[Finnhub] Created AKR Q4 2025: 2026-02-09
+[Finnhub] Created BRX Q4 2025: 2026-02-09
+[Finnhub] Created ANGI Q4 2025: 2026-02-09
+[Finnhub] Created OESX Q3 2026: 2026-02-09
+[Finnhub] Created MPAA Q3 2026: 2026-02-09
+[Finnhub] Created ADPT Q4 2025: 2026-02-09
+[Finnhub] Skipping ATAO - not in companies table
+[Finnhub] Created STAA Q4 2025: 2026-02-09
+[Finnhub] Created MAR Q4 2025: 2026-02-09
+[Finnhub] Created NSARO Q4 2025: 2026-02-09
+[Finnhub] Created IEHC Q3 2025: 2026-02-09
+[Finnhub] Created SPGI Q4 2025: 2026-02-09
+[Finnhub] Created LYFT Q4 2025: 2026-02-09
+[Finnhub] Created USAC Q4 2025: 2026-02-09
+[Finnhub] Created SMCI Q2 2026: 2026-02-09
+[Finnhub] Skipping SAGE - not in companies table
+[Finnhub] Sync complete: 1299 updated, 201 skipped
+
+✅ Sync completed successfully!
+
+📊 Results:
+   Total earnings from Finnhub: 1500
+   Updated/created in database: 1299
+   Skipped (not in companies):  201
+   Duration: 10238ms (10.24s)

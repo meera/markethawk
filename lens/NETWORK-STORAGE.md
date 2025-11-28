@@ -26,8 +26,8 @@ Videos can be stored on these drives instead of in the git repo to save space an
 
 ### Option 2: home-meera Network Drive
 **Location:**
-- Mac: `/Volumes/home-meera/earninglens-videos/`
-- Sushi: `/home/meera/earninglens-videos/`
+- Mac: `/Volumes/home-meera/markethawk-videos/`
+- Sushi: `/home/meera/markethawk-videos/`
 
 **Pros:** Network accessible, decent storage
 **Cons:** Shared with home directory
@@ -35,8 +35,8 @@ Videos can be stored on these drives instead of in the git repo to save space an
 
 ### Option 3: var-data Network Drive (RECOMMENDED)
 **Location:**
-- Mac: `/Volumes/var-data/earninglens-videos/`
-- Sushi: `/var/data/earninglens-videos/`
+- Mac: `/Volumes/var-data/markethawk-videos/`
+- Sushi: `/var/data/markethawk-videos/`
 
 **Pros:** Dedicated data storage, large capacity
 **Cons:** Requires network mount on Mac
@@ -50,14 +50,14 @@ Videos can be stored on these drives instead of in the git repo to save space an
 # 1. SSH into sushi
 ssh meera@192.168.1.101
 
-# 2. Navigate to earninglens
-cd ~/earninglens/sushi
+# 2. Navigate to markethawk
+cd ~/markethawk/sushi
 
 # 3. Run storage setup
 ./setup-storage.sh
 
 # Follow prompts to select storage location
-# Recommended: Option 3 (/var/data/earninglens-videos)
+# Recommended: Option 3 (/var/data/markethawk-videos)
 ```
 
 ### On Mac (Accessing network storage)
@@ -126,13 +126,13 @@ Located at: `sushi/config/storage.conf`
 
 ```bash
 # Videos storage location
-VIDEOS_BASE_DIR="/var/data/earninglens-videos"
+VIDEOS_BASE_DIR="/var/data/markethawk-videos"
 
 # Logs location
-LOGS_DIR="/home/meera/earninglens/sushi/logs"
+LOGS_DIR="/home/meera/markethawk/sushi/logs"
 
 # Temp directory
-TEMP_DIR="/home/meera/earninglens/sushi/.tmp"
+TEMP_DIR="/home/meera/markethawk/sushi/.tmp"
 ```
 
 **Edit manually:**
@@ -157,25 +157,25 @@ No changes to workflow! Just run as normal:
 
 # Videos are automatically saved to configured location
 # Check with:
-ls /var/data/earninglens-videos/pltr-q3-2024/
+ls /var/data/markethawk-videos/pltr-q3-2024/
 ```
 
 ### Accessing processed videos
 
 **On sushi:**
 ```bash
-ls /var/data/earninglens-videos/
-cd /var/data/earninglens-videos/pltr-q3-2024
+ls /var/data/markethawk-videos/
+cd /var/data/markethawk-videos/pltr-q3-2024
 ```
 
 **On Mac:**
 ```bash
 # Make sure var-data is mounted
-open /Volumes/var-data/earninglens-videos/
+open /Volumes/var-data/markethawk-videos/
 
 # Or via terminal
-ls /Volumes/var-data/earninglens-videos/
-cd /Volumes/var-data/earninglens-videos/pltr-q3-2024
+ls /Volumes/var-data/markethawk-videos/
+cd /Volumes/var-data/markethawk-videos/pltr-q3-2024
 ```
 
 ### Designing thumbnails on Mac
@@ -185,7 +185,7 @@ cd /Volumes/var-data/earninglens-videos/pltr-q3-2024
 open smb://192.168.1.101/var-data
 
 # 2. Navigate to video folder
-cd /Volumes/var-data/earninglens-videos/pltr-q3-2024
+cd /Volumes/var-data/markethawk-videos/pltr-q3-2024
 
 # 3. Design thumbnail (Figma, Canva, etc.)
 # Save to: thumbnail/custom.jpg
@@ -194,7 +194,7 @@ cd /Volumes/var-data/earninglens-videos/pltr-q3-2024
 
 # 5. SSH to sushi and update YouTube
 ssh meera@192.168.1.101
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 ./scripts/update-thumbnail.sh pltr-q3-2024
 ```
 
@@ -218,7 +218,7 @@ sushi/videos/                  # Large video files (stored on network)
 
 Setup creates a symlink:
 ```bash
-sushi/videos -> /var/data/earninglens-videos
+sushi/videos -> /var/data/markethawk-videos
 ```
 
 This allows:
@@ -247,18 +247,18 @@ open smb://192.168.1.101/var-data
 ls /var/data
 
 # Check permissions
-ls -ld /var/data/earninglens-videos
+ls -ld /var/data/markethawk-videos
 ```
 
 ### "Permission denied"
 
 ```bash
 # Check ownership
-ls -ld /var/data/earninglens-videos
+ls -ld /var/data/markethawk-videos
 
 # Fix ownership (on sushi)
-sudo chown -R meera:meera /var/data/earninglens-videos
-sudo chmod -R 755 /var/data/earninglens-videos
+sudo chown -R meera:meera /var/data/markethawk-videos
+sudo chmod -R 755 /var/data/markethawk-videos
 ```
 
 ### "Storage full"
@@ -268,7 +268,7 @@ sudo chmod -R 755 /var/data/earninglens-videos
 df -h /var/data
 
 # Clean up old videos if needed
-du -sh /var/data/earninglens-videos/*
+du -sh /var/data/markethawk-videos/*
 ```
 
 ### "Symlink broken"
@@ -279,7 +279,7 @@ ls -l sushi/videos
 
 # Recreate symlink
 rm sushi/videos
-ln -s /var/data/earninglens-videos sushi/videos
+ln -s /var/data/markethawk-videos sushi/videos
 ```
 
 ## Storage Estimates
@@ -350,7 +350,7 @@ ln -s /new/location sushi/videos
 ```bash
 # On sushi
 ./setup-storage.sh
-# Choose option 3: /var/data/earninglens-videos
+# Choose option 3: /var/data/markethawk-videos
 
 # On Mac (if accessing)
 open smb://192.168.1.101/var-data

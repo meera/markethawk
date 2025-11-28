@@ -1,7 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { organization } from 'better-auth/plugins/organization';
-import { createAuthMiddleware } from 'better-auth/api';
 // import { stripe } from '@better-auth/stripe';  // TODO: Enable when implementing monetization
 import { db } from './db';
 import * as schema from './db/schema';
@@ -104,7 +103,7 @@ async function transferBillingToOldestAdmin(orgId: string, leavingOwnerId: strin
 
 export const auth = betterAuth({
   // Use X-Forwarded-Host header to support both www and non-www domains
-  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  baseURL: process.env.BETTER_AUTH_URL,
   basePath: '/api/auth',
   database: drizzleAdapter(db, {
     provider: 'pg',
@@ -112,13 +111,43 @@ export const auth = betterAuth({
   }),
   advanced: {
     useSecureCookies: process.env.NODE_ENV === 'production',
-    crossSubDomainCookies: {
-      enabled: true,
-      domain: '.markethawkeye.com', // Works for both www and non-www
-    },
+    ...(process.env.NODE_ENV === 'production' && {
+      crossSubDomainCookies: {
+        enabled: true,
+        domain: '.markethawkeye.com', // Works for both www and non-www
+      },
+    }),
   },
   logger: {
     disabled: false,
+  },
+
+  // Database hooks - trigger on user creation (works for all signup methods)
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          // Send welcome email when new user is created
+          console.log('[Database Hook] User created:', {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+          });
+
+          try {
+            console.log('[Database Hook] Calling sendWelcomeEmail...');
+            await sendWelcomeEmail(
+              user.email,
+              user.name || undefined
+            );
+            console.log(`[Database Hook] Welcome email sent successfully to ${user.email}`);
+          } catch (error) {
+            console.error('[Database Hook] Failed to send welcome email:', error);
+            // Don't fail the signup if email fails
+          }
+        },
+      },
+    },
   },
   emailAndPassword: {
     enabled: true,
@@ -163,28 +192,6 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
       enabled: !!process.env.GITHUB_CLIENT_ID,
     },
-  },
-
-  // Hooks for welcome emails and post-signup actions
-  hooks: {
-    after: createAuthMiddleware(async (ctx) => {
-      // Send welcome email when user signs up
-      if (ctx.path.startsWith('/sign-up')) {
-        const newSession = ctx.context.newSession;
-        if (newSession?.user) {
-          try {
-            await sendWelcomeEmail(
-              newSession.user.email,
-              newSession.user.name || undefined
-            );
-            console.log(`Welcome email sent to ${newSession.user.email}`);
-          } catch (error) {
-            console.error('Failed to send welcome email:', error);
-            // Don't fail the signup if email fails
-          }
-        }
-      }
-    }),
   },
 
   plugins: [

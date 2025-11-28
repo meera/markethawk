@@ -26,7 +26,7 @@ export const SubscribeExample: React.FC = () => {
 
       {/* Full version - appears at frame 30 (1 second at 30fps) */}
       <Sequence from={30} durationInFrames={150}>
-        <SubscribeLowerThird channelName="EarningLens" />
+        <SubscribeLowerThird channelName="MarketHawk" />
       </Sequence>
 
       {/* Compact version - appears at frame 210 (7 seconds) */}
@@ -37,7 +37,7 @@ export const SubscribeExample: React.FC = () => {
       {/* Custom positioned version */}
       <Sequence from={360} durationInFrames={120}>
         <SubscribeLowerThird
-          channelName="EarningLens"
+          channelName="MarketHawk"
           style={{
             bottom: 40,
             left: 40,

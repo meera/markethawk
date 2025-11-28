@@ -235,9 +235,9 @@ const EarningsCallVideoComponent: React.FC<EarningsCallVideoProps> = ({data}) =>
         />
       ))}
 
-      {/* EarningLens Branding - Top Right */}
+      {/* MarketHawk Branding - Top Right */}
       <div className="absolute top-8 right-8 text-gray-500 text-xl font-bold">
-        EarningLens
+        MarketHawk
       </div>
 
       {/* Progress Bar - Bottom */}

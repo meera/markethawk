@@ -1,6 +1,6 @@
 # Quick Start Guide - Generate Your First Video
 
-This guide will walk you through generating your first EarningLens video in **under 10 minutes**.
+This guide will walk you through generating your first MarketHawk video in **under 10 minutes**.
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ This guide will walk you through generating your first EarningLens video in **un
 ## Step 1: Install Dependencies
 
 ```bash
-cd /Users/Meera/earninglens/studio
+cd /Users/Meera/markethawk/studio
 npm install
 ```
 
@@ -74,12 +74,12 @@ You should see:
 From the root directory:
 
 ```bash
-cd /Users/Meera/earninglens
+cd /Users/Meera/markethawk
 node scripts/upload-to-r2.js --ticker=AAPL --quarter=Q4 --year=2024
 ```
 
 This will:
-1. Create `earninglens/AAPL/videos/` in R2
+1. Create `markethawk/AAPL/videos/` in R2
 2. Upload video as `2024-Q4-full.mp4`
 3. Verify upload
 
@@ -108,7 +108,7 @@ This will:
 
 **Title:**
 ```
-Apple (AAPL) Q4 2024 Earnings - Revenue Beats by 6% | EarningLens
+Apple (AAPL) Q4 2024 Earnings - Revenue Beats by 6% | MarketHawk
 ```
 
 **Description:**
@@ -133,7 +133,7 @@ Apple Q4 2024 (FY2024) earnings call with visual charts and financial analysis.
 0:21 Segment Breakdown
 0:35 Key Highlights
 
-🔗 Full analysis: https://earninglens.com/aapl/q4-2024
+🔗 Full analysis: https://markethawkeye.com/aapl/q4-2024
 
 #AAPL #Apple #earnings #investing #stocks #technology
 ```
@@ -214,7 +214,7 @@ npm start  # Preview in studio first
 rclone config show r2-public
 
 # Test connection
-rclone ls r2-public:earninglens
+rclone ls r2-public:markethawkeye
 ```
 
 ### YouTube Upload Slow

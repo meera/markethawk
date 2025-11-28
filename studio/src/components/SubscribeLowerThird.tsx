@@ -9,7 +9,7 @@ interface SubscribeLowerThirdProps {
 }
 
 export const SubscribeLowerThird: React.FC<SubscribeLowerThirdProps> = ({
-  channelName = 'EarningLens',
+  channelName = 'MarketHawk',
   style,
   theme,
 }) => {
@@ -129,7 +129,7 @@ export const SubscribeLowerThird: React.FC<SubscribeLowerThirdProps> = ({
 
 // Alternative: Compact version (smaller)
 export const SubscribeLowerThirdCompact: React.FC<SubscribeLowerThirdProps> = ({
-  channelName = 'EarningLens',
+  channelName = 'MarketHawk',
   style,
   theme,
 }) => {

@@ -6,11 +6,11 @@ Complete earnings video production pipeline on GPU machine.
 
 ```bash
 # 1. Clone repo and pull latest
-cd ~/earninglens
+cd ~/markethawk
 git pull
 
 # 2. Setup Python environment (creates .venv and loads .env)
-cd ~/earninglens
+cd ~/markethawk
 ./sushi/setup-sushi.sh
 
 # This will:
@@ -61,7 +61,7 @@ This will:
 
 ```bash
 # 1. Upload video first
-scp earnings-call.mp4 sushi:~/earninglens/sushi/videos/nvda-q3-2024/input/source.mp4
+scp earnings-call.mp4 sushi:~/markethawk/sushi/videos/nvda-q3-2024/input/source.mp4
 
 # 2. Process
 ./scripts/process-earnings.sh nvda-q3-2024 manual

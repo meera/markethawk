@@ -211,7 +211,7 @@ export const ShortClip: React.FC<ShortClipProps> = ({
         <div className="text-sm text-blue-400">
           Watch full earnings call ↗
         </div>
-        <div className="text-xs text-gray-500 mt-1">EarningLens.com</div>
+        <div className="text-xs text-gray-500 mt-1">MarketHawk.com</div>
       </div>
     </AbsoluteFill>
   );
@@ -347,7 +347,7 @@ Shorts show a thumbnail before playing. Make it count:
    ↓
 5. Subscribes to channel
    ↓
-6. Visits EarningLens.com
+6. Visits MarketHawk.com
    ↓
 7. Signs up for Pro (later)
 ```

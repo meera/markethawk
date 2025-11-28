@@ -21,8 +21,10 @@ export async function subscribeToNewsletter(
   data: SubscriberData,
   groupId?: string
 ): Promise<boolean> {
+  console.log('[MailerLite] subscribeToNewsletter called with:', { data, groupId });
+
   if (!process.env.MAILERLITE_API_KEY) {
-    console.error('MAILERLITE_API_KEY is not set');
+    console.error('[MailerLite] MAILERLITE_API_KEY is not set');
     throw new Error('MailerLite API key not configured');
   }
 
@@ -31,23 +33,18 @@ export async function subscribeToNewsletter(
       email: data.email,
       ...(data.name && { name: data.name }),
       ...(data.fields && { fields: data.fields }),
-      status: 'active' as const, // Set to 'unconfirmed' if you want double opt-in
+      ...(groupId && { groups: [groupId] }), // Add to group in single API call
     };
 
-    const response = await mailerlite.subscribers.createOrUpdate(params);
-    console.log('MailerLite subscription successful:', response.data);
+    console.log('[MailerLite] API params:', JSON.stringify(params, null, 2));
 
-    // Add to group if specified
-    if (groupId && response.data) {
-      const subscriberId = (response.data as any).id;
-      if (subscriberId) {
-        await addToGroup(subscriberId, groupId);
-      }
-    }
+    const response = await mailerlite.subscribers.createOrUpdate(params);
+    console.log('[MailerLite] Subscription successful! Response:', response.data);
 
     return true;
   } catch (error: any) {
-    console.error('MailerLite subscription error:', error.response?.data || error.message);
+    console.error('[MailerLite] Subscription error:', error.response?.data || error.message);
+    console.error('[MailerLite] Full error:', error);
     throw error;
   }
 }
@@ -59,18 +56,24 @@ export async function subscribeToNewsletter(
  * @returns Success status
  */
 export async function sendWelcomeEmail(email: string, name?: string): Promise<boolean> {
+  console.log('[MailerLite] sendWelcomeEmail called with:', { email, name });
+
   if (!process.env.MAILERLITE_API_KEY) {
-    console.error('MAILERLITE_API_KEY is not set');
+    console.error('[MailerLite] MAILERLITE_API_KEY is not set');
     throw new Error('MailerLite API key not configured');
   }
 
   const groupId = process.env.MAILERLITE_GROUP_NEW_USERS;
+  console.log('[MailerLite] NEW_USERS group ID from env:', groupId);
+
   if (!groupId) {
-    console.error('MAILERLITE_GROUP_NEW_USERS is not set');
+    console.error('[MailerLite] MAILERLITE_GROUP_NEW_USERS is not set');
     throw new Error('Welcome email group not configured');
   }
 
   try {
+    console.log('[MailerLite] Calling subscribeToNewsletter with group:', groupId);
+
     // Add subscriber to "New Users" group
     // This will trigger the welcome email automation in MailerLite
     await subscribeToNewsletter(
@@ -85,10 +88,10 @@ export async function sendWelcomeEmail(email: string, name?: string): Promise<bo
       groupId
     );
 
-    console.log(`Welcome email triggered for ${email}`);
+    console.log(`[MailerLite] Welcome email triggered successfully for ${email}`);
     return true;
   } catch (error: any) {
-    console.error('Failed to send welcome email:', error.response?.data || error.message);
+    console.error('[MailerLite] Failed to send welcome email:', error.response?.data || error.message);
     throw error;
   }
 }

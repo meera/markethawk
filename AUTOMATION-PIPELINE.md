@@ -322,7 +322,7 @@ Scale to 1000+ companies → Market leader
 
 ## Summary
 
-**What makes EarningLens special:**
+**What makes MarketHawk special:**
 1. 🎨 **Visually fantastic** - Engaging video production
 2. 📖 **Compelling stories** - Data-driven narratives
 3. 🤖 **Automated pipeline** - Mass production at scale

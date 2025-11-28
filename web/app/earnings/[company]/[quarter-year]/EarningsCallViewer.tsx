@@ -25,8 +25,8 @@ export function EarningsCallViewer({
     <div>
       {/* Video/Audio Player */}
       {mediaUrl && (
-        <div className="bg-white border border-gray-200 rounded-lg p-6 sticky top-4 z-20">
-          <h2 className="text-xl font-semibold mb-4">Recording</h2>
+        <div className="bg-gray-800/50 dark:bg-gray-800/50 border border-gray-700/50 dark:border-gray-700/50 rounded-lg p-6 shadow-sm">
+          <h2 className="text-xl font-semibold mb-4 text-white dark:text-white">Recording</h2>
           {isAudio ? (
             <audio
               ref={videoRef as any}
@@ -41,7 +41,7 @@ export function EarningsCallViewer({
             <video
               ref={videoRef}
               controls
-              className="w-full rounded"
+              className="w-full rounded max-h-96"
               preload="metadata"
               src={mediaUrl}
             >

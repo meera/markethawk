@@ -683,3 +683,4 @@ chmod 755 /var/markethawk/jobs/{JOB_ID}/renders
 
 **Last Updated:** 2025-11-23
 **Project Status:** Active Development - Job-based pipeline with Neon production database
+- Application deployed on Vercel Pro tier

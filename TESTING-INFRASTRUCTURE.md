@@ -1,4 +1,4 @@
-# EarningLens - Testing Infrastructure
+# MarketHawk - Testing Infrastructure
 
 ## Problem Statement
 
@@ -17,7 +17,7 @@
 ## Testing Strategy Overview
 
 ```
-Testing Pyramid for EarningLens:
+Testing Pyramid for MarketHawk:
 
         ┌─────────────────┐
         │   E2E Tests     │  ← Test critical user flows
@@ -809,7 +809,7 @@ generateChangeReport();
   ❌ Failed: 3
 
 👁️ Visual Changes:
-  View Percy report: https://percy.io/earninglens/pr/123
+  View Percy report: https://percy.io/markethawk/pr/123
 
   Changes detected:
   - Revenue chart layout shifted 2px

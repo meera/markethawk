@@ -29,7 +29,7 @@ export const SubscribeExample: React.FC = () => {
 export const OutroExample: React.FC = () => {
 	return (
 		<OutroScreen
-			channelName="EarningLens"
+			channelName="MarketHawk"
 			callToAction="Subscribe for weekly earnings analysis"
 		/>
 	);
@@ -225,7 +225,7 @@ export const FullDemo: React.FC = () => {
 
 			{/* Scene 4: Outro (8-12s) */}
 			<Sequence from={fps * 8} durationInFrames={fps * 4}>
-				<OutroScreen channelName="EarningLens" />
+				<OutroScreen channelName="MarketHawk" />
 			</Sequence>
 		</AbsoluteFill>
 	);

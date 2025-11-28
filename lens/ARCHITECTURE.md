@@ -60,13 +60,13 @@ print(result)
 
 ---
 
-## Implementation in EarningLens
+## Implementation in MarketHawk
 
 ### 1. download-source.py
 
 **Function:**
 ```python
-def download_video(url: str, downloads_dir: str = "/var/earninglens/_downloads") -> Dict:
+def download_video(url: str, downloads_dir: str = "/var/markethawk/_downloads") -> Dict:
     """Download video from YouTube URL"""
     # Returns: {file_path, metadata_path, title, description, ...}
 ```
@@ -182,13 +182,13 @@ def step_insights(self):
 
 ### Test Standalone
 ```bash
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 
 # Test download
 python scripts/download-source.py "https://youtube.com/..."
 
 # Test parse
-python scripts/parse-metadata.py /var/earninglens/_downloads/jUnV3LiN0_k/input/metadata.json
+python scripts/parse-metadata.py /var/markethawk/_downloads/jUnV3LiN0_k/input/metadata.json
 
 # Test silence removal
 python scripts/remove-silence.py input.mp4 output.mp4

@@ -1,0 +1,20 @@
+experiment_id: exp_001
+description: "Download YouTube Short and extract frames"
+tags: [test, download, frames]
+
+workflow:
+  # Step 1: Download video from YouTube
+  - step: download_video
+    id: download
+    params:
+      url: https://www.youtube.com/shorts/iYsOFDa4DDU
+      output_dir: data/inputs
+
+  # Step 2: Extract frames from downloaded video
+  - step: extract_frames
+    id: frames
+    params:
+      input: ${download.output}
+      fps: 24
+      format: jpg
+      quality: 2

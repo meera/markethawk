@@ -112,25 +112,25 @@ async function deleteUser(identifier: string, isEmail: boolean = true): Promise<
     // 1. Delete MarketHawk data (manual cleanup - no cascade)
 
     // Delete video views
-    const deletedViews = await db
+    await db
       .delete(schema.videoViews)
       .where(eq(schema.videoViews.userId, userId));
-    stats.videoViews = deletedViews.rowCount || 0;
+    stats.videoViews = 0; // Count not available from delete
     console.log(`✓ Deleted ${stats.videoViews} video views`);
 
     // Delete video engagement
-    const deletedEngagement = await db
+    await db
       .delete(schema.videoEngagement)
       .where(eq(schema.videoEngagement.userId, userId));
-    stats.videoEngagement = deletedEngagement.rowCount || 0;
-    console.log(`✓ Deleted ${stats.videoEngagement} video engagement records`);
+    stats.videoEngagement = 0; // Count not available from delete
+    console.log(`✓ Deleted video engagement records`);
 
     // Delete click throughs
-    const deletedClicks = await db
+    await db
       .delete(schema.clickThroughs)
       .where(eq(schema.clickThroughs.userId, userId));
-    stats.clickThroughs = deletedClicks.rowCount || 0;
-    console.log(`✓ Deleted ${stats.clickThroughs} click throughs`);
+    stats.clickThroughs = 0; // Count not available from delete
+    console.log(`✓ Deleted click throughs`);
 
     // 2. Count Better Auth related records (will be cascade deleted)
 
@@ -147,8 +147,8 @@ async function deleteUser(identifier: string, isEmail: boolean = true): Promise<
     stats.invitations = invitationCount.length;
 
     // 3. Delete the user (cascades to sessions, accounts, members, invitations)
-    const deletedUser = await db.delete(user).where(eq(user.id, userId));
-    stats.user = deletedUser.rowCount || 0;
+    await db.delete(user).where(eq(user.id, userId));
+    stats.user = 1; // User deleted
 
     // Print summary
     console.log('\n✅ User deleted successfully!\n');

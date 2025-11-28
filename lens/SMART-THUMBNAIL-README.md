@@ -34,7 +34,7 @@ python lens/smart_thumbnail_generator.py <video_file> <data_json> <output_dir>
 ```bash
 # Extract frames from video
 python lens/smart_thumbnail_generator.py \
-  /var/earninglens/_downloads/jUnV3LiN0_k/source.trimmed.mp4 \
+  /var/markethawk/_downloads/jUnV3LiN0_k/source.trimmed.mp4 \
   studio/data/AAPL-Q4-2024.json \
   /tmp/thumbnails/
 
@@ -52,7 +52,7 @@ python lens/smart_thumbnail_generator.py \
 ```bash
 # Create custom thumbnail
 python lens/smart_thumbnail_generator.py \
-  /var/earninglens/PLTR/Q3-2025/audio.m4a \
+  /var/markethawk/PLTR/Q3-2025/audio.m4a \
   studio/data/PLTR-Q3-2025.json \
   /tmp/thumbnails/
 
@@ -186,7 +186,7 @@ Audio-only earnings calls need thumbnails that:
 - ✅ **Grab attention** in YouTube search/recommendations
 - ✅ **Convey key info** at a glance (company, quarter, performance)
 - ✅ **Stand out** from competitors' plain thumbnails
-- ✅ **Build brand** (EarningLens badge)
+- ✅ **Build brand** (MarketHawk badge)
 
 **Design elements:**
 - Large, bold company name (readable in small preview)
@@ -320,9 +320,9 @@ sudo apt-get install fonts-dejavu-core
 
 ```bash
 python lens/smart_thumbnail_generator.py \
-  /var/earninglens/AAPL/2024-Q4/take1.mp4 \
+  /var/markethawk/AAPL/2024-Q4/take1.mp4 \
   studio/data/AAPL-Q4-2024.json \
-  /var/earninglens/AAPL/2024-Q4/thumbnails/
+  /var/markethawk/AAPL/2024-Q4/thumbnails/
 
 # Output: 4 frames extracted
 # Choose frame_2 (shows Tim Cook speaking)
@@ -333,9 +333,9 @@ python lens/smart_thumbnail_generator.py \
 
 ```bash
 python lens/smart_thumbnail_generator.py \
-  /var/earninglens/PLTR/Q3-2025/audio.m4a \
+  /var/markethawk/PLTR/Q3-2025/audio.m4a \
   studio/data/PLTR-Q3-2025.json \
-  /var/earninglens/PLTR/Q3-2025/thumbnails/
+  /var/markethawk/PLTR/Q3-2025/thumbnails/
 
 # Output: custom_thumbnail.jpg
 # Shows: Large "PALANTIR" text + green ↑ chart + Q3 2025
@@ -344,4 +344,4 @@ python lens/smart_thumbnail_generator.py \
 
 ## License
 
-Part of EarningLens project.
+Part of MarketHawk project.

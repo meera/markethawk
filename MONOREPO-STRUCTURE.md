@@ -1,11 +1,11 @@
-# EarningLens - Monorepo Structure
+# MarketHawk - Monorepo Structure
 
 ## Overview
 
-EarningLens uses a **monorepo** approach with separate directories for each concern:
+MarketHawk uses a **monorepo** approach with separate directories for each concern:
 
 ```
-earninglens/
+markethawk/
 ├── web/               # User-facing website (Next.js)
 ├── api/               # API server (Express/Fastify)
 ├── dashboard/         # Admin interface (Next.js)
@@ -17,9 +17,9 @@ earninglens/
 ```
 
 **Project Names Explained:**
-- **web** - Public website users visit (earninglens.com)
+- **web** - Public website users visit (markethawkeye.com)
 - **api** - Backend server for all data operations
-- **dashboard** - Admin control panel (admin.earninglens.com)
+- **dashboard** - Admin control panel (admin.markethawkeye.com)
 - **studio** - Video rendering and production pipeline
 - **insights** - Analytics, ETL jobs, recommendations
 
@@ -37,7 +37,7 @@ earninglens/
 ### Root Level
 
 ```
-earninglens/
+markethawk/
 ├── web/                         # User-facing website
 ├── api/                         # API server
 ├── dashboard/                   # Admin dashboard
@@ -451,7 +451,7 @@ for row in $(echo "${COMPANIES}" | jq -r '.[] | @base64'); do
 
   # Upload to R2
   rclone copy out/${TICKER}-Q4-2024.mp4 \
-    earninglens:${TICKER}/videos/2024-Q4-full.mp4 -P
+    markethawkeye:${TICKER}/videos/2024-Q4-full.mp4 -P
 
   # Upload to YouTube via backend API
   curl -X POST http://localhost:4000/api/videos/upload \
@@ -506,7 +506,7 @@ analytics/
 ```typescript
 // analytics/src/jobs/sync-youtube-analytics.ts
 
-import {db} from '@earninglens/shared/database';
+import {db} from '@markethawk/shared/database';
 import {getVideoAnalytics} from '../../../backend/src/services/youtube';
 
 export async function syncYouTubeAnalytics() {
@@ -610,8 +610,8 @@ shared/
 ```typescript
 // frontend/src/app/page.tsx
 
-import {formatCurrency} from '@earninglens/shared/utils';
-import {Video} from '@earninglens/shared/types';
+import {formatCurrency} from '@markethawk/shared/utils';
+import {Video} from '@markethawk/shared/types';
 
 const revenue = formatCurrency(89500000000); // "$89.5B"
 ```
@@ -621,7 +621,7 @@ const revenue = formatCurrency(89500000000); // "$89.5B"
 
 {
   "dependencies": {
-    "@earninglens/shared": "*"
+    "@markethawk/shared": "*"
   }
 }
 ```
@@ -634,7 +634,7 @@ const revenue = formatCurrency(89500000000); // "$89.5B"
 
 ```json
 {
-  "name": "earninglens",
+  "name": "markethawk",
   "private": true,
   "workspaces": [
     "frontend",
@@ -694,9 +694,9 @@ const revenue = formatCurrency(89500000000); // "$89.5B"
 ### Separate Deployments
 
 ```
-frontend/        → Vercel (earninglens.com)
-admin/           → Vercel (admin.earninglens.com)
-backend/         → Railway or AWS ECS (api.earninglens.com)
+frontend/        → Vercel (markethawkeye.com)
+admin/           → Vercel (admin.markethawkeye.com)
+backend/         → Railway or AWS ECS (api.markethawkeye.com)
 video-generation → GPU machine (local) or Lambda
 analytics/       → Railway (background workers)
 ```

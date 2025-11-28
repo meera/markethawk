@@ -60,7 +60,7 @@ export const PLTR_Q3_2025_take2: React.FC = () => {
 ### Option 3: Custom position (bottom left)
 ```tsx
 <SubscribeLowerThird
-  channelName="EarningLens"
+  channelName="MarketHawk"
   style={{
     bottom: 60,
     left: 40,

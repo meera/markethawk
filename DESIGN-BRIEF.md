@@ -1,11 +1,11 @@
-# EarningLens Design System
+# MarketHawk Design System
 
 **Version:** 1.0
 **Last Updated:** November 3, 2025
 
 ## Design Philosophy
 
-EarningLens transforms drab earnings calls into visually engaging content. Our design system prioritizes:
+MarketHawk transforms drab earnings calls into visually engaging content. Our design system prioritizes:
 
 1. **Professional credibility** - Financial data requires trust
 2. **Visual clarity** - Complex data must be instantly comprehensible
@@ -355,16 +355,16 @@ Radius Full:   9999px            (Pills, avatars)
 
 ### Maintaining Visual Continuity
 
-**Challenge:** Videos uploaded to YouTube → users click → land on earninglens.com
+**Challenge:** Videos uploaded to YouTube → users click → land on markethawkeye.com
 **Goal:** Seamless transition (users shouldn't feel like they left the "experience")
 
 **Strategy:**
 
 1. **Consistent Branding in Video**
-   - EarningLens logo watermark (top-left or bottom-right)
+   - MarketHawk logo watermark (top-left or bottom-right)
    - Same color palette in video graphics
    - Consistent typography (Inter font in burned-in text)
-   - End card with earninglens.com CTA
+   - End card with markethawkeye.com CTA
 
 2. **Video Thumbnail → Website Consistency**
    - Use same accent colors (#667EEA purple, #2563EB blue)

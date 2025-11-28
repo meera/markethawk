@@ -1,8 +1,8 @@
-# EarningLens - Product Requirements Document (PRD)
+# MarketHawk - Product Requirements Document (PRD)
 
 ## Executive Summary
 
-**Product:** EarningLens
+**Product:** MarketHawk
 **Vision:** Transform earnings call audio into visually-enhanced, data-rich YouTube videos with an interactive web platform
 **Goal:** Build a monetizable SaaS platform via YouTube channel + website subscriptions
 **Timeline:** MVP in 1-2 days, 100 videos in 2 weeks, full platform in 4-6 weeks
@@ -47,7 +47,7 @@ Built-in knowledge graph that surfaces cross-company relationships:
 - Poor discoverability and engagement
 
 ### The Solution
-EarningLens creates:
+MarketHawk creates:
 1. **Visually-rich YouTube videos** with:
    - Transcripts overlaid on video
    - Charts, graphs, and dashboards
@@ -191,7 +191,7 @@ This produces:
 **Flat structure - all files at root level of `_downloads/<video_id>/`**
 
 ```
-/var/earninglens/
+/var/markethawk/
 ├── _downloads/                    # Permanent archive (source of truth)
 │   └── <video_id>/               # Flat directory - easy to navigate
 │       ├── source.mp4            # Original download
@@ -225,7 +225,7 @@ This produces:
 **Step 6: Manual Composition (Remotion Studio)**
 ```bash
 # Open Remotion Studio
-cd ~/earninglens
+cd ~/markethawk
 npm run remotion
 ```
 
@@ -295,13 +295,13 @@ python lens/process_earnings.py --url "video3" --to insights &
 
 **Primary Monitor:** Admin interface ( available only for me)
 
-**Dashboard URL:** `earninglens.com/admin`
+**Dashboard URL:** `markethawkeye.com/admin`
 
 **Key Metrics (One-Glance View):**
 
 ```
 ┌─────────────────────────────────────────┐
-│  EarningLens Dashboard                  │
+│  MarketHawk Dashboard                  │
 ├─────────────────────────────────────────┤
 │                                         │
 │  📊 Top Videos (24h)                    │
@@ -473,7 +473,7 @@ INSERT INTO video_engagement (
 **Layout:**
 ```
 ┌────────────────────────────────────────────┐
-│  [Logo] EarningLens          [Login]       │
+│  [Logo] MarketHawk          [Login]       │
 ├────────────────────────────────────────────┤
 │                                            │
 │   Latest Earnings (Interactive Grid)      │
@@ -703,9 +703,9 @@ CREATE TABLE video_requests (
 
 ### 7. Entity Relationship Mapping (Key Differentiator)
 
-**What Sets EarningLens Apart from YouTube:**
+**What Sets MarketHawk Apart from YouTube:**
 
-While YouTube shows individual earnings call videos, EarningLens creates an **intelligent knowledge graph** that surfaces hidden relationships across companies, products, competitors, and market trends.
+While YouTube shows individual earnings call videos, MarketHawk creates an **intelligent knowledge graph** that surfaces hidden relationships across companies, products, competitors, and market trends.
 
 **The Core Value:**
 
@@ -716,7 +716,7 @@ While YouTube shows individual earnings call videos, EarningLens creates an **in
 ```
 Apple mentions "Vision Pro" in Q4 2024 earnings
   ↓
-EarningLens Knowledge Graph:
+MarketHawk Knowledge Graph:
   - Vision Pro appears in Apple SEC 10-Q
   - Vision Pro mentioned in Meta earnings (competing with Quest 3)
   - Vision Pro discussed on apple.com/vision
@@ -1011,7 +1011,7 @@ export default async function VideoPage({params}) {
 
 **Competitive Advantage:**
 
-| Feature | YouTube | EarningLens |
+| Feature | YouTube | MarketHawk |
 |---------|---------|-------------|
 | Watch earnings videos | ✅ | ✅ |
 | Search by company | ✅ | ✅ |
@@ -1022,7 +1022,7 @@ export default async function VideoPage({params}) {
 | Entity relationships | ❌ | ✅ |
 | Knowledge graph | ❌ | ✅ |
 
-**This is the "unfair advantage" that makes EarningLens more than just a video platform.**
+**This is the "unfair advantage" that makes MarketHawk more than just a video platform.**
 
 ### 8. Personalization & Recommendations
 
@@ -1305,7 +1305,7 @@ CREATE INDEX idx_videos_youtube_id ON videos(youtube_id);
 
 **Deliverables:**
 - 10 YouTube videos published
-- Landing page live at earninglens.com
+- Landing page live at markethawkeye.com
 - YouTube channel created
 - Basic admin dashboard (views only)
 
@@ -1733,7 +1733,7 @@ export async function GET(request: Request) {
 
 Exa.ai is a neural search API that finds high-quality, structured content across the web. Unlike Google, it's optimized for programmatic data extraction.
 
-**Perfect for EarningLens:**
+**Perfect for MarketHawk:**
 - Find earnings call transcripts
 - Extract financial data from SEC filings
 - Discover competitor information
@@ -1922,7 +1922,7 @@ function parseFinancialHighlights(results: ExaSearchResult[]) {
 
 **Landing Page Impact:**
 ```
-User visits earninglens.com
+User visits markethawkeye.com
 
 Sees immediately:
 ┌────────────────────────────────────────┐
@@ -2059,7 +2059,7 @@ npm run seed:company -- AAPL Q4 2024
 npm run render -- --ticker=AAPL --quarter=Q4 --year=2024
 
 # 4. Upload to R2
-rclone copy out/AAPL-Q4-2024.mp4 earninglens:AAPL/videos/
+rclone copy out/AAPL-Q4-2024.mp4 markethawkeye:AAPL/videos/
 
 # 5. Upload to YouTube
 npm run youtube:upload -- --video=AAPL-Q4-2024
@@ -2091,7 +2091,7 @@ SELECT ticker, is_custom, youtube_id FROM videos;
 1. **Set up monorepo** (web, api, dashboard, studio, insights)
 2. **Initialize databases** (Neon PostgreSQL)
 3. **Configure Better Auth** (Google One Tap)
-4. **Set up R2 bucket** (`earninglens`)
+4. **Set up R2 bucket** (`markethawkeye`)
 5. **Seed with existing YouTube videos** (50 videos in 4 hours)
 
 ### Phase 2: First Custom Video (Days 2-3)

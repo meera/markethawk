@@ -285,7 +285,7 @@ const EarningsVideoComponent: React.FC<EarningsVideoProps> = ({data}) => {
       {/* Brand Watermark - always visible */}
       <AbsoluteFill>
         <div className="absolute top-8 right-8 text-gray-500 text-xl font-bold">
-          EarningLens
+          MarketHawk
         </div>
       </AbsoluteFill>
     </AbsoluteFill>

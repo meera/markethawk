@@ -1,4 +1,4 @@
-# EarningLens Governing Principles
+# MarketHawk Governing Principles
 
 ## The Problem
 **Earnings calls are drab and uninteresting.**
@@ -108,7 +108,7 @@ Carefully select data sources:
 
 ---
 
-## The EarningLens Promise
+## The MarketHawk Promise
 
 **To Viewers:**
 1. You hear the ACTUAL earnings call audio
@@ -158,7 +158,7 @@ Before publishing any video:
 - [ ] Sources cited for peripheral data
 - [ ] No opinions presented as facts
 - [ ] Company name and ticker accurate
-- [ ] EarningLens branding included
+- [ ] MarketHawk branding included
 
 ---
 

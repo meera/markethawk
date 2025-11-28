@@ -19,7 +19,7 @@ The unified Python orchestrator `process_earnings.py` can run all steps at once 
 ### Process Complete Video (All Steps)
 
 ```bash
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 python process_earnings.py --url "https://www.youtube.com/watch?v=jUnV3LiN0_k"
 ```
 
@@ -43,7 +43,7 @@ python process_earnings.py --url "..." --step download
 
 **Creates:**
 ```
-/var/earninglens/_downloads/jUnV3LiN0_k/
+/var/markethawk/_downloads/jUnV3LiN0_k/
 ├── input/
 │   ├── source.mp4
 │   └── metadata.json
@@ -59,7 +59,7 @@ python process_earnings.py --url "..." --step parse
 
 **Creates:**
 ```
-/var/earninglens/PLTR/Q3-2024/
+/var/markethawk/PLTR/Q3-2024/
 ├── input/
 ├── transcripts/
 ├── take1/
@@ -72,28 +72,28 @@ python process_earnings.py --url "..." --step remove-silence
 ```
 
 **Trims:** Initial silence from video
-**Output:** `/var/earninglens/PLTR/Q3-2024/input/source.mp4`
+**Output:** `/var/markethawk/PLTR/Q3-2024/input/source.mp4`
 
 ### 4. Transcribe
 ```bash
 python process_earnings.py --url "..." --step transcribe
 ```
 
-**Output:** `/var/earninglens/PLTR/Q3-2024/transcripts/transcript.json`
+**Output:** `/var/markethawk/PLTR/Q3-2024/transcripts/transcript.json`
 
 ### 5. Extract Insights
 ```bash
 python process_earnings.py --url "..." --step insights
 ```
 
-**Output:** `/var/earninglens/PLTR/Q3-2024/transcripts/insights.json`
+**Output:** `/var/markethawk/PLTR/Q3-2024/transcripts/insights.json`
 
 ### 6. Render Video
 ```bash
 python process_earnings.py --url "..." --step render
 ```
 
-**Output:** `/var/earninglens/PLTR/Q3-2024/take1/final.mp4`
+**Output:** `/var/markethawk/PLTR/Q3-2024/take1/final.mp4`
 
 ### 7. Upload to YouTube
 ```bash
@@ -133,7 +133,7 @@ python process_earnings.py --url "..." --from render
 
 **On Mac (Quick steps):**
 ```bash
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 python process_earnings.py --url "..." --step download
 python process_earnings.py --url "..." --step parse
 python process_earnings.py --url "..." --step remove-silence
@@ -142,11 +142,11 @@ python process_earnings.py --url "..." --step remove-silence
 **On Sushi (Heavy processing):**
 ```bash
 ssh meera@192.168.1.101
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 python process_earnings.py --url "..." --from transcribe
 ```
 
-Since `/var/earninglens/` is mounted on both, files are instantly available!
+Since `/var/markethawk/` is mounted on both, files are instantly available!
 
 ---
 
@@ -182,7 +182,7 @@ State is saved in `_downloads/<video_id>/.state.json`
 ## Directory Structure
 
 ```
-/var/earninglens/
+/var/markethawk/
 ├── _downloads/                    # Permanent archive
 │   └── jUnV3LiN0_k/
 │       ├── input/
@@ -209,7 +209,7 @@ State is saved in `_downloads/<video_id>/.state.json`
 
 ### On Mac
 ```bash
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 
 # 1. Create Python environment
 python3 -m venv .venv
@@ -221,8 +221,8 @@ pip install -r requirements.txt
 # 3. Install ffmpeg (for silence removal)
 brew install ffmpeg
 
-# 4. Mount /var/earninglens
-sudo ln -sf /Volumes/earninglens /var/earninglens
+# 4. Mount /var/markethawk
+sudo ln -sf /Volumes/markethawk /var/markethawk
 
 # 5. Copy .env
 cp ../.env .env
@@ -233,7 +233,7 @@ python process_earnings.py --url "..." --step download
 
 ### On Sushi
 ```bash
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 
 # 1. Create Python environment
 python3 -m venv .venv
@@ -246,7 +246,7 @@ pip install -r requirements.txt
 sudo apt install ffmpeg
 
 # 4. Fix permissions
-sudo chown -R meera:meera /var/earninglens
+sudo chown -R meera:meera /var/markethawk
 
 # 5. Copy .env
 cp ../.env .env
@@ -266,7 +266,7 @@ python process_earnings.py --url "..." --step download
 python process_earnings.py --url "..." --step parse
 
 # Check what was detected
-cat /var/earninglens/_downloads/jUnV3LiN0_k/.state.json | jq .
+cat /var/markethawk/_downloads/jUnV3LiN0_k/.state.json | jq .
 ```
 
 ### Re-render Video (Different Take)
@@ -275,7 +275,7 @@ cat /var/earninglens/_downloads/jUnV3LiN0_k/.state.json | jq .
 python process_earnings.py --url "..." --step render
 
 # Manually move to take2
-COMPANY_DIR="/var/earninglens/PLTR/Q3-2024"
+COMPANY_DIR="/var/markethawk/PLTR/Q3-2024"
 mkdir -p $COMPANY_DIR/take2
 mv $COMPANY_DIR/take1/final.mp4 $COMPANY_DIR/take2/final-v1.mp4
 ```
@@ -305,7 +305,7 @@ python process_earnings.py --url "video3" --step parse
 
 # Later on Sushi - batch process
 ssh meera@192.168.1.101
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 source .venv/bin/activate
 
 python process_earnings.py --url "video1" --from transcribe
@@ -350,7 +350,7 @@ python process_earnings.py --url "..." --step parse
 ### "Could not parse company/quarter"
 ```bash
 # Check metadata
-cat /var/earninglens/_downloads/jUnV3LiN0_k/input/metadata.json | jq .
+cat /var/markethawk/_downloads/jUnV3LiN0_k/input/metadata.json | jq .
 
 # Manually add ticker to TICKER_MAP in parse-metadata.py
 nano scripts/parse-metadata.py
@@ -359,7 +359,7 @@ nano scripts/parse-metadata.py
 ### Reset State (Start Fresh)
 ```bash
 VIDEO_ID="jUnV3LiN0_k"
-rm /var/earninglens/_downloads/$VIDEO_ID/.state.json
+rm /var/markethawk/_downloads/$VIDEO_ID/.state.json
 
 # Now rerun
 python process_earnings.py --url "..."

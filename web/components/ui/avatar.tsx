@@ -49,12 +49,14 @@ export function Avatar({ src, alt, fallback, className, ...props }: AvatarProps)
           src={src}
           alt={alt || 'Avatar'}
           className="h-full w-full object-cover"
-          onError={(e) => {
-            console.error('Avatar image failed to load:', src, e);
+          referrerPolicy="no-referrer"
+          crossOrigin="anonymous"
+          onError={() => {
+            // Silently fall back to initials
             setImageError(true);
           }}
           onLoad={() => {
-            console.log('Avatar image loaded successfully:', src);
+            setImageError(false);
           }}
         />
       )}

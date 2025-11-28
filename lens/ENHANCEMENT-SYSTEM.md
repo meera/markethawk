@@ -14,7 +14,7 @@ The Enhancement System is a **data-driven** approach to applying visual enhancem
 ## Directory Structure
 
 ```
-earninglens/
+markethawk/
 ├── lens/
 │   ├── companies/              # Company brand profiles
 │   │   ├── HOOD.json

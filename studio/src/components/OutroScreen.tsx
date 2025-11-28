@@ -15,7 +15,7 @@ interface OutroScreenProps {
 }
 
 export const OutroScreen: React.FC<OutroScreenProps> = ({
-	channelName = 'EarningLens',
+	channelName = 'MarketHawk',
 	callToAction = 'Subscribe for more earnings analysis',
 	backgroundColor = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
 }) => {

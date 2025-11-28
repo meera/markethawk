@@ -1,4 +1,4 @@
-# Studio - EarningLens Video Production
+# Studio - MarketHawk Video Production
 
 Video generation using Remotion for earnings call videos.
 
@@ -143,15 +143,15 @@ After rendering, upload to Cloudflare R2:
 
 ```bash
 # Create directory structure in R2
-rclone mkdir r2-public:earninglens/AAPL
-rclone mkdir r2-public:earninglens/AAPL/videos
+rclone mkdir r2-public:markethawkeye/AAPL
+rclone mkdir r2-public:markethawkeye/AAPL/videos
 
 # Upload video
 rclone copy out/AAPL-Q4-2024.mp4 \
-  r2-public:earninglens/AAPL/videos/2024-Q4-full.mp4 -P
+  r2-public:markethawkeye/AAPL/videos/2024-Q4-full.mp4 -P
 
 # Verify
-rclone ls r2-public:earninglens/AAPL/videos/
+rclone ls r2-public:markethawkeye/AAPL/videos/
 ```
 
 ## Next Steps
@@ -163,7 +163,7 @@ rclone ls r2-public:earninglens/AAPL/videos/
 
 2. **Upload to R2**
    ```bash
-   rclone copy out/AAPL-Q4-2024.mp4 r2-public:earninglens/AAPL/videos/ -P
+   rclone copy out/AAPL-Q4-2024.mp4 r2-public:markethawkeye/AAPL/videos/ -P
    ```
 
 3. **Upload to YouTube**

@@ -7,8 +7,8 @@
  *   node scripts/upload-to-r2.js --ticker=AAPL --quarter=Q4 --year=2024
  *
  * This will:
- * 1. Create R2 directory structure: earninglens/AAPL/videos/
- * 2. Upload: studio/out/AAPL-Q4-2024.mp4 → earninglens/AAPL/videos/2024-Q4-full.mp4
+ * 1. Create R2 directory structure: markethawk/AAPL/videos/
+ * 2. Upload: studio/out/AAPL-Q4-2024.mp4 → markethawk/AAPL/videos/2024-Q4-full.mp4
  * 3. Verify upload
  */
 
@@ -31,7 +31,7 @@ if (!ticker || !quarter || !year) {
   process.exit(1);
 }
 
-const BUCKET = 'earninglens';
+const BUCKET = 'markethawkeye';
 const REMOTE = 'r2-public'; // Use existing r2-public remote from CLAUDE.md
 
 // File paths
