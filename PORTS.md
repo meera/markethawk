@@ -1,6 +1,6 @@
 # Port Configuration
 
-Quick reference for all services in the EarningLens monorepo.
+Quick reference for all services in the MarketHawk monorepo.
 
 ## Development Ports
 
@@ -60,7 +60,7 @@ pkill -f "remotion studio"
 
 **Web (Vercel):**
 - Port configured by Vercel
-- Custom domain: earninglens.com
+- Custom domain: markethawkeye.com
 
 **Remotion (GPU Rendering):**
 - Runs on sushi machine (192.168.1.101)

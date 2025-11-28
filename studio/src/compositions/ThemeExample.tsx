@@ -69,7 +69,7 @@ export const ThemeExample: React.FC = () => {
         >
           Default Theme (YouTube Red)
         </div>
-        <SubscribeLowerThird channelName="EarningLens" />
+        <SubscribeLowerThird channelName="MarketHawk" />
       </Sequence>
 
       {/* Sequence 2: Robinhood Theme (Green) */}
@@ -87,7 +87,7 @@ export const ThemeExample: React.FC = () => {
           Robinhood Theme (Signature Green)
         </div>
         <SubscribeLowerThird
-          channelName="EarningLens"
+          channelName="MarketHawk"
           theme={robinhoodTheme}
         />
       </Sequence>
@@ -107,7 +107,7 @@ export const ThemeExample: React.FC = () => {
           Palantir Theme (Corporate Blue)
         </div>
         <SubscribeLowerThird
-          channelName="EarningLens"
+          channelName="MarketHawk"
           theme={palantirTheme}
         />
       </Sequence>
@@ -127,7 +127,7 @@ export const ThemeExample: React.FC = () => {
           Compact Version (Robinhood)
         </div>
         <SubscribeLowerThirdCompact
-          channelName="EarningLens"
+          channelName="MarketHawk"
           theme={robinhoodTheme}
         />
       </Sequence>

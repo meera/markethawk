@@ -1,6 +1,6 @@
 # Design Quick Reference
 
-Quick copy-paste reference for EarningLens design system.
+Quick copy-paste reference for MarketHawk design system.
 
 ## Colors
 

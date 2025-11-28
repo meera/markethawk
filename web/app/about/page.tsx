@@ -67,7 +67,7 @@ export default function HomePage() {
           </h2>
 
           <p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
-            Spot discrepancies between what executives say and what the data shows. Catch the hesitation in their voices. Hear the confidence—or lack of it—that words alone can't convey.
+            There's a strange thing that happens when you listen instead of read. The pauses speak. The hesitations reveal. And the confidence—or the lack of it—becomes impossible to miss. Transcripts flatten everything into words. Audio gives you the geometry of truth.
           </p>
         </div>
       </section>
@@ -75,43 +75,43 @@ export default function HomePage() {
       {/* Vision Section */}
       <section id="vision" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="relative bg-background-muted/50 border border-border backdrop-blur-sm rounded-2xl p-8 md:p-12 overflow-hidden">
-          <div className="absolute top-4 right-4 w-3 h-3 bg-accent rounded-full shadow-lg shadow-accent/50 animate-pulse"></div>
+          <div className="absolute top-4 right-4 w-3 h-3 bg-accent rounded-full shadow-lg shadow-accent/50 animate-pulse motion-reduce:animate-none" aria-hidden="true"></div>
           <h3 className="text-3xl font-bold text-text-primary mb-6">Our Vision</h3>
 
           <div className="space-y-6 text-text-tertiary text-lg leading-relaxed">
             <p>
-              <strong className="text-primary">Transcripts strip away what matters most.</strong> The pause. The hesitation. The tone that reveals everything.
+              <strong className="text-primary">Here's what you miss when you only read the transcript:</strong> The CFO who takes three seconds too long before answering the margin question. The CEO whose voice lifts when discussing future guidance—or doesn't. The analyst who asks about competition and gets a careful, rehearsed answer that says everything by saying nothing.
             </p>
 
             <p>
-              When a CFO hesitates before answering margin questions, you need to hear it. When revenue numbers don't match their confident tone, that's your signal. When management dodges questions about competition, the silence speaks volumes.
+              Transcripts give you the words. Audio gives you the truth between the words.
             </p>
 
             <p>
-              With Markey HawkEye, you can:
+              The geometry of an earnings call isn't in what's said—it's in how it's said. Where the energy shifts. Where the confidence cracks. Where the script ends and the real conversation accidentally begins.
+            </p>
+
+            <p className="text-text-primary font-medium">
+              MarketHawk gives you:
             </p>
 
             <ul className="space-y-3 ml-6">
               <li className="flex items-start">
                 <span className="text-primary mr-3">•</span>
-                <span><strong className="text-text-primary">Hear what executives really mean</strong> - Tone, hesitation, and confidence reveal more than words</span>
+                <span><strong className="text-text-primary">The actual voices.</strong> Not summaries. Not AI interpretations. The executives themselves—with every pause, every inflection, every moment of hesitation intact.</span>
               </li>
               <li className="flex items-start">
                 <span className="text-primary mr-3">•</span>
-                <span><strong className="text-text-primary">Spot discrepancies instantly</strong> - See when the numbers don't match the narrative</span>
+                <span><strong className="text-text-primary">The data, synchronized.</strong> Charts appear exactly when metrics are mentioned. You see the numbers while hearing the spin. The discrepancies become impossible to miss.</span>
               </li>
               <li className="flex items-start">
                 <span className="text-primary mr-3">•</span>
-                <span><strong className="text-text-primary">Understand market challenges faster</strong> - Visual context makes complex issues clear</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-primary mr-3">•</span>
-                <span><strong className="text-text-primary">Make better investment decisions</strong> - Original audio + synchronized data = complete picture</span>
+                <span><strong className="text-text-primary">The full context.</strong> Thirty minutes reveals what thirty-second clips can't. You get the dynamic, not just the moment.</span>
               </li>
             </ul>
 
             <p className="pt-4 border-t border-border">
-              We don't summarize or paraphrase. You get the <strong className="text-primary">authentic voices of executives</strong> paired with the data that matters. No AI voice, no lost context, no missed signals.
+              No AI voice. No paraphrasing. No sanitized summaries. Just the raw earnings call paired with the financial data that matters. Because the truth isn't in the transcript—it's in the tone, the timing, and the things they don't quite say.
             </p>
           </div>
         </div>
@@ -149,39 +149,39 @@ export default function HomePage() {
 
       {/* How It Works */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h3 className="text-3xl font-bold text-text-primary mb-12 text-center">Why You'll Never Miss a Signal Again</h3>
+        <h3 className="text-3xl font-bold text-text-primary mb-12 text-center">How You Actually Use This</h3>
 
         <div className="grid md:grid-cols-3 gap-8">
           <div className="relative group bg-background-muted/40 border border-border rounded-xl p-6 hover:bg-background-muted/60 hover:border-border-accent hover:shadow-lg hover:shadow-accent/10 transition-all">
-            <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-accent to-accent-hover rounded-full flex items-center justify-center shadow-lg shadow-accent/30 font-bold text-white text-sm">1</div>
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+            <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-accent to-accent-hover rounded-full flex items-center justify-center shadow-lg shadow-accent/30 font-bold text-gray-900 text-sm">1</div>
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4" aria-hidden="true">
               <span className="text-3xl">🎙️</span>
             </div>
-            <h4 className="text-xl font-semibold text-primary group-hover:text-primary-light transition-colors mb-3">Catch Every Nuance</h4>
+            <h4 className="text-xl font-semibold text-primary group-hover:text-primary-light transition-colors mb-3">Listen for the Edges</h4>
             <p className="text-text-tertiary">
-              Hear the actual voices. A CEO's pause. A CFO's hesitation. The confidence—or lack of it—that transcripts miss. Authentic audio reveals what words alone can't.
+              The CEO pauses before the margin question. The CFO's voice tightens when discussing guidance. You hear what the transcript erases—the moments where confidence slips and truth leaks through.
             </p>
           </div>
 
           <div className="relative group bg-background-muted/40 border border-border rounded-xl p-6 hover:bg-background-muted/60 hover:border-border-accent hover:shadow-lg hover:shadow-accent/10 transition-all">
-            <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-accent to-accent-hover rounded-full flex items-center justify-center shadow-lg shadow-accent/30 font-bold text-white text-sm">2</div>
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+            <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-accent to-accent-hover rounded-full flex items-center justify-center shadow-lg shadow-accent/30 font-bold text-gray-900 text-sm">2</div>
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4" aria-hidden="true">
               <span className="text-3xl">📊</span>
             </div>
-            <h4 className="text-xl font-semibold text-primary group-hover:text-primary-light transition-colors mb-3">See the Full Picture</h4>
+            <h4 className="text-xl font-semibold text-primary group-hover:text-primary-light transition-colors mb-3">Watch the Geometry Reveal Itself</h4>
             <p className="text-text-tertiary">
-              Charts appear exactly when metrics are mentioned. Spot when the narrative doesn't match the numbers. Connect dots faster with synchronized visual context.
+              The chart appears exactly when they mention revenue growth. You see the number. You hear the tone. The gap between what they say and what the data shows becomes impossible to miss.
             </p>
           </div>
 
           <div className="relative group bg-background-muted/40 border border-border rounded-xl p-6 hover:bg-background-muted/60 hover:border-border-accent hover:shadow-lg hover:shadow-accent/10 transition-all">
-            <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-accent to-accent-hover rounded-full flex items-center justify-center shadow-lg shadow-accent/30 font-bold text-white text-sm">3</div>
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-              <span className="text-3xl">🎬</span>
+            <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-accent to-accent-hover rounded-full flex items-center justify-center shadow-lg shadow-accent/30 font-bold text-gray-900 text-sm">3</div>
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4" aria-hidden="true">
+              <span className="text-3xl">⚡</span>
             </div>
-            <h4 className="text-xl font-semibold text-primary group-hover:text-primary-light transition-colors mb-3">Stay Ahead of the Market</h4>
+            <h4 className="text-xl font-semibold text-primary group-hover:text-primary-light transition-colors mb-3">Act Before the Market Does</h4>
             <p className="text-text-tertiary">
-              Get insights within hours of earnings releases. While others scramble through transcripts, you're already analyzing tone, data, and market implications.
+              Within hours of the earnings release, you've already heard the hesitation, spotted the discrepancy, and understood what the market will figure out tomorrow. You're not scrambling. You're ahead.
             </p>
           </div>
         </div>
@@ -190,9 +190,9 @@ export default function HomePage() {
       {/* Newsletter Subscription */}
       <section id="subscribe" className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="bg-gradient-to-br from-primary to-primary-dark rounded-2xl p-8 md:p-12 text-center shadow-2xl shadow-primary/20">
-          <h3 className="text-3xl font-bold text-white mb-4">Don't Miss the Next Big Signal</h3>
+          <h3 className="text-3xl font-bold text-white mb-4">The Signal Is Already There</h3>
           <p className="text-white/90 mb-8 text-lg">
-            Get early access to insights that move markets. Be the first to catch discrepancies, hear executive tone, and spot opportunities before the crowd.
+            Most people will read the transcript tomorrow and miss it. You'll hear it today—in the pause, the tone, the moment where the script ends and the truth accidentally slips through.
           </p>
 
           <form onSubmit={handleSubscribe} className="space-y-4">

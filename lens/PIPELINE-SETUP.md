@@ -7,7 +7,7 @@ This guide sets up a unified output directory structure shared between Mac and L
 ```
 Mac                             Linux (sushi)
 ─────────────────────────────────────────────────────
-earninglens/                    earninglens/
+markethawk/                    markethawk/
 └── sushi/                      └── sushi/
     └── videos/    ←───────────────→ videos/
         └── {video-id}/             └── {video-id}/
@@ -29,8 +29,8 @@ earninglens/                    earninglens/
 Add to your `~/.zshrc` or `~/.bashrc`:
 
 ```bash
-# EarningLens aliases
-source ~/earninglens/sushi/shell-aliases.sh
+# MarketHawk aliases
+source ~/markethawk/sushi/shell-aliases.sh
 ```
 
 Then reload:
@@ -46,9 +46,9 @@ If you want real-time access to sushi files:
 # Using SSHFS
 brew install macfuse sshfs
 
-# Mount sushi:/home/user/earninglens/sushi/videos to local
+# Mount sushi:/home/user/markethawk/sushi/videos to local
 mkdir -p ~/sushi-videos
-sshfs user@sushi:/home/user/earninglens/sushi/videos ~/sushi-videos
+sshfs user@sushi:/home/user/markethawk/sushi/videos ~/sushi-videos
 
 # Unmount when done
 umount ~/sushi-videos
@@ -68,8 +68,8 @@ video pltr-q3-2024    # Go to specific video
 
 ```bash
 cd ~
-git clone <repo-url> earninglens
-cd earninglens
+git clone <repo-url> markethawk
+cd markethawk
 ```
 
 ### 2. Source Shell Aliases
@@ -77,8 +77,8 @@ cd earninglens
 Add to `~/.bashrc`:
 
 ```bash
-# EarningLens aliases
-source ~/earninglens/sushi/shell-aliases.sh
+# MarketHawk aliases
+source ~/markethawk/sushi/shell-aliases.sh
 ```
 
 Then reload:
@@ -89,7 +89,7 @@ source ~/.bashrc
 ### 3. Create Videos Directory
 
 ```bash
-mkdir -p ~/earninglens/sushi/videos
+mkdir -p ~/markethawk/sushi/videos
 ```
 
 ### 4. Test Aliases
@@ -119,7 +119,7 @@ All tools now use the same output structure:
 ### Git Workflow
 ```bash
 # On sushi (Linux):
-cd ~/earninglens
+cd ~/markethawk
 git pull
 ./scripts/process-earnings.sh pltr-q3-2024 youtube <url>
 git add sushi/videos/pltr-q3-2024
@@ -127,7 +127,7 @@ git commit -m "Add PLTR Q3 2024 video"
 git push
 
 # On Mac:
-cd ~/earninglens
+cd ~/markethawk
 git pull  # Get the new video
 open sushi/videos/pltr-q3-2024/output/final.mp4  # View result
 ```
@@ -213,7 +213,7 @@ git push
 
 ```bash
 # Pull changes
-cd ~/earninglens
+cd ~/markethawk
 git pull
 
 # View transcripts
@@ -241,14 +241,14 @@ git push
 # Check that aliases are loaded
 echo $VIDEOS_ROOT
 
-# Should output: /path/to/earninglens/sushi/videos
+# Should output: /path/to/markethawk/sushi/videos
 ```
 
 ### Permission Issues
 
 ```bash
 # On sushi, ensure videos directory is writable
-chmod -R u+w ~/earninglens/sushi/videos
+chmod -R u+w ~/markethawk/sushi/videos
 ```
 
 ### Mount Issues (Mac)
@@ -256,7 +256,7 @@ chmod -R u+w ~/earninglens/sushi/videos
 ```bash
 # Unmount and remount
 umount ~/sushi-videos
-sshfs user@sushi:/home/user/earninglens/sushi/videos ~/sushi-videos
+sshfs user@sushi:/home/user/markethawk/sushi/videos ~/sushi-videos
 ```
 
 ## Environment Variables
@@ -265,8 +265,8 @@ Set these on both Mac and Linux:
 
 ```bash
 # In ~/.zshrc or ~/.bashrc
-export EARNINGLENS_ROOT="$HOME/earninglens"
-export SUSHI_ROOT="$EARNINGLENS_ROOT/sushi"
+export MARKETHAWK_ROOT="$HOME/markethawk"
+export SUSHI_ROOT="$MARKETHAWK_ROOT/sushi"
 export VIDEOS_ROOT="$SUSHI_ROOT/videos"
 ```
 

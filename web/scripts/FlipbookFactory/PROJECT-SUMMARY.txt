@@ -1,0 +1,131 @@
+================================================================================
+                          FLIPBOOK FACTORY
+              AI Video-to-Flipbook Experimentation Playground
+================================================================================
+
+WHAT YOU BUILT:
+---------------
+A modular workflow system where you define video processing pipelines in YAML.
+Steps are Python classes that process data and pass results to the next step.
+
+KEY FILES:
+----------
+📚 Learning Resources (START HERE):
+   ├── YOUR-TURN.md              ← Read this first! Step-by-step guide
+   ├── QUICK-REFERENCE.md        ← Data flow cheat sheet
+   ├── DATAFLOW-EXPLAINED.md     ← Detailed walkthrough with examples
+   └── CODE-PATH.md              ← Line-by-line execution trace
+
+🔧 Core System:
+   ├── flipbook/
+   │   ├── step.py               ← Base Step class + Registry
+   │   ├── workflow.py           ← YAML parser + execution engine
+   │   └── steps/
+   │       ├── download_video.py ← Download from YouTube
+   │       └── extract_frames.py ← Extract frames with ffmpeg
+   ├── run.py                    ← Main runner
+   └── debug_workflow.py         ← Debug mode (see data flow)
+
+📋 Experiments:
+   └── experiments/
+       ├── exp_001.yaml          ← First experiment (download + frames)
+       └── exp_001/              ← Auto-created outputs
+           ├── config.yaml       ← Saved workflow definition
+           ├── metadata.json     ← Execution results
+           ├── notes.md          ← Your observations
+           └── frames/           ← Extracted frames
+
+HOW IT WORKS:
+-------------
+1. Define workflow in YAML:
+   
+   workflow:
+     - step: download_video
+       id: download
+       params: {url: "https://youtube.com/..."}
+   
+     - step: extract_frames
+       params:
+         input: ${download.output}  ← Reference previous step
+         fps: 24
+
+2. Each step returns a dictionary:
+   
+   return {
+     'output': 'path/to/result',  ← Main result
+     'metadata': {...}             ← Extra info
+   }
+
+3. Workflow engine connects them:
+   
+   ${download.output} → 'data/inputs/video.mp4'
+
+THE KEY INSIGHT:
+----------------
+Steps are DECOUPLED. They don't know about each other.
+The YAML config is the "wiring" that connects them.
+
+This means you can:
+• Add new steps without modifying existing ones
+• Use steps in any order
+• Create unlimited workflow combinations
+
+QUICK START:
+------------
+1. Setup:
+   source .venv/bin/activate
+   pip install -r requirements.txt
+
+2. Run first experiment:
+   python run.py experiments/exp_001.yaml
+
+3. See data flow (debug mode):
+   python debug_workflow.py experiments/exp_001.yaml
+
+4. Experiment!
+   • Change fps: 24 → 12
+   • Change format: jpg → png
+   • Try different videos
+
+ARCHITECTURE PATTERNS YOU LEARNED:
+-----------------------------------
+✓ Step Pattern       - Modular processing units
+✓ Registry Pattern   - Auto-discover steps via decorator
+✓ Template Method    - Base class defines contract
+✓ Dependency Injection - Steps receive params, return outputs
+✓ Data Pipeline      - Chain steps via references
+
+These same patterns are used in:
+• Apache Airflow (data pipelines)
+• GitHub Actions (CI/CD)
+• AWS Step Functions (cloud workflows)
+• Prefect/Dagster (ML pipelines)
+
+NEXT STEPS:
+-----------
+Phase 1 (COMPLETE): ✅
+• YAML parser
+• Workflow engine
+• Step registry
+• 2 working steps
+
+Phase 2 (NEXT):
+• Add pose extraction (MediaPipe)
+• Add stylization (ControlNet)
+• Add video encoding
+• Compare experiments
+
+Phase 3:
+• Config diff tool
+• Video comparison viewer
+• Search experiments
+
+READ THIS NEXT:
+---------------
+1. YOUR-TURN.md        (Complete walkthrough)
+2. QUICK-REFERENCE.md  (Data flow cheat sheet)
+3. Run the experiment! (python run.py experiments/exp_001.yaml)
+
+================================================================================
+                    YOU BUILT A MINI AIRFLOW! 🚀
+================================================================================

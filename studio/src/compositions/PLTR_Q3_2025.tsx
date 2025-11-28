@@ -171,7 +171,7 @@ const SimpleBanner: React.FC = () => {
               fontWeight: 'bold',
               color: '#2563eb',
             }}>
-              EarningLens
+              MarketHawk
             </div>
             <div style={{
               fontSize: '32px',

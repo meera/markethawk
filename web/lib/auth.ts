@@ -8,6 +8,7 @@ import { member as memberTable } from './db/auth-schema';
 import { eq } from 'drizzle-orm';
 // import Stripe from 'stripe';  // TODO: Enable when implementing monetization
 import { sendEmail } from './email';
+import { sendWelcomeEmail } from './mailerlite';
 
 // ============================================
 // HELPER FUNCTIONS
@@ -102,7 +103,7 @@ async function transferBillingToOldestAdmin(orgId: string, leavingOwnerId: strin
 
 export const auth = betterAuth({
   // Use X-Forwarded-Host header to support both www and non-www domains
-  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  baseURL: process.env.BETTER_AUTH_URL,
   basePath: '/api/auth',
   database: drizzleAdapter(db, {
     provider: 'pg',
@@ -110,14 +111,43 @@ export const auth = betterAuth({
   }),
   advanced: {
     useSecureCookies: process.env.NODE_ENV === 'production',
-    crossSubDomainCookies: {
-      enabled: true,
-      domain: '.markethawkeye.com', // Works for both www and non-www
-    },
+    ...(process.env.NODE_ENV === 'production' && {
+      crossSubDomainCookies: {
+        enabled: true,
+        domain: '.markethawkeye.com', // Works for both www and non-www
+      },
+    }),
   },
   logger: {
-    verboseLogging: true,
     disabled: false,
+  },
+
+  // Database hooks - trigger on user creation (works for all signup methods)
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          // Send welcome email when new user is created
+          console.log('[Database Hook] User created:', {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+          });
+
+          try {
+            console.log('[Database Hook] Calling sendWelcomeEmail...');
+            await sendWelcomeEmail(
+              user.email,
+              user.name || undefined
+            );
+            console.log(`[Database Hook] Welcome email sent successfully to ${user.email}`);
+          } catch (error) {
+            console.error('[Database Hook] Failed to send welcome email:', error);
+            // Don't fail the signup if email fails
+          }
+        },
+      },
+    },
   },
   emailAndPassword: {
     enabled: true,
@@ -163,12 +193,6 @@ export const auth = betterAuth({
       enabled: !!process.env.GITHUB_CLIENT_ID,
     },
   },
-
-  // TODO: Add hooks for custom user ID generation and welcome emails
-  // hooks: {
-  //   before: createAuthMiddleware(async (ctx) => { ... }),
-  //   after: createAuthMiddleware(async (ctx) => { ... }),
-  // },
 
   plugins: [
     organization({

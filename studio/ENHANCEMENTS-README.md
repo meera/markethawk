@@ -142,7 +142,7 @@ The enhancement system provides **reusable, brand-aware components** that adapt 
 ```tsx
 <CallToAction
   message="View full analysis with interactive charts"
-  url="EarningLens.com/HOOD/Q3-2025"
+  url="MarketHawk.com/HOOD/Q3-2025"
   brandColors={robinhoodBrand.brandColors}
   showSubscribe={true}
 />
@@ -212,7 +212,7 @@ export const EarningsVideo: React.FC = () => {
       <Sequence from={durationInFrames - fps * 10} durationInFrames={fps * 10}>
         <CallToAction
           message="View full analysis"
-          url="EarningLens.com"
+          url="MarketHawk.com"
           brandColors={brand.brandColors}
         />
       </Sequence>

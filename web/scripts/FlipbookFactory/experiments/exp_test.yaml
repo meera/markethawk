@@ -1,0 +1,43 @@
+experiment_id: exp_test
+description: "Test data flow without downloading (uses mock data)"
+tags: [test, learning]
+
+# This is a simplified test to understand data flow
+# We'll create a mock step that simulates download_video
+
+workflow:
+  # Step 1: Simulate a download (returns fake paths)
+  # Note: This step doesn't exist yet - just showing the concept
+  # - step: mock_download
+  #   id: download
+  #   params:
+  #     video_id: TEST123
+  #   # Returns: {'output': 'fake/video.mp4', 'video_id': 'TEST123'}
+
+  # For now, let's use the real download step
+  - step: download_video
+    id: download
+    params:
+      url: https://www.youtube.com/shorts/iYsOFDa4DDU
+
+  # Step 2: Extract frames (references download output)
+  - step: extract_frames
+    id: frames
+    params:
+      input: ${download.output}     # ← This gets replaced with actual video path
+      fps: 12                         # Fewer frames for faster testing
+      format: jpg
+
+# After this runs, you'll have:
+# step_outputs = {
+#   'download': {
+#     'output': 'data/inputs/iYsOFDa4DDU.mp4',
+#     'video_id': 'iYsOFDa4DDU',
+#     'metadata': {...}
+#   },
+#   'frames': {
+#     'output': 'experiments/exp_test/frames',
+#     'frame_count': 180,  # (15 seconds * 12 fps)
+#     'fps': 12
+#   }
+# }

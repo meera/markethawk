@@ -14,7 +14,7 @@ Complete Python-based pipeline for processing earnings call videos. Works on bot
 
 ```bash
 # Setup (one time)
-cd ~/earninglens
+cd ~/markethawk
 source .venv/bin/activate
 pip install -r requirements.txt
 
@@ -97,7 +97,7 @@ python process_earnings.py --url "..." --from render
 **Flat structure - all files at root level of `_downloads/<video_id>/`**
 
 ```
-/var/earninglens/
+/var/markethawk/
 ├── _downloads/                    # Permanent archive (source of truth)
 │   └── <video_id>/               # Flat directory - easy to see everything
 │       ├── source.mp4            # Original download
@@ -155,7 +155,7 @@ Works on both! Fast steps on Mac, heavy processing on Linux GPU.
 
 **On Mac (Quick steps):**
 ```bash
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 source .venv/bin/activate
 
 # Download multiple videos
@@ -170,7 +170,7 @@ python process_earnings.py --url "video2" --step parse
 **On Sushi (GPU processing):**
 ```bash
 ssh meera@192.168.1.101
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 source .venv/bin/activate
 
 # Process from transcribe onwards (GPU-accelerated)
@@ -178,7 +178,7 @@ python process_earnings.py --url "video1" --from transcribe
 python process_earnings.py --url "video2" --from transcribe
 ```
 
-Since `/var/earninglens/` is mounted on both, files are instantly available!
+Since `/var/markethawk/` is mounted on both, files are instantly available!
 
 ---
 
@@ -215,7 +215,7 @@ All scripts can be run directly:
 
 ### On Mac
 ```bash
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 
 # Python environment
 python3 -m venv .venv
@@ -225,8 +225,8 @@ pip install -r requirements.txt
 # Install ffmpeg
 brew install ffmpeg
 
-# Mount /var/earninglens
-sudo ln -sf /Volumes/earninglens /var/earninglens
+# Mount /var/markethawk
+sudo ln -sf /Volumes/markethawk /var/markethawk
 
 # Copy .env
 cp ../.env .env
@@ -234,7 +234,7 @@ cp ../.env .env
 
 ### On Sushi
 ```bash
-cd ~/earninglens/sushi
+cd ~/markethawk/sushi
 
 # Python environment
 python3 -m venv .venv
@@ -245,7 +245,7 @@ pip install -r requirements.txt
 sudo apt install ffmpeg
 
 # Fix permissions
-sudo chown -R meera:meera /var/earninglens
+sudo chown -R meera:meera /var/markethawk
 
 # Copy .env
 cp ../.env .env
@@ -263,14 +263,14 @@ python process_earnings.py --url "..." --step download
 **"Could not parse company/quarter"**
 ```bash
 # Check metadata
-cat /var/earninglens/_downloads/<video_id>/input/metadata.json
+cat /var/markethawk/_downloads/<video_id>/input/metadata.json
 
 # Add ticker to TICKER_MAP in scripts/parse-metadata.py
 ```
 
 **Reset state**
 ```bash
-rm /var/earninglens/_downloads/<video_id>/.state.json
+rm /var/markethawk/_downloads/<video_id>/.state.json
 python process_earnings.py --url "..."
 ```
 

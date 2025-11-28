@@ -67,7 +67,7 @@ export async function getActiveSubscription() {
     success: true,
     personal: null,
     organization: null,
-    activeOrganizationId: session.session.activeOrganizationId,
+    activeOrganizationId: null,
   };
 }
 
