@@ -14,7 +14,7 @@ export function TableOfContents({ chapters }: { chapters: Chapter[] }) {
   if (chapters.length === 0) return null;
 
   return (
-    <div className="bg-gray-800/50 dark:bg-gray-800/50 border border-gray-700/50 dark:border-gray-700/50 rounded-lg p-6 sticky top-4">
+    <div className="bg-gray-800/50 dark:bg-gray-800/50 border border-gray-700/50 dark:border-gray-700/50 rounded-lg p-6">
       <h2 className="text-lg font-semibold mb-4 text-white dark:text-white">Table of Contents</h2>
       <nav className="space-y-2">
         {chapters.map((chapter, index) => (

@@ -58,21 +58,54 @@ def extract_keywords_from_highlight(highlight: Dict) -> List[str]:
     """
     Extract searchable keywords from a highlight
 
+    Prioritizes:
+    1. Numbers (most distinctive - "200", "2.9", "4000")
+    2. Long words (6+ chars - more unique)
+    3. Medium words (4-5 chars)
+
     Args:
         highlight: Highlight dict with 'text' field
 
     Returns:
-        List of keywords to search for
+        List of keywords to search for (up to 8)
     """
-    text_clean = re.sub(r'[^\w\s]', '', highlight.get('text', '').lower())
+    text = highlight.get('text', '').lower()
+
+    # Extract numbers first (very distinctive)
+    numbers = re.findall(r'\d+(?:\.\d+)?', text)
+
+    # Clean text and extract words
+    text_clean = re.sub(r'[^\w\s]', '', text)
     words = text_clean.split()
 
-    # Remove stop words and keep substantial words
-    stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'is', 'was', 'are'}
-    keywords = [w for w in words if w not in stop_words and len(w) > 3]
+    # Expanded stop words
+    stop_words = {
+        'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+        'of', 'is', 'was', 'are', 'its', 'with', 'from', 'this', 'that', 'now',
+        'can', 'run', 'part', 'per', 'new', 'hps', 'has', 'have', 'been', 'were',
+        'will', 'would', 'could', 'should', 'than', 'then', 'also', 'just', 'more',
+        'most', 'some', 'such', 'into', 'over', 'only', 'year', 'years'
+    }
 
-    # Take first 5 most distinctive words
-    return keywords[:5]
+    # Filter words: exclude stop words and short words
+    content_words = [w for w in words if w not in stop_words and len(w) >= 4]
+
+    # Prioritize longer words (more distinctive)
+    long_words = [w for w in content_words if len(w) >= 6]
+    medium_words = [w for w in content_words if 4 <= len(w) < 6]
+
+    # Build keyword list: numbers first, then long words, then medium words
+    keywords = numbers[:3] + long_words[:4] + medium_words[:3]
+
+    # Remove duplicates while preserving order
+    seen = set()
+    unique_keywords = []
+    for k in keywords:
+        if k not in seen:
+            seen.add(k)
+            unique_keywords.append(k)
+
+    return unique_keywords[:8]
 
 
 def is_number_keyword(keyword: str) -> bool:
@@ -89,94 +122,133 @@ def refine_timestamp_with_words(
     """
     Refine LLM-suggested timestamp using word-level transcript data
 
-    Searches within +window_seconds of LLM suggestion for first keyword match.
+    Strategy: Find where multiple keywords CLUSTER together within a short time span.
+    This is more robust than single-keyword matching because:
+    - Common words like "quarter", "revenue" appear many times
+    - The actual highlight location has multiple keywords near each other
+
+    Process:
+    1. Find all occurrences of each keyword in the transcript
+    2. Group matches into time clusters (within 15 seconds of each other)
+    3. Score clusters by: number of distinct keywords matched
+    4. Return the start of the highest-scoring cluster
 
     Args:
-        llm_timestamp: Timestamp suggested by LLM (from paragraph-level)
+        llm_timestamp: Timestamp suggested by LLM (fallback if no cluster found)
         keywords: Keywords to search for
         transcript_data: Full transcript with word-level data
-        window_seconds: Search window in seconds (forward from llm_timestamp)
+        window_seconds: Cluster window size in seconds (default 30)
 
     Returns:
-        Refined timestamp (or original if no match found)
+        Refined timestamp (start of best keyword cluster, or original if no match)
     """
     if not keywords:
         return llm_timestamp
 
+    CLUSTER_WINDOW = 15  # Seconds - keywords must appear within this window to cluster
+
     # Get all word-level data from segments
     segments = transcript_data.get("segments", [])
 
-    # Search window: llm_timestamp to llm_timestamp + window_seconds
-    search_start = llm_timestamp
-    search_end = llm_timestamp + window_seconds
-
-    # Build list of all words with timestamps in search window
-    # Separate number matches (higher priority) from text matches
-    number_matches = []
-    text_matches = []
+    # Collect ALL matches for each keyword
+    all_matches = []
 
     for segment in segments:
         segment_start = segment.get("start", 0)
-        segment_end = segment.get("end", 0)
 
-        # Skip segments outside search window
-        if segment_end < search_start or segment_start > search_end:
-            continue
-
-        # Check word-level data if available
         words = segment.get("words", [])
         if words:
             for word_obj in words:
                 word_text = word_obj.get("word", "").lower().strip()
                 word_start = word_obj.get("start", segment_start)
 
-                # Check if word is in search window
-                if search_start <= word_start <= search_end:
-                    # Check if word matches any keyword
-                    for keyword in keywords:
-                        # Skip single-character keywords (too generic: 'a', 'i')
-                        if len(keyword) <= 1:
-                            continue
+                for keyword in keywords:
+                    if len(keyword) <= 2:
+                        continue
 
-                        # Skip very short words unless they're numbers
-                        if len(keyword) <= 2 and not is_number_keyword(keyword):
-                            continue
+                    # Require EXACT match or strong substring match
+                    is_match = False
+                    # For longer keywords (5+ chars), allow substring
+                    if len(keyword) >= 5 and len(word_text) >= 5:
+                        is_match = keyword in word_text or word_text in keyword
+                    # For shorter keywords, require exact match
+                    elif keyword == word_text:
+                        is_match = True
+                    # Also match if word starts with keyword (e.g., "consecutive" matches "consecutively")
+                    elif len(keyword) >= 4 and word_text.startswith(keyword[:4]):
+                        is_match = True
 
-                        # Require better match quality
-                        is_match = False
-                        if len(word_text) >= 3 and len(keyword) >= 3:
-                            # For longer words, check if keyword is in word or vice versa
-                            is_match = keyword in word_text or word_text in keyword
-                        elif keyword == word_text:
-                            # For short words, require exact match
-                            is_match = True
+                    if is_match:
+                        all_matches.append({
+                            'word': word_text,
+                            'keyword': keyword,
+                            'timestamp': word_start,
+                            'is_number': is_number_keyword(keyword)
+                        })
 
-                        if is_match:
-                            match_obj = {
-                                'word': word_text,
-                                'keyword': keyword,
-                                'timestamp': word_start
-                            }
+    if not all_matches:
+        print(f"    ⚠ {llm_timestamp}s → no matches found, keeping original")
+        return float(llm_timestamp)
 
-                            # Prioritize number keywords
-                            if is_number_keyword(keyword):
-                                number_matches.append(match_obj)
-                            else:
-                                text_matches.append(match_obj)
+    # Sort matches by timestamp
+    all_matches.sort(key=lambda x: x['timestamp'])
 
-    # Prefer number matches first (more specific)
-    all_matches = number_matches + text_matches
+    # Find clusters: groups of matches within CLUSTER_WINDOW of each other
+    clusters = []
+    current_cluster = [all_matches[0]]
 
-    # Return first match timestamp + 0.5s buffer
-    if all_matches:
-        first_match = min(all_matches, key=lambda x: x['timestamp'])
-        refined_timestamp = first_match['timestamp'] + 0.5
-        match_type = "number" if first_match in number_matches else "text"
-        print(f"    ✓ {llm_timestamp}s → {refined_timestamp:.1f}s (matched '{first_match['word']}' [{match_type}])")
+    for match in all_matches[1:]:
+        # If this match is within CLUSTER_WINDOW of the cluster start, add to cluster
+        if match['timestamp'] - current_cluster[0]['timestamp'] <= CLUSTER_WINDOW:
+            current_cluster.append(match)
+        else:
+            # Save current cluster and start new one
+            clusters.append(current_cluster)
+            current_cluster = [match]
+
+    clusters.append(current_cluster)  # Don't forget the last cluster
+
+    # Score clusters by number of DISTINCT keywords matched
+    def score_cluster(cluster):
+        distinct_keywords = set(m['keyword'] for m in cluster)
+        has_number = any(m['is_number'] for m in cluster)
+        # Bonus for number matches (more specific)
+        return len(distinct_keywords) + (0.5 if has_number else 0)
+
+    # Strategy: Use a tiered approach
+    # 1. If there's a STRONG cluster (3+ keywords), take the first one
+    # 2. Otherwise, take the cluster with highest score (to avoid false positives from weak early matches)
+
+    scored_clusters = [(c, score_cluster(c)) for c in clusters]
+    strong_clusters = [(c, s) for c, s in scored_clusters if s >= 3]
+    good_clusters = [(c, s) for c, s in scored_clusters if s >= 2]
+
+    if strong_clusters:
+        # Take the first strong cluster (earliest, with 3+ keywords)
+        best_cluster, best_score = strong_clusters[0]
+        refined_timestamp = best_cluster[0]['timestamp'] + 0.5
+        distinct = set(m['keyword'] for m in best_cluster)
+        print(f"    ✓ {llm_timestamp}s → {refined_timestamp:.1f}s (strong cluster: {len(distinct)} keywords: {list(distinct)[:3]})")
         return refined_timestamp
 
-    # No match found, return original
-    print(f"    ⚠ {llm_timestamp}s → no match found, keeping original")
+    if good_clusters:
+        # No strong cluster - take the BEST (highest score) cluster to avoid false positives
+        best_cluster, best_score = max(good_clusters, key=lambda x: x[1])
+        refined_timestamp = best_cluster[0]['timestamp'] + 0.5
+        distinct = set(m['keyword'] for m in best_cluster)
+        print(f"    ✓ {llm_timestamp}s → {refined_timestamp:.1f}s (best cluster: {len(distinct)} keywords: {list(distinct)[:3]})")
+        return refined_timestamp
+
+    # Fallback: if no good cluster, try to find a number keyword match
+    number_matches = [m for m in all_matches if m['is_number']]
+    if number_matches:
+        first_number = min(number_matches, key=lambda x: x['timestamp'])
+        refined_timestamp = first_number['timestamp'] + 0.5
+        print(f"    ✓ {llm_timestamp}s → {refined_timestamp:.1f}s (number match: '{first_number['word']}')")
+        return refined_timestamp
+
+    # No good cluster or number match - keep original
+    print(f"    ⚠ {llm_timestamp}s → weak matches only, keeping original")
     return float(llm_timestamp)
 
 

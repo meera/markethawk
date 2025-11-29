@@ -1,9 +1,55 @@
 'use client';
 
-import { MediaPlayerProvider } from './MediaPlayerContext';
+import { MediaPlayerProvider, useMediaPlayer } from './MediaPlayerContext';
 import { TableOfContents } from './TableOfContents';
 import { EarningsCallViewer } from './EarningsCallViewer';
 import Link from 'next/link';
+
+// Format seconds to MM:SS
+function formatTimestamp(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Highlights list component that uses the media player context
+function HighlightsList({ highlights }: { highlights: any[] }) {
+  const { seekTo } = useMediaPlayer();
+
+  if (highlights.length === 0) return null;
+
+  return (
+    <div className="bg-gray-800/50 dark:bg-gray-800/50 border border-gray-700/50 dark:border-gray-700/50 rounded-lg p-6">
+      <h2 className="text-xl font-semibold mb-4 text-white dark:text-white">Key Highlights</h2>
+      <div className="space-y-4">
+        {highlights.map((highlight: any, index: number) => (
+          <div key={index} className="border-l-4 border-yellow-500 dark:border-yellow-500 pl-4 py-2">
+            <div className="flex items-center gap-2 mb-1">
+              {highlight.timestamp !== undefined && highlight.timestamp !== null && (
+                <button
+                  onClick={() => seekTo(highlight.timestamp)}
+                  className="text-xs font-mono px-2 py-0.5 bg-gray-700/60 hover:bg-gray-600/60 text-blue-300 hover:text-blue-200 rounded transition-colors cursor-pointer"
+                  title="Jump to this moment"
+                >
+                  {formatTimestamp(highlight.timestamp)}
+                </button>
+              )}
+              {highlight.category && (
+                <span className="text-xs font-medium px-2 py-1 bg-yellow-900/40 text-yellow-300 dark:bg-yellow-900/40 dark:text-yellow-300 rounded">
+                  {highlight.category}
+                </span>
+              )}
+              {highlight.speaker && (
+                <span className="text-xs text-gray-400 dark:text-gray-400">— {highlight.speaker}</span>
+              )}
+            </div>
+            <p className="text-gray-200 dark:text-gray-200">{highlight.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 interface Props {
   company: string;
@@ -137,28 +183,7 @@ export function EarningsCallPageClient({
             )}
 
             {/* Highlights */}
-            {highlights.length > 0 && (
-              <div className="bg-gray-800/50 dark:bg-gray-800/50 border border-gray-700/50 dark:border-gray-700/50 rounded-lg p-6">
-                <h2 className="text-xl font-semibold mb-4 text-white dark:text-white">Key Highlights</h2>
-                <div className="space-y-4">
-                  {highlights.map((highlight: any, index: number) => (
-                    <div key={index} className="border-l-4 border-yellow-500 dark:border-yellow-500 pl-4 py-2">
-                      <div className="flex items-center gap-2 mb-1">
-                        {highlight.category && (
-                          <span className="text-xs font-medium px-2 py-1 bg-yellow-900/40 text-yellow-300 dark:bg-yellow-900/40 dark:text-yellow-300 rounded">
-                            {highlight.category}
-                          </span>
-                        )}
-                        {highlight.speaker && (
-                          <span className="text-xs text-gray-400 dark:text-gray-400">— {highlight.speaker}</span>
-                        )}
-                      </div>
-                      <p className="text-gray-200 dark:text-gray-200">{highlight.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            <HighlightsList highlights={highlights} />
           </div>
 
           {/* Sidebar - 1 column */}

@@ -38,15 +38,21 @@ export function EarningsCallViewer({
               Your browser does not support the audio element.
             </audio>
           ) : (
-            <video
-              ref={videoRef}
-              controls
-              className="w-full rounded max-h-96"
-              preload="metadata"
-              src={mediaUrl}
-            >
-              Your browser does not support the video element.
-            </video>
+            // TODO: Add poster={thumbnailUrl} to video element
+            // 1. Generate thumbnail in pipeline workflow (extract frame or use banner)
+            // 2. Upload to R2 alongside rendered.mp4, add thumbnail_url column to earnings_calls schema
+            // 3. Pass thumbnailUrl prop to this component and use as poster
+            <div className="relative aspect-video bg-gray-900 rounded overflow-hidden">
+              <video
+                ref={videoRef}
+                controls
+                className="absolute inset-0 w-full h-full object-contain"
+                preload="metadata"
+                src={mediaUrl}
+              >
+                Your browser does not support the video element.
+              </video>
+            </div>
           )}
         </div>
       )}
