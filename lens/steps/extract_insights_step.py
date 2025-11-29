@@ -70,10 +70,20 @@ def extract_insights_step(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, 
         )
 
     # Extract auto-detected metadata from insights if it was auto-detected
+    detected_quarter = None
+    detected_year = None
     if not company_name and hasattr(insights, 'company_name'):
         company_name = insights.company_name
         ticker = insights.company_ticker if hasattr(insights, 'company_ticker') else None
-        quarter = f"{insights.quarter}-{insights.year}" if hasattr(insights, 'quarter') and hasattr(insights, 'year') else None
+        detected_quarter = insights.quarter if hasattr(insights, 'quarter') else None
+        detected_year = insights.year if hasattr(insights, 'year') else None
+        quarter = f"{detected_quarter}-{detected_year}" if detected_quarter and detected_year else None
+    elif company_name and quarter:
+        # Parse quarter string like "Q3-2025" into separate components
+        parts = quarter.split('-')
+        if len(parts) == 2:
+            detected_quarter = parts[0]
+            detected_year = parts[1]
 
     # Return result
     return {
@@ -81,6 +91,8 @@ def extract_insights_step(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, 
         'company': company_name or 'Unknown',
         'ticker': ticker or 'N/A',
         'quarter': quarter or 'N/A',
+        'detected_quarter': detected_quarter or 'N/A',
+        'detected_year': detected_year or 'N/A',
         'metrics_count': len(insights.financial_metrics) if hasattr(insights, 'financial_metrics') else 0,
         'highlights_count': len(insights.highlights) if hasattr(insights, 'highlights') else 0
     }

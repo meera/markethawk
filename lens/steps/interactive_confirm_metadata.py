@@ -115,12 +115,9 @@ def interactive_confirm_metadata(job_dir: Path, job_data: Dict[str, Any]) -> Dic
     job_data['company']['year'] = confirmed_year
 
     return {
-        'confirmed': {
-            'ticker': confirmed_ticker,
-            'company': confirmed_company,
-            'quarter': confirmed_quarter,
-            'year': confirmed_year,
-        },
-        'method': 'interactive',
-        'updated_job_company': True  # Flag that we updated top-level company
+        'confirmed_ticker': confirmed_ticker,
+        'confirmed_company': confirmed_company,
+        'confirmed_quarter': confirmed_quarter,
+        'confirmed_year': confirmed_year,
+        'method': 'interactive'
     }

@@ -11,4 +11,5 @@ __all__ = [
     'upload_artifacts_r2',
     'upload_media_r2',
     'update_database',
+    'notify_seo',
 ]

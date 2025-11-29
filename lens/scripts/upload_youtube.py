@@ -210,9 +210,9 @@ def upload_video(video_path: str, job_yaml_path: str, thumbnail_path: Optional[s
     quarter = confirmed.get('quarter') or company.get('quarter', 'Q3')
     year = confirmed.get('year') or company.get('year', 2025)
 
-    # Build title
+    # Build title: "Company Name Q4 2025 Earnings Call (Replay)"
     title = youtube_info.get('title') or insights.get('title') or \
-            f"{name} {quarter} {year} Earnings Call"
+            f"{name} {quarter} {year} Earnings Call (Replay)"
 
     # Build description with chapter markers
     description = build_description(job_data)

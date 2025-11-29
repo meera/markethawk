@@ -126,6 +126,11 @@ try:
 except ImportError:
     ffmpeg_audio_with_banner = None
 
+try:
+    from steps.notify_seo import notify_seo
+except ImportError:
+    notify_seo = None
+
 
 # Step Handler Registry
 # Maps handler names (from workflow YAML) to Python functions
@@ -160,6 +165,9 @@ STEP_HANDLERS: Dict[str, Callable] = {
 
     # Database steps
     'update_database': update_database,
+
+    # SEO notification
+    'notify_seo': notify_seo,
 
     # Batch workflow steps
     'validate_earnings_call': validate_earnings_call,

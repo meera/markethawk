@@ -43,6 +43,33 @@ def create_banner(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
     img = Image.new('RGB', (width, height), color='#1a1a2e')
     draw = ImageDraw.Draw(img)
 
+    # Add MarketHawkEye logo (top right corner)
+    logo_path = Path(__file__).parent.parent.parent / "web" / "public" / "hawk-logo.jpg"
+    if logo_path.exists():
+        try:
+            logo = Image.open(logo_path)
+            # Resize logo to reasonable size (e.g., 150px height, maintain aspect ratio)
+            logo_height = 150
+            aspect_ratio = logo.width / logo.height
+            logo_width = int(logo_height * aspect_ratio)
+            logo = logo.resize((logo_width, logo_height), Image.Resampling.LANCZOS)
+
+            # Position in top right corner with 50px padding
+            logo_x = width - logo_width - 50
+            logo_y = 50
+
+            # Paste logo (handle transparency if PNG)
+            if logo.mode == 'RGBA':
+                img.paste(logo, (logo_x, logo_y), logo)
+            else:
+                img.paste(logo, (logo_x, logo_y))
+
+            print(f"   ✅ Added MarketHawkEye logo")
+        except Exception as e:
+            print(f"   ⚠️  Could not add logo: {e}")
+    else:
+        print(f"   ⚠️  Logo not found at: {logo_path}")
+
     # Try to use a nice font, fall back to default
     try:
         # Try common font paths
