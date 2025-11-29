@@ -108,6 +108,76 @@
 
 ## 🎥 VIDEO PIPELINE TODO
 
+### Architecture Refactor - Flexible Pipeline System
+
+#### Migrate to YAML-based Workflow System
+**Current**: Hardcoded pipeline in `lens/process_earnings.py` with fixed steps
+**Goal**: Flexible, composable workflows defined in YAML
+
+**Benefits**:
+- Experiment with different processing pipelines without code changes
+- Mix and match steps in any order (e.g., skip transcription for pre-transcribed videos)
+- Compare different approaches side-by-side (different LLM models, different video styles)
+- Easier to add new steps without modifying existing code
+- Better separation of concerns (steps are decoupled)
+
+**Architecture Pattern** (Industry standard - Airflow/Prefect style):
+```python
+# Current (coupled):
+def process_earnings(video_id):
+    download(video_id)
+    parse(video_id)
+    transcribe(video_id)
+    extract_insights(video_id)
+    # Each step knows about file paths
+
+# Proposed (decoupled):
+@StepRegistry.register
+class DownloadVideo(Step):
+    def process(self, **params):
+        return {'output': 'path/to/video.mp4', 'video_id': 'ABC123'}
+
+# YAML workflow:
+workflow:
+  - step: download_video
+    id: download
+    params: {url: "${input.url}"}
+
+  - step: transcribe
+    params: {input: ${download.output}}
+
+  - step: extract_insights
+    params: {transcript: ${transcribe.output}}
+```
+
+**Implementation Plan**:
+- [ ] Create `lens/step.py` - Base Step class and Registry pattern
+- [ ] Create `lens/workflow.py` - YAML parser and execution engine
+- [ ] Refactor existing steps to inherit from Step class:
+  - [ ] `lens/steps/download_video.py`
+  - [ ] `lens/steps/parse_metadata.py`
+  - [ ] `lens/steps/remove_silence.py`
+  - [ ] `lens/steps/transcribe.py`
+  - [ ] `lens/steps/extract_insights.py`
+- [ ] Create example workflow configs:
+  - [ ] `workflows/standard.yaml` - Full pipeline
+  - [ ] `workflows/quick.yaml` - Skip silence removal for speed
+  - [ ] `workflows/insights_only.yaml` - Process existing transcript
+  - [ ] `workflows/retranscribe.yaml` - Re-run just transcription step
+- [ ] Create `lens/run_workflow.py` - New workflow runner
+- [ ] Keep backward compatibility: `process_earnings.py` wraps workflow engine
+- [ ] Add workflow comparison tools (diff configs, compare results)
+
+**Key Design Patterns**:
+- Step Pattern: Each operation is a reusable class
+- Registry Pattern: Auto-discover steps via decorator
+- Data Flow: Steps pass file paths via return values
+- Reference Resolution: `${step_id.output}` syntax in YAML
+
+**Priority**: Medium-High (enables rapid experimentation, but current system works)
+
+---
+
 ### High Priority - Video Generation
 
 #### Thumbnail Validation Agent

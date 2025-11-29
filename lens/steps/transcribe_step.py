@@ -52,6 +52,7 @@ def transcribe_step(job_dir: Path, job_data: Dict[str, Any]) -> Dict[str, Any]:
     # Return result for job.yaml
     return {
         'transcript_file': str(output_dir / "transcript.json"),
+        'paragraphs_file': str(output_dir / "transcript.paragraphs.json"),
         'audio_file': str(audio_file),
         'model': 'medium',
         'language': 'en'

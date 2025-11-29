@@ -21,6 +21,104 @@ from job import JobManager
 from step_registry import get_handler, list_handlers
 
 
+class StepContext:
+    """
+    Runtime context for step input/output resolution
+
+    Tracks outputs from executed steps to enable variable interpolation
+    in subsequent steps (e.g., ${step_id.field})
+    """
+
+    def __init__(self):
+        """Initialize empty context"""
+        self.outputs: Dict[str, Dict[str, Any]] = {}  # {step_id: {output_key: value}}
+        self.job_data: Dict[str, Any] = {}  # Reference to job.yaml data
+
+    def set_job_data(self, job_data: Dict[str, Any]) -> None:
+        """Store reference to job.yaml for ${job.field} resolution"""
+        self.job_data = job_data
+
+    def register_outputs(self, step_id: str, outputs: Dict[str, Any]) -> None:
+        """
+        Register outputs from a completed step
+
+        Args:
+            step_id: Step identifier (defaults to step name)
+            outputs: Dict of output key-value pairs from handler
+        """
+        self.outputs[step_id] = outputs
+
+    def get_output(self, step_id: str, key: str) -> Any:
+        """
+        Get output value from a previous step
+
+        Args:
+            step_id: Step identifier
+            key: Output key name
+
+        Returns:
+            Output value
+
+        Raises:
+            KeyError: If step_id or key not found
+        """
+        if step_id not in self.outputs:
+            raise KeyError(f"Step '{step_id}' has not been executed or has no outputs")
+        if key not in self.outputs[step_id]:
+            raise KeyError(f"Step '{step_id}' has no output '{key}'. Available: {list(self.outputs[step_id].keys())}")
+        return self.outputs[step_id][key]
+
+    def resolve_variable(self, expression: str) -> Any:
+        """
+        Resolve a variable expression like ${step_id.field}
+
+        Supports:
+        - ${input.field} - Access job.yaml input section
+        - ${step_id.field} - Access previous step output
+        - ${job.field} - Access any job.yaml field
+
+        Args:
+            expression: Variable expression (e.g., "${step_id.field}")
+
+        Returns:
+            Resolved value
+
+        Raises:
+            ValueError: If expression format is invalid
+            KeyError: If referenced step/field doesn't exist
+        """
+        if not expression.startswith('${') or not expression.endswith('}'):
+            # Not a variable expression, return as-is (literal value)
+            return expression
+
+        # Extract variable path: "${step_id.field}" -> "step_id.field"
+        var_path = expression[2:-1]
+        parts = var_path.split('.', 1)
+
+        if len(parts) != 2:
+            raise ValueError(f"Invalid variable expression '{expression}'. Expected format: ${{source.field}}")
+
+        source, field = parts
+
+        # Resolve based on source
+        if source == 'input':
+            # Access job.yaml input section
+            input_data = self.job_data.get('input', {})
+            if field not in input_data:
+                raise KeyError(f"Job input has no field '{field}'. Available: {list(input_data.keys())}")
+            return input_data[field]
+
+        elif source == 'job':
+            # Access any job.yaml field
+            if field not in self.job_data:
+                raise KeyError(f"Job has no field '{field}'")
+            return self.job_data[field]
+
+        else:
+            # Assume it's a step_id - access step output
+            return self.get_output(source, field)
+
+
 class WorkflowOrchestrator:
     """Execute workflow steps defined in YAML"""
 
@@ -37,6 +135,14 @@ class WorkflowOrchestrator:
         self.job_dir = job_file.parent
         self.workflow = self._load_workflow(workflow_file)
         self.force = force
+
+        # Initialize step execution context for input/output resolution
+        self.context = StepContext()
+        self.context.set_job_data(self.job.job)
+
+        # Load outputs from previously completed steps into context
+        # This ensures ${step.output} references work even when resuming workflow
+        self._restore_context_from_job()
 
     def _load_workflow(self, workflow_file: Optional[Path] = None) -> Dict[str, Any]:
         """
@@ -130,6 +236,76 @@ class WorkflowOrchestrator:
 
         return (False, None)
 
+    def _resolve_inputs(self, step: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Resolve step inputs from workflow YAML
+
+        Supports variable interpolation:
+        - ${input.field} - Access job.yaml input section
+        - ${step_id.field} - Access previous step output
+        - ${job.field} - Access any job.yaml field
+        - Literal values (no ${...}) are returned as-is
+
+        Args:
+            step: Step definition from workflow
+
+        Returns:
+            Dict of resolved input values
+
+        Raises:
+            KeyError: If referenced variable doesn't exist
+            ValueError: If variable expression is invalid
+        """
+        inputs_config = step.get('inputs', {})
+        if not inputs_config:
+            # No explicit inputs defined - return empty dict (backward compatible)
+            return {}
+
+        resolved = {}
+        for input_name, expression in inputs_config.items():
+            try:
+                resolved[input_name] = self.context.resolve_variable(expression)
+            except (KeyError, ValueError) as e:
+                step_name = step['name']
+                print(f"❌ Error resolving input '{input_name}' for step '{step_name}': {e}")
+                raise
+
+        return resolved
+
+    def _register_outputs(self, step: Dict[str, Any], handler_result: Dict[str, Any]) -> None:
+        """
+        Register step outputs to context for later steps
+
+        Args:
+            step: Step definition from workflow
+            handler_result: Dict returned by handler
+
+        The 'outputs' section in YAML maps output names to handler result keys:
+
+        outputs:
+          destination: "destination"  # Maps handler_result['destination'] to output 'destination'
+          file_size: "file_size_mb"   # Maps handler_result['file_size_mb'] to output 'file_size'
+        """
+        outputs_config = step.get('outputs', {})
+        if not outputs_config:
+            # No explicit outputs defined - register entire handler result (backward compatible)
+            step_id = step.get('id', step['name'])
+            self.context.register_outputs(step_id, handler_result)
+            return
+
+        # Map outputs according to configuration
+        step_id = step.get('id', step['name'])
+        mapped_outputs = {}
+
+        for output_name, result_key in outputs_config.items():
+            if result_key not in handler_result:
+                step_name = step['name']
+                print(f"⚠️  Warning: Handler for step '{step_name}' did not return expected key '{result_key}'. Available: {list(handler_result.keys())}")
+                continue
+            mapped_outputs[output_name] = handler_result[result_key]
+
+        self.context.register_outputs(step_id, mapped_outputs)
+
     def _execute_step(self, step: Dict[str, Any]) -> bool:
         """
         Execute single workflow step
@@ -162,12 +338,30 @@ class WorkflowOrchestrator:
         self.job.update_step(step_name, status='in_progress', started_at=datetime.now().isoformat())
 
         try:
+            # Resolve inputs from workflow YAML (supports variable interpolation)
+            resolved_inputs = self._resolve_inputs(step)
+            if resolved_inputs:
+                print(f"📥 Resolved inputs: {list(resolved_inputs.keys())}")
+
             # Get handler function
             handler = get_handler(handler_name)
 
+            # Prepare job data with resolved inputs
+            # Handlers can access via job_data.get('_resolved_inputs', {})
+            handler_job_data = {
+                **self.job.job,
+                '_resolved_inputs': resolved_inputs
+            }
+
             # Execute handler
             # Handlers receive (job_dir, job_data) and return result dict
-            result = handler(self.job_dir, self.job.job)
+            result = handler(self.job_dir, handler_job_data)
+
+            # Register outputs to context for later steps
+            self._register_outputs(step, result)
+            step_id = step.get('id', step_name)
+            if step_id in self.context.outputs:
+                print(f"📤 Registered outputs: {list(self.context.outputs[step_id].keys())}")
 
             # Update job with result (merge result dict into step data)
             self.job.update_step(
@@ -264,6 +458,26 @@ class WorkflowOrchestrator:
         print(f"{'#'*60}\n")
 
         self._execute_step(step)
+
+    def _restore_context_from_job(self):
+        """
+        Restore step outputs into context from completed steps in job.yaml
+
+        This allows variable interpolation (${step.output}) to work by loading
+        outputs from previously completed steps. Makes job.yaml the single source
+        of truth for step outputs.
+        """
+        processing = self.job.job.get('processing', {})
+
+        for step in self.workflow['steps']:
+            step_name = step['name']
+            step_id = step.get('id', step_name)
+
+            # Check if step has been completed in job.yaml
+            step_data = processing.get(step_name, {})
+            if step_data.get('status') == 'completed':
+                # Register outputs from this completed step
+                self._register_outputs(step, step_data)
 
     def run_from_step(self, start_step_name: str):
         """
